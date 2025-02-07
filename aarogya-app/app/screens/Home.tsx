@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
+import { useNavigation } from "expo-router";
 
 export default function HomeScreen() {
     const { user } = useContext(AppContext);
+    const navigation = useNavigation();
     return (
         <SafeAreaView
             style={{
@@ -382,7 +384,9 @@ export default function HomeScreen() {
                             alignSelf: "stretch",
                             marginBottom: 12,
                             marginHorizontal: 16,
-                        }} onPress={() => alert('Pressed!')}>
+                        }} onPress={() => {
+                            navigation.navigate("Countdown");
+                        }}>
                         <Text
                             style={{
                                 color: "#161411",
