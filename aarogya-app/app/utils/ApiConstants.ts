@@ -21,7 +21,8 @@ export class Api {
     static readonly LOGIN_URL = `${Api.BASE_URL}/login`;
     static readonly REGISTER_URL = `${Api.BASE_URL}/signup`;
     static readonly CURRENT_USER_URL = `${Api.BASE_URL}/user/profile`;
-    static readonly LOGOUT_URL = `${Api.BASE_URL}/auth/logout`;
+    static readonly LOGOUT_URL = `${Api.BASE_URL}/logout`;
+    static readonly CHATBOT_URL = `${Api.BASE_URL}/chat`;
 
     static async buildHeaders() {
         const token = await getJWTToken();
