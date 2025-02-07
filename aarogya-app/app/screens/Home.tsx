@@ -1,39 +1,405 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
+import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
 
 export default function HomeScreen() {
     const { user } = useContext(AppContext);
-
     return (
-        <ScrollView
-            contentContainerStyle={{
-                flexGrow: 1,
-                backgroundColor: "#f5f7fa",
-                padding: 20,
-                alignItems: "center",
-            }}
-        >
-            {
-                user ? (
-                    <>
-                        <Text style={{ fontSize: 26, fontWeight: "bold", color: "#333", marginTop: 10 }}>
-                            Welcome, {user.name}! 👋
+        <SafeAreaView
+            style={{
+                flex: 1,
+                backgroundColor: "#FFFFFF",
+            }}>
+            <ScrollView
+                style={{
+                    flex: 1,
+                    backgroundColor: "#FCFAF7",
+                }}>
+                <View
+                    style={{
+                        alignItems: "flex-start",
+                        backgroundColor: "#FCFAF7",
+                        width: "100%",
+                    }}>
+                    <View
+                        style={{
+                            alignItems: "center",
+                            backgroundColor: "#FCFAF7",
+                            paddingTop: 21,
+                            paddingStart: 16,
+                            paddingBottom: 8,
+                            marginBottom: 16,
+                        }}>
+                    </View>
+                    <View
+                        style={{
+                            alignItems: "center",
+                            width: "100%",
+                        }}>
+                        <Image
+                            source={{ uri: "https://picsum.photos/200" }}
+                            resizeMode={"stretch"}
+                            style={{
+                                borderRadius: 64,
+                                width: 128,
+                                height: 128,
+                                marginBottom: 21,
+                            }}
+                        />
+                        <Text
+                            style={{
+                                color: "#161411",
+                                fontSize: 22,
+                                marginBottom: 7,
+                            }}>
+                            {`Good morning, ${user?.name}!`}
                         </Text>
-                        <Text style={{ fontSize: 18, fontWeight: "bold", color: "#333", marginTop: 10 }}>
-                            Your email: {user.email}
+                        <Text
+                            style={{
+                                color: "#8C7A5E",
+                                fontSize: 16,
+                                marginBottom: 34,
+                            }}>
+                            {"Ready for today's exercises?"}
                         </Text>
-                        <Text style={{ fontSize: 16, fontStyle: "italic", color: "#333", marginTop: 30 }}>
-                            Please show me the bottom navigation bar now where there would be "Home", "Fitness", "Chat", "Profile"
-                        </Text>
-                    </>
-                ) : (
-                    <Text style={{ fontSize: 26, fontWeight: "bold", color: "#333", marginTop: 10 }}>
-                        You are not logged in!
+                    </View>
+                    <View>
+
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: 16,
+                                marginHorizontal: 16,
+                            }}>
+                            <View
+                                style={{
+                                    backgroundColor: "#F4F2EF",
+                                    borderRadius: 12,
+                                    paddingVertical: 30,
+                                    paddingHorizontal: 25,
+                                }}>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 16,
+                                        marginBottom: 16,
+                                    }}>
+                                    {"Steps Today"}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 24,
+                                    }}>
+                                    {"45"}
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    backgroundColor: "#F4F2EF",
+                                    borderRadius: 12,
+                                    marginStart: 16,
+                                    paddingVertical: 30,
+                                    paddingHorizontal: 26,
+                                }}>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 16,
+                                        marginBottom: 16,
+                                    }}>
+                                    {"Exercises done "}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 24,
+                                    }}>
+                                    {"2"}
+                                </Text>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: 16,
+                                marginStart: 16,
+                            }}>
+                            <View
+                                style={{
+                                    backgroundColor: "#F4F2EF",
+                                    borderRadius: 12,
+                                    paddingVertical: 30,
+                                    paddingHorizontal: 25,
+                                }}>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 16,
+                                        marginBottom: 16,
+                                    }}>
+                                    {"Time spent"}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 24,
+                                    }}>
+                                    {"1:03"}
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    marginStart: 16,
+
+                                    backgroundColor: "#F4F2EF",
+                                    borderRadius: 12,
+                                    paddingVertical: 30,
+                                    paddingHorizontal: 25,
+                                }}>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 16,
+                                        marginBottom: 16,
+                                    }}>
+                                    {"Calories burned"}
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: "#161411",
+                                        fontSize: 24,
+                                    }}>
+                                    {"34"}
+                                </Text>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                backgroundColor: "#F4F2EF",
+                                borderRadius: 12,
+                                paddingVertical: 30,
+                                paddingHorizontal: 25,
+                                marginBottom: 37,
+                                alignContent: "center",
+                                alignItems: "center",
+                                marginHorizontal: 16,
+                            }}>
+                            <Text
+                                style={{
+                                    color: "#161411",
+                                    fontSize: 16,
+                                    marginBottom: 16,
+                                }}>
+                                {"Total score"}
+                            </Text>
+                            <Text
+                                style={{
+                                    color: "#161411",
+                                    fontSize: 24,
+                                }}>
+                                {"3,456"}
+                            </Text>
+                        </View>
+                    </View>
+                    <Text
+                        style={{
+                            color: "#161411",
+                            fontSize: 18,
+                            marginBottom: 26,
+                            marginLeft: 17,
+                        }}>
+                        {"Today's roadmap"}
                     </Text>
-                )
-            }
-        </ScrollView>
-    );
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "flex-start",
+                            marginBottom: 2,
+                            marginLeft: 32,
+                            marginRight: 206,
+                        }}>
+                        <View
+                            style={{
+                                width: 8,
+                                marginTop: 2,
+                                marginRight: 25,
+                            }}>
+                            <View
+                                style={{
+                                    height: 8,
+                                    backgroundColor: "#161411",
+                                    borderRadius: 4,
+                                    marginBottom: 4,
+                                }}>
+                            </View>
+                            <View
+                                style={{
+                                    height: 40,
+                                    backgroundColor: "#E5E2DB",
+                                    marginHorizontal: 3,
+                                }}>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flex: 1,
+                            }}>
+                            <Text
+                                style={{
+                                    color: "#161411",
+                                    fontSize: 16,
+                                    textAlign: "center",
+                                    marginBottom: 8,
+                                }}>
+                                {"Morning routine"}
+                            </Text>
+                            <Text
+                                style={{
+                                    color: "#8C7A5E",
+                                    fontSize: 16,
+                                }}>
+                                {"2 exercises"}
+                            </Text>
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            width: 2,
+                            height: 16,
+                            backgroundColor: "#E5E2DB",
+                            marginBottom: 2,
+                            marginLeft: 35,
+                        }}>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "flex-start",
+                            marginBottom: 3,
+                            marginLeft: 32,
+                            marginRight: 213,
+                        }}>
+                        <View
+                            style={{
+                                width: 8,
+                                marginTop: 2,
+                                marginRight: 25,
+                            }}>
+                            <View
+                                style={{
+                                    height: 8,
+                                    backgroundColor: "#161411",
+                                    borderRadius: 4,
+                                    marginBottom: 4,
+                                }}>
+                            </View>
+                            <View
+                                style={{
+                                    height: 40,
+                                    backgroundColor: "#E5E2DB",
+                                    marginHorizontal: 3,
+                                }}>
+                            </View>
+                        </View>
+                        <View
+                            style={{
+                                flex: 1,
+                            }}>
+                            <Text
+                                style={{
+                                    color: "#161411",
+                                    fontSize: 16,
+                                    textAlign: "center",
+                                    marginBottom: 8,
+                                }}>
+                                {"Afternoon walk"}
+                            </Text>
+                            <Text
+                                style={{
+                                    color: "#8C7A5E",
+                                    fontSize: 16,
+                                    textAlign: "center",
+                                }}>
+                                {"Walk 500 steps"}
+                            </Text>
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            width: 2,
+                            height: 16,
+                            backgroundColor: "#E5E2DB",
+                            marginBottom: 2,
+                            marginLeft: 35,
+                        }}>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginBottom: 8,
+                            marginLeft: 32,
+                            marginRight: 209,
+                        }}>
+                        <View
+                            style={{
+                                width: 8,
+                                height: 8,
+                                backgroundColor: "#161411",
+                                borderRadius: 4,
+                                marginRight: 26,
+                            }}>
+                        </View>
+                        <Text
+                            style={{
+                                color: "#161411",
+                                fontSize: 16,
+                                flex: 1,
+                            }}>
+                            {"Evening routine"}
+                        </Text>
+                    </View>
+                    <Text
+                        style={{
+                            color: "#8C7A5E",
+                            fontSize: 16,
+                            marginBottom: 21,
+                            marginLeft: 65,
+                        }}>
+                        {"3 exercises"}
+                    </Text>
+                    <TouchableOpacity
+                        style={{
+                            alignItems: "center",
+                            backgroundColor: "#F99E16",
+                            borderRadius: 12,
+                            padding: 18,
+                            alignSelf: "stretch",
+                            marginBottom: 12,
+                            marginHorizontal: 16,
+                        }} onPress={() => alert('Pressed!')}>
+                        <Text
+                            style={{
+                                color: "#161411",
+                                fontSize: 16,
+                                textAlign: "center",
+                            }}>
+                            {"Start routine"}
+                        </Text>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            height: 20,
+                            backgroundColor: "#FFFFFF",
+                        }}>
+                    </View>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    )
 }

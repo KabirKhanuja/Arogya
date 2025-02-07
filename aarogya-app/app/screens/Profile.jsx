@@ -3,21 +3,21 @@ import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "
 
 export default function ProfileScreen() {
 	return (
-		<SafeAreaView 
+		<SafeAreaView
 			style={{
 				flex: 1,
 				backgroundColor: "#FFFFFF",
 			}}>
-			<ScrollView  
+			<ScrollView
 				style={{
 					flex: 1,
 					backgroundColor: "#FFFFFF",
 				}}>
-				<View 
+				<View
 					style={{
 						backgroundColor: "#FCF9F7",
 					}}>
-					<View 
+					<View
 						style={{
 							alignItems: "center",
 							backgroundColor: "#FCF9F7",
@@ -25,7 +25,7 @@ export default function ProfileScreen() {
 							paddingBottom: 9,
 							marginBottom: 16,
 						}}>
-						<Text 
+						<Text
 							style={{
 								color: "#1C160C",
 								fontSize: 18,
@@ -34,8 +34,8 @@ export default function ProfileScreen() {
 						</Text>
 					</View>
 					<Image
-						source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-						resizeMode = {"stretch"}
+						source={{ uri: "https://picsum.photos/200" }}
+						resizeMode={"stretch"}
 						style={{
 							borderRadius: 64,
 							height: 128,
@@ -43,7 +43,7 @@ export default function ProfileScreen() {
 							marginHorizontal: 131,
 						}}
 					/>
-					<Text 
+					<Text
 						style={{
 							color: "#1C160C",
 							fontSize: 22,
@@ -52,7 +52,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Viru"}
 					</Text>
-					<Text 
+					<Text
 						style={{
 							color: "#9E7A47",
 							fontSize: 16,
@@ -61,7 +61,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Age: 65, Weight: 89 kgs, Height: 6'1\""}
 					</Text>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							justifyContent: "space-between",
@@ -69,15 +69,15 @@ export default function ProfileScreen() {
 							marginBottom: 24,
 							marginHorizontal: 16,
 						}}>
-						<TouchableOpacity 
+						<TouchableOpacity
 							style={{
 								width: 173,
 								alignItems: "center",
 								backgroundColor: "#F4EFE5",
 								borderRadius: 8,
 								paddingVertical: 15,
-							}} onPress={()=>alert('Pressed!')}>
-							<Text 
+							}} onPress={() => alert('Pressed!')}>
+							<Text
 								style={{
 									color: "#1C160C",
 									fontSize: 14,
@@ -85,15 +85,15 @@ export default function ProfileScreen() {
 								{"Re-evaluate"}
 							</Text>
 						</TouchableOpacity>
-						<TouchableOpacity 
+						<TouchableOpacity
 							style={{
 								width: 173,
 								alignItems: "center",
 								backgroundColor: "#F99E16",
 								borderRadius: 8,
 								paddingVertical: 15,
-							}} onPress={()=>alert('Pressed!')}>
-							<Text 
+							}} onPress={() => alert('Pressed!')}>
+							<Text
 								style={{
 									color: "#1C160C",
 									fontSize: 14,
@@ -102,7 +102,7 @@ export default function ProfileScreen() {
 							</Text>
 						</TouchableOpacity>
 					</View>
-					<Text 
+					<Text
 						style={{
 							color: "#9E7A47",
 							fontSize: 16,
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Recovery Progress"}
 					</Text>
-					<View 
+					<View
 						style={{
 							alignItems: "flex-start",
 							backgroundColor: "#F5F0E5",
@@ -119,7 +119,7 @@ export default function ProfileScreen() {
 							marginBottom: 29,
 							marginHorizontal: 16,
 						}}>
-						<View 
+						<View
 							style={{
 								width: 179,
 								height: 8,
@@ -128,7 +128,7 @@ export default function ProfileScreen() {
 							}}>
 						</View>
 					</View>
-					<Text 
+					<Text
 						style={{
 							color: "#1C160C",
 							fontSize: 18,
@@ -137,7 +137,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Badges"}
 					</Text>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							justifyContent: "space-between",
@@ -146,8 +146,8 @@ export default function ProfileScreen() {
 							marginHorizontal: 16,
 						}}>
 						<Image
-							source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-							resizeMode = {"stretch"}
+							source={{ uri: "https://kylesethgray.com/content/images/2018/08/thanksgiving_day_challenge_5k.png" }}
+							resizeMode={"stretch"}
 							style={{
 								borderRadius: 8,
 								width: 173,
@@ -155,8 +155,8 @@ export default function ProfileScreen() {
 							}}
 						/>
 						<Image
-							source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-							resizeMode = {"stretch"}
+							source={{ uri: "https://kylesethgray.com/content/images/2018/08/new_year_2017.png" }}
+							resizeMode={"stretch"}
 							style={{
 								borderRadius: 8,
 								width: 173,
@@ -164,7 +164,7 @@ export default function ProfileScreen() {
 							}}
 						/>
 					</View>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							alignItems: "center",
@@ -172,7 +172,7 @@ export default function ProfileScreen() {
 							marginLeft: 17,
 							marginRight: 45,
 						}}>
-						<Text 
+						<Text
 							style={{
 								color: "#1C160C",
 								fontSize: 16,
@@ -181,7 +181,7 @@ export default function ProfileScreen() {
 							}}>
 							{"First Step Badge"}
 						</Text>
-						<Text 
+						<Text
 							style={{
 								color: "#1C160C",
 								fontSize: 16,
@@ -189,7 +189,7 @@ export default function ProfileScreen() {
 							{"Second Step Badge"}
 						</Text>
 					</View>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							alignItems: "center",
@@ -197,7 +197,7 @@ export default function ProfileScreen() {
 							marginLeft: 16,
 							marginRight: 68,
 						}}>
-						<Text 
+						<Text
 							style={{
 								color: "#9E7A47",
 								fontSize: 14,
@@ -206,7 +206,7 @@ export default function ProfileScreen() {
 							}}>
 							{"For completing 1st exercise"}
 						</Text>
-						<Text 
+						<Text
 							style={{
 								color: "#9E7A47",
 								fontSize: 14,
@@ -216,8 +216,8 @@ export default function ProfileScreen() {
 						</Text>
 					</View>
 					<Image
-						source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-						resizeMode = {"stretch"}
+						source={{ uri: "https://kylesethgray.com/content/images/2018/08/VeteransDay_Sticker.png" }}
+						resizeMode={"stretch"}
 						style={{
 							borderRadius: 8,
 							width: 173,
@@ -226,7 +226,7 @@ export default function ProfileScreen() {
 							marginLeft: 16,
 						}}
 					/>
-					<Text 
+					<Text
 						style={{
 							color: "#1C160C",
 							fontSize: 16,
@@ -235,7 +235,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Five Steps Badge"}
 					</Text>
-					<Text 
+					<Text
 						style={{
 							color: "#9E7A47",
 							fontSize: 14,
@@ -244,7 +244,7 @@ export default function ProfileScreen() {
 						}}>
 						{"For completing 5 exercises"}
 					</Text>
-					<Text 
+					<Text
 						style={{
 							color: "#1C160C",
 							fontSize: 18,
@@ -253,7 +253,7 @@ export default function ProfileScreen() {
 						}}>
 						{"Certificates"}
 					</Text>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							justifyContent: "space-between",
@@ -262,8 +262,8 @@ export default function ProfileScreen() {
 							marginHorizontal: 16,
 						}}>
 						<Image
-							source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-							resizeMode = {"stretch"}
+							source={{ uri: "https://i.etsystatic.com/23383377/r/il/833db7/3235267495/il_fullxfull.3235267495_cdo5.jpg" }}
+							resizeMode={"stretch"}
 							style={{
 								borderRadius: 8,
 								width: 173,
@@ -271,8 +271,8 @@ export default function ProfileScreen() {
 							}}
 						/>
 						<Image
-							source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-							resizeMode = {"stretch"}
+							source={{ uri: "https://i.etsystatic.com/23383377/r/il/7e92f8/4868914726/il_1080xN.4868914726_4lk8.jpg" }}
+							resizeMode={"stretch"}
 							style={{
 								borderRadius: 8,
 								width: 173,
@@ -280,7 +280,7 @@ export default function ProfileScreen() {
 							}}
 						/>
 					</View>
-					<View 
+					<View
 						style={{
 							flexDirection: "row",
 							alignItems: "flex-start",
@@ -288,12 +288,12 @@ export default function ProfileScreen() {
 							marginLeft: 16,
 							marginRight: 55,
 						}}>
-						<View 
+						<View
 							style={{
 								width: 171,
 								marginRight: 14,
 							}}>
-							<Text 
+							<Text
 								style={{
 									color: "#1C160C",
 									fontSize: 16,
@@ -302,7 +302,7 @@ export default function ProfileScreen() {
 								}}>
 								{"Completion Certificate"}
 							</Text>
-							<Text 
+							<Text
 								style={{
 									color: "#9E7A47",
 									fontSize: 14,
@@ -311,11 +311,11 @@ export default function ProfileScreen() {
 								{"For completing the program"}
 							</Text>
 						</View>
-						<View 
+						<View
 							style={{
 								flex: 1,
 							}}>
-							<Text 
+							<Text
 								style={{
 									color: "#1C160C",
 									fontSize: 16,
@@ -323,7 +323,7 @@ export default function ProfileScreen() {
 								}}>
 								{"Goal Achievement Certificate"}
 							</Text>
-							<Text 
+							<Text
 								style={{
 									color: "#9E7A47",
 									fontSize: 14,
@@ -332,7 +332,7 @@ export default function ProfileScreen() {
 							</Text>
 						</View>
 					</View>
-					<TouchableOpacity 
+					<TouchableOpacity
 						style={{
 							alignItems: "center",
 							backgroundColor: "#F99E16",
@@ -340,8 +340,8 @@ export default function ProfileScreen() {
 							paddingVertical: 15,
 							marginBottom: 12,
 							marginHorizontal: 16,
-						}} onPress={()=>alert('Pressed!')}>
-						<Text 
+						}} onPress={() => alert('Pressed!')}>
+						<Text
 							style={{
 								color: "#1C160C",
 								fontSize: 14,
@@ -349,98 +349,7 @@ export default function ProfileScreen() {
 							{"Share on social media"}
 						</Text>
 					</TouchableOpacity>
-					<View 
-						style={{
-							backgroundColor: "#FCF9F7",
-							paddingVertical: 13,
-							paddingHorizontal: 42,
-						}}>
-						<View 
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								marginBottom: 13,
-							}}>
-							<Image
-								source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-								resizeMode = {"stretch"}
-								style={{
-									width: 24,
-									height: 24,
-								}}
-							/>
-							<View 
-								style={{
-									flex: 1,
-								}}>
-							</View>
-							<Image
-								source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-								resizeMode = {"stretch"}
-								style={{
-									width: 24,
-									height: 24,
-									marginRight: 67,
-								}}
-							/>
-							<Image
-								source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-								resizeMode = {"stretch"}
-								style={{
-									width: 24,
-									height: 24,
-									marginRight: 68,
-								}}
-							/>
-							<Image
-								source = {{uri: "https://i.imgur.com/1tMFzp8.png"}} 
-								resizeMode = {"stretch"}
-								style={{
-									width: 24,
-									height: 24,
-								}}
-							/>
-						</View>
-						<View 
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-							}}>
-							<Text 
-								style={{
-									color: "#9E7A47",
-									fontSize: 12,
-									marginRight: 4,
-									flex: 1,
-								}}>
-								{"Home"}
-							</Text>
-							<Text 
-								style={{
-									color: "#9E7A47",
-									fontSize: 12,
-									marginRight: 59,
-								}}>
-								{"Fitness"}
-							</Text>
-							<Text 
-								style={{
-									color: "#9E7A47",
-									fontSize: 12,
-									marginRight: 61,
-								}}>
-								{"Chat"}
-							</Text>
-							<Text 
-								style={{
-									color: "#1C160C",
-									fontSize: 12,
-								}}>
-								{"Profile"}
-							</Text>
-						</View>
-					</View>
-					<View 
+					<View
 						style={{
 							height: 20,
 							backgroundColor: "#FCF9F7",
