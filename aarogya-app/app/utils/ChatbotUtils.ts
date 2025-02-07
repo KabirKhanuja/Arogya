@@ -18,7 +18,7 @@ export default class Chatbot {
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = response.responseJson;
                 this.conversationId = responseJson.conversation_id;
-                return responseJson.message + " ID=" + responseJson.conversation_id;
+                return responseJson.message;
             }
             return null;
         } catch (error) {
