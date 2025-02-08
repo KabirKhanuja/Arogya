@@ -103,16 +103,6 @@ const TypingIndicator = () => {
     );
 };
 
-const Dialog = () => {
-    return (
-        <>
-            <TherapistBotMessage message={"Hi there, I'm your virtual guide to help you through your exercises. How can I help you today?"} />
-            <UserMessage message={"I'm  having  a  hard  time  with  the  hip  flexor  stretch."} />
-        </>
-    )
-}
-
-
 const EmptyMessagesContainer = () => {
     return (
         <View style={styles.container}>

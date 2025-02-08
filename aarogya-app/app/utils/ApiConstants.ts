@@ -17,6 +17,7 @@ const clearJWTToken = async () => {
 
 export class Api {
     static readonly BASE_URL = "https://aarogyaapi.vercel.app/";
+    // static readonly BASE_URL = "http://127.0.0.1:5000";
 
     static readonly LOGIN_URL = `${Api.BASE_URL}/login`;
     static readonly REGISTER_URL = `${Api.BASE_URL}/signup`;

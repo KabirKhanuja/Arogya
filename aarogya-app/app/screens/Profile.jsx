@@ -1,9 +1,11 @@
 import { useNavigation } from "expo-router";
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
+import AppContext from "../auth/AuthContext";
 
 export default function ProfileScreen() {
 	const navigation = useNavigation();
+	const {user} = useContext(AppContext);
 	return (
 		<SafeAreaView
 			style={{
@@ -52,7 +54,7 @@ export default function ProfileScreen() {
 							textAlign: "center",
 							marginBottom: 20,
 						}}>
-						{"Viru"}
+						{user.name}
 					</Text>
 					<Text
 						style={{
@@ -61,7 +63,7 @@ export default function ProfileScreen() {
 							textAlign: "center",
 							marginBottom: 20,
 						}}>
-						{"Age: 65, Weight: 89 kgs, Height: 6'1\""}
+						{`Age: ${user.age}, Weight: ${user.weight} kgs, Height: ${user.height} cms`}
 					</Text>
 					<View
 						style={{

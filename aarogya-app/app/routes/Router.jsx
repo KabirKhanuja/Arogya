@@ -29,7 +29,16 @@ export default Router = () => {
                         email: _user.username,
                         name: _user.name,
                         id: _user.user_id,
+                        age: _user.age,
+                        gender: _user.gender,
+                        weight: _user.weight,
+                        height: _user.height,
+                        doYouSmoke: _user.smoking,
+                        doYouDrink: _user.drinking,
+                        problems: _user.problems,
+                        medicalHistory: _user.medicalHistory
                     });
+
                     setIsLoggedIn(true);
                     return;
                 }

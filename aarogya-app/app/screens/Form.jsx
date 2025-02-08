@@ -15,7 +15,7 @@ export default function FormScreen() {
     const [showDrinkingModal, setShowDrinkingModal] = useState(false);
     const [problems, setProblems] = useState('');
     const [medicalHistory, setMedicalHistory] = useState('');
-    const { authService, user, setFormFilled } = useContext(AppContext);
+    const { authService, user, setFormFilled, setUser } = useContext(AppContext);
     const genderOptions = ['Male', 'Female', 'Other'];
     const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
 
@@ -40,6 +40,17 @@ export default function FormScreen() {
         })
             .then(responseJson => {
                 if (responseJson) {
+                    setUser({
+                        ...user,
+                        age: parseInt(age),
+                        gender: gender,
+                        weight: weight,
+                        height: height,
+                        doYouSmoke: smoking,
+                        doYouDrink: drinking,
+                        problems: problems,
+                        medicalHistory: medicalHistory
+                    })
                     console.log("User account updated successfully", responseJson);
                     setFormFilled(true);
                     return;

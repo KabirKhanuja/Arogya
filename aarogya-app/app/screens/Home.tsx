@@ -3,7 +3,18 @@ import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "
 import AppContext from "../auth/AuthContext";
 import { useNavigation } from "expo-router";
 import RoadmapUtils from "../utils/RoadmapUtils";
-import Loading from "../components/Loading";
+import ExerciseRoadmap from "../components/ExerciseRoadmap";
+
+const LoadingIndicator = ({ text = "Typing" }) => {
+    const typingIndicator = [`${text}`, `${text}.`, `${text}..`, `${text}...`];
+    const [indicator, setIndicator] = React.useState(0);
+    setTimeout(() => {
+        setIndicator((indicator + 1) % 4);
+    }, 300);
+    return (
+        <Text>{typingIndicator[indicator]}</Text>
+    );
+};
 
 export default function HomeScreen() {
     const { user } = useContext(AppContext);
@@ -18,8 +29,8 @@ export default function HomeScreen() {
                 .then((response) => {
                     if (response) {
                         setRoadmap(response);
-                        setRoadmapGenerated(true);
                     }
+                    setRoadmapGenerated(true);
                 });
         }
     }, []);
@@ -253,11 +264,24 @@ export default function HomeScreen() {
                         {"Today's roadmap"}
                     </Text>
                     {
-                        !roadmapGenerated ? (<Loading />) : (
+                        !roadmapGenerated ? (
+                            <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginStart: 40,
+                                paddingBottom: 50
+                            }}
+                            >
+                                <LoadingIndicator text="Generating" />
+                            </View>
+                    ) : (
                             <>
                                 <Text>
                                     {JSON.stringify(roadmap)}
                                 </Text>
+                                <ExerciseRoadmap data={roadmap}/>
                             </>
                         )
                     }
