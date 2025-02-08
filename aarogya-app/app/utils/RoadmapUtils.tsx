@@ -13,7 +13,7 @@ export default class RoadmapUtils {
             const localRoadmap = await SecureStorage.getItemAsync('roadmap');
             if (localRoadmap && localRoadmap != "") {
                 const localRoadmapObj = JSON.parse(localRoadmap);
-                if (localRoadmapObj) return;
+                if (localRoadmapObj) return localRoadmapObj;
             }
 
             const response = await Api.post(Api.GENERATE_ROADMAP_URL, {});
