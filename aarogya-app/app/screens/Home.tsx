@@ -1,17 +1,131 @@
-import React, { useContext } from "react";
-import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { Pedometer } from 'expo-sensors';
 import AppContext from "../auth/AuthContext";
 import { useNavigation } from "expo-router";
 import RoadmapUtils from "../utils/RoadmapUtils";
 import Loading from "../components/Loading";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Define types
+type PedometerAvailability = 'checking' | 'available' | 'unavailable';
+type Subscription = { remove: () => void };
+
+interface DayBoundaries {
+    startOfDay: Date;
+    endOfDay: Date;
+}
+
+// Utility function to get start and end of day in IST
+const getDayBoundariesIST = (): DayBoundaries => {
+    const now = new Date();
+    const startOfDay = new Date(now);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(now);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    return { startOfDay, endOfDay };
+};
 
 export default function HomeScreen() {
     const { user } = useContext(AppContext);
-    const [roadmapGenerated, setRoadmapGenerated] = React.useState(false);
-    const [roadmap, setRoadmap] = React.useState({});
+    const [roadmapGenerated, setRoadmapGenerated] = React.useState<boolean>(false);
+    const [roadmap, setRoadmap] = React.useState<Record<string, any>>({});
+    const [stepCount, setStepCount] = useState<number>(0);
+    const [isPedometerAvailable, setPedometerAvailable] = useState<PedometerAvailability>('checking');
     const navigation = useNavigation();
-    const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
+    const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user?.id ?? ''));
 
+    // Store steps at midnight
+    const storeStepsAtMidnight = async (steps: number): Promise<void> => {
+        try {
+            const date = new Date().toISOString().split('T')[0];
+            await AsyncStorage.setItem(`steps_${date}`, steps.toString());
+        } catch (error) {
+            console.error('Error storing steps:', error);
+        }
+    };
+
+    // Load stored steps
+    const loadStoredSteps = async (): Promise<number> => {
+        try {
+            const date = new Date().toISOString().split('T')[0];
+            const steps = await AsyncStorage.getItem(`steps_${date}`);
+            return steps ? parseInt(steps) : 0;
+        } catch (error) {
+            console.error('Error loading steps:', error);
+            return 0;
+        }
+    };
+
+    // Check if we need to reset steps
+    const checkAndResetSteps = async (): Promise<void> => {
+        const now = new Date();
+        const lastResetDate = await AsyncStorage.getItem('lastResetDate');
+        const currentDate = now.toISOString().split('T')[0];
+
+        if (lastResetDate !== currentDate) {
+            // Store yesterday's steps before resetting
+            const yesterdaySteps = await loadStoredSteps();
+            await storeStepsAtMidnight(yesterdaySteps);
+
+            // Reset steps for new day
+            setStepCount(0);
+            await AsyncStorage.setItem('lastResetDate', currentDate);
+        }
+    };
+
+    useEffect(() => {
+        let subscription: Subscription | null = null;
+
+        const subscribe = async () => {
+            const isAvailable = await Pedometer.isAvailableAsync();
+            setPedometerAvailable(isAvailable ? 'available' : 'unavailable');
+
+            if (isAvailable) {
+                const { startOfDay, endOfDay } = getDayBoundariesIST();
+
+                // Load any stored steps first
+                const storedSteps = await loadStoredSteps();
+                setStepCount(storedSteps);
+
+                // Check if we need to reset steps
+                await checkAndResetSteps();
+
+                // Subscribe to pedometer updates
+                subscription = Pedometer.watchStepCount(result => {
+                    setStepCount(prevCount => {
+                        const newCount = prevCount + result.steps;
+                        storeStepsAtMidnight(newCount);
+                        return newCount;
+                    });
+                });
+
+                // Get steps since start of day
+                const pastStepCountResult = await Pedometer.getStepCountAsync(startOfDay, endOfDay);
+                if (pastStepCountResult) {
+                    setStepCount(pastStepCountResult.steps);
+                }
+            } else {
+                Alert.alert(
+                    'Pedometer not available',
+                    'The pedometer is not available on this device.'
+                );
+            }
+        };
+
+        subscribe();
+
+        // Cleanup subscription on unmount
+        return () => {
+            if (subscription) {
+                subscription.remove();
+            }
+        };
+    }, []);
+
+    // Your existing useEffect for roadmap
     React.useEffect(() => {
         if (!roadmapGenerated) {
             roadmapGeneratorRef.current.generateRoadmap()
@@ -23,6 +137,12 @@ export default function HomeScreen() {
                 });
         }
     }, []);
+
+    // For the navigation error, you'll need to type it properly
+    const handleStartRoutine = () => {
+        // @ts-ignore - Add proper typing for your navigation
+        navigation.navigate("Countdown");
+    };
 
     return (
         <SafeAreaView
@@ -118,7 +238,7 @@ export default function HomeScreen() {
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    {"45"}
+                                    {stepCount.toString()}
                                 </Text>
                             </View>
                             <View
@@ -431,9 +551,8 @@ export default function HomeScreen() {
                             alignSelf: "stretch",
                             marginBottom: 12,
                             marginHorizontal: 16,
-                        }} onPress={() => {
-                            navigation.navigate("Countdown");
-                        }}>
+                        }}
+                        onPress={handleStartRoutine}>
                         <Text
                             style={{
                                 color: "#161411",

@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.aarogyaapp"
     },
     "web": {
       "bundler": "metro",
@@ -25,6 +26,12 @@
     "plugins": [
       "expo-router",
       "react-native-bottom-tabs",
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion sensors."
+        }
+      ],
       [
         "expo-splash-screen",
         {

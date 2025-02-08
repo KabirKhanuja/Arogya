@@ -61,7 +61,7 @@ export default function LandingScreen() {
 
             <View style={{ padding: 20 }}>
                 <Image 
-                    source={{ uri: "https://www.palmbeachphysiotherapy.com.au/wp-content/uploads/2024/01/Exercise-Rehabilitation-Palm-Beach.jpg" }} 
+                    source={{ uri: "https://i.ibb.co/PvnXGh0W/Exercise-Rehabilitation-Palm-Beach.png" }} 
                     style={{ 
                         width: width - 40,
                         height: 220,
