@@ -52,6 +52,9 @@ current_exercise = 0  # Start with right hand clockwise
 engine.say(f"Starting with the {exercise_order[0][0]} hand, {exercise_order[0][1]}.")
 engine.runAndWait()
 
+# Timer Start
+start_time = time.time()
+
 # Function for countdown transition
 def countdown_transition():
     for i in range(3, 0, -1):
@@ -142,13 +145,7 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
                 next_hand, next_direction = exercise_order[current_exercise]
 
                 # Show transition screen
-                black_screen = np.zeros((SCREEN_HEIGHT, SCREEN_WIDTH, 3), dtype=np.uint8)
-                cv2.putText(black_screen, f"Next: {next_hand.capitalize()} Hand - {next_direction.capitalize()}",
-                            (50, SCREEN_HEIGHT // 2 - 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-                cv2.imshow("Wrist Rotation Tracker", black_screen)
-                cv2.waitKey(1000)
-
-                countdown_transition()  # Show 3...2...1 countdown
+                countdown_transition()
 
                 engine.say(f"Switching to {next_hand} hand, {next_direction}.")
                 engine.runAndWait()
@@ -162,6 +159,25 @@ with mp_hands.Hands(min_detection_confidence=0.5, min_tracking_confidence=0.5, m
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
+# Timer End
+end_time = time.time()
+total_time = int(end_time - start_time)
+
+# Accuracy Calculation
+if total_time <= 130:
+    accuracy = 100.0
+else:
+    accuracy = (130 / total_time) * 100
+
+# Display Final Black Screen
+final_screen = np.zeros((SCREEN_HEIGHT, SCREEN_WIDTH, 3), dtype=np.uint8)
+cv2.putText(final_screen, f"Total Time: {total_time} sec", (50, SCREEN_HEIGHT // 2 - 50),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+cv2.putText(final_screen, f"Accuracy: {accuracy:.2f}%", (50, SCREEN_HEIGHT // 2 + 50),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+cv2.imshow("Final Results", final_screen)
+cv2.waitKey(5000)  # Show for 5 seconds
 
 cap.release()
 cv2.destroyAllWindows()
