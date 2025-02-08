@@ -7,7 +7,7 @@ import { useNavigation } from "expo-router"
 
 export default Router = () => {
     const [isLoading, setIsLoading] = React.useState(true);
-    const { authService, isLoggedIn, setIsLoggedIn, setUser, user, formFilled } = useContext(AppContext);
+    const { authService, isLoggedIn, setIsLoggedIn, setUser, user, formFilled, setFormFilled } = useContext(AppContext);
     const navigation = useNavigation();
 
     React.useEffect(() => {
@@ -22,6 +22,9 @@ export default Router = () => {
 
                 if (responseJson) {
                     const _user = responseJson.user;
+                    setFormFilled(
+                        _user.name !== null && _user.height !== "" && _user.weight !== "" && _user.age !== "" && _user.problem !== ""
+                    )
                     setUser({
                         email: _user.username,
                         name: _user.name,
