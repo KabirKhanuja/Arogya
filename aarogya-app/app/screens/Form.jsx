@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../auth/AuthContext";
 import { SafeAreaView, View, ScrollView, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { useNavigation } from "expo-router";
@@ -14,12 +14,28 @@ export default function FormScreen() {
     const [smoking, setSmoking] = useState((user && user.doYouSmoke != "") ? user.doYouSmoke : "");
     const [drinking, setDrinking] = useState((user && user.doYouDrink != "") ? user.doYouDrink : "");
     const [problems, setProblems] = useState((user && user.problems != "") ? user.problems : "");
-    const [medicalHistory, setMedicalHistory] = useState((user && user.medicalHistory) != "" ? user.medicalHistory : "");
+    const [medicalHistory, setMedicalHistory] = useState("");
     const [showGenderModal, setShowGenderModal] = useState(false);
     const [showSmokingModal, setShowSmokingModal] = useState(false);
     const [showDrinkingModal, setShowDrinkingModal] = useState(false);
     const genderOptions = ['Male', 'Female', 'Other'];
     const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
+
+    useEffect(() => {
+        if (user) {
+            if(user.age) setAge(user.age.toString());
+            if(user.gender) setGender(user.gender);
+            if(user.height) setHeight(user.height.toString());
+            if(user.weight) setWeight(user.weight.toString());
+            if(user.doYouSmoke in yesNoOptions) setSmoking(user.doYouSmoke);
+            if(user.doYouDrink in yesNoOptions) setDrinking(user.doYouDrink);
+            if(user.problems) setProblems(user.problems.toString());
+            if(user.medicalHistory) setMedicalHistory(user.medicalHistory);
+        }
+    }, []);
+    const handleBack = () => {
+        navigation.navigate("MainTabs");
+    };
 
     const handleNumberInput = (text, setter, min, max) => {
         let numericValue = text.replace(/[^0-9]/g, '');
@@ -94,7 +110,9 @@ export default function FormScreen() {
                             paddingHorizontal: 16,
                             marginBottom: 26,
                         }}>
-                        <Ionicons name="arrow-back" size={24} color={"black"} />
+                        <TouchableOpacity onPress={handleBack}>
+                            <Ionicons name="arrow-back" size={24} color={"black"} />
+                        </TouchableOpacity>
                     </View>
                     <Text
                         style={{

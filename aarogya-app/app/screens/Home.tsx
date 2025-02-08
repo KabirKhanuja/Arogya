@@ -21,19 +21,19 @@ export default function HomeScreen() {
     const [roadmapGenerated, setRoadmapGenerated] = React.useState(false);
     const [roadmap, setRoadmap] = React.useState({});
     const navigation = useNavigation();
-    // const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
+    const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
 
-    // React.useEffect(() => {
-    //     if (!roadmapGenerated) {
-    //         roadmapGeneratorRef.current.generateRoadmap()
-    //             .then((response) => {
-    //                 if (response) {
-    //                     setRoadmap(response);
-    //                 }
-    //                 setRoadmapGenerated(true);
-    //             });
-    //     }
-    // }, []);
+    React.useEffect(() => {
+        if (!roadmapGenerated) {
+            roadmapGeneratorRef.current.generateRoadmap()
+                .then((response) => {
+                    if (response) {
+                        setRoadmap(response);
+                    }
+                    setRoadmapGenerated(true);
+                });
+        }
+    }, []);
 
     return (
         <SafeAreaView
@@ -285,167 +285,6 @@ export default function HomeScreen() {
                             </>
                         )
                     }
-                    {/* <View>
-                    <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "flex-start",
-                                marginBottom: 2,
-                                marginLeft: 32,
-                                marginRight: 206,
-                            }}>
-                            <View
-                                style={{
-                                    width: 8,
-                                    marginTop: 2,
-                                    marginRight: 25,
-                                }}>
-                                <View
-                                    style={{
-                                        height: 8,
-                                        backgroundColor: "#161411",
-                                        borderRadius: 4,
-                                        marginBottom: 4,
-                                    }}>
-                                </View>
-                                <View
-                                    style={{
-                                        height: 40,
-                                        backgroundColor: "#E5E2DB",
-                                        marginHorizontal: 3,
-                                    }}>
-                                </View>
-                            </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        textAlign: "center",
-                                        marginBottom: 8,
-                                    }}>
-                                    {"Morning routine"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#8C7A5E",
-                                        fontSize: 16,
-                                    }}>
-                                    {"2 exercises"}
-                                </Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                width: 2,
-                                height: 16,
-                                backgroundColor: "#E5E2DB",
-                                marginBottom: 2,
-                                marginLeft: 35,
-                            }}>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "flex-start",
-                                marginBottom: 3,
-                                marginLeft: 32,
-                                marginRight: 213,
-                            }}>
-                            <View
-                                style={{
-                                    width: 8,
-                                    marginTop: 2,
-                                    marginRight: 25,
-                                }}>
-                                <View
-                                    style={{
-                                        height: 8,
-                                        backgroundColor: "#161411",
-                                        borderRadius: 4,
-                                        marginBottom: 4,
-                                    }}>
-                                </View>
-                                <View
-                                    style={{
-                                        height: 40,
-                                        backgroundColor: "#E5E2DB",
-                                        marginHorizontal: 3,
-                                    }}>
-                                </View>
-                            </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        textAlign: "center",
-                                        marginBottom: 8,
-                                    }}>
-                                    {"Afternoon walk"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#8C7A5E",
-                                        fontSize: 16,
-                                        textAlign: "center",
-                                    }}>
-                                    {"Walk 500 steps"}
-                                </Text>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                width: 2,
-                                height: 16,
-                                backgroundColor: "#E5E2DB",
-                                marginBottom: 2,
-                                marginLeft: 35,
-                            }}>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                marginBottom: 8,
-                                marginLeft: 32,
-                                marginRight: 209,
-                            }}>
-                            <View
-                                style={{
-                                    width: 8,
-                                    height: 8,
-                                    backgroundColor: "#161411",
-                                    borderRadius: 4,
-                                    marginRight: 26,
-                                }}>
-                            </View>
-                            <Text
-                                style={{
-                                    color: "#161411",
-                                    fontSize: 16,
-                                    flex: 1,
-                                }}>
-                                {"Evening routine"}
-                            </Text>
-                        </View>
-                        <Text
-                            style={{
-                                color: "#8C7A5E",
-                                fontSize: 16,
-                                marginBottom: 21,
-                                marginLeft: 65,
-                            }}>
-                            {"3 exercises"}
-                        </Text>
-                    </View> */}
-
                     <TouchableOpacity
                         style={{
                             alignItems: "center",

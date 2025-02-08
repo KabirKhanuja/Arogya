@@ -1,5 +1,5 @@
 import { Api } from "./ApiConstants";
-import generateRoadmapMain from "../utils/RoadmapsDB";
+import * as SecureStorage from "expo-secure-store";
 
 export default class RoadmapUtils {
     userId: string;
@@ -9,14 +9,18 @@ export default class RoadmapUtils {
     }
 
     async generateRoadmap() {
-        return generateRoadmapMain();
-    }
+        try {
+            const localRoadmap = await SecureStorage.getItemAsync('roadmap');
+            if (localRoadmap && localRoadmap != "") {
+                const localRoadmapObj = JSON.parse(localRoadmap);
+                if (localRoadmapObj) return;
+            }
 
-    async _generateRoadmap() {
-        try {            
             const response = await Api.post(Api.GENERATE_ROADMAP_URL, {});
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = response.responseJson;
+                console.log("Roadmap response: ", responseJson);
+                await SecureStorage.setItemAsync('roadmap', JSON.stringify(responseJson));
                 return responseJson;
             }
             return null;
