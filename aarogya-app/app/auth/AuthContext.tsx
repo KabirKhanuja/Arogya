@@ -1,11 +1,6 @@
 import React, { createContext, FC, PropsWithChildren } from "react";
 import AuthenticationService from "./service"
-
-type Screen = "landing" | "login" | "dashboard" | "form";
-
-interface ScreenState {
-    screen: Screen;
-}
+import getUserMain from "../utils/UsersDB";
 
 type AppContextType = {
     authService: AuthenticationService;
@@ -13,8 +8,6 @@ type AppContextType = {
     setIsLoggedIn: (isLoggedIn: boolean) => void;
     setUser: (user: UserType) => void;
     user: UserType | null;
-    setFormFilled: (formFilled: boolean) => void;
-    formFilled: boolean;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -23,14 +16,13 @@ export const AppContext = createContext<AppContextType>({
     setIsLoggedIn: () => { },
     setUser: () => { },
     user: null,
-    formFilled: false,
-    setFormFilled: () => { },
 })
 
 export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
-    const [user, setUser] = React.useState<UserType | null>(null);
-    const [formFilled, setFormFilled] = React.useState<boolean>(false);
+    const _user = getUserMain();
+    // const [user, setUser] = React.useState<UserType | null>(null);
+    const [user, setUser] = React.useState<UserType | null>(_user);
     const authService = new AuthenticationService();
     const defaultContext = {
         authService,
@@ -38,8 +30,6 @@ export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
         setIsLoggedIn,
         setUser,
         user,
-        setFormFilled,
-        formFilled,
     };
 
     return (

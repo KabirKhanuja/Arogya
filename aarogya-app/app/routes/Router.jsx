@@ -3,7 +3,6 @@ import MainNavigator from "./MainStack"
 import AuthNavigator from "./AuthStack"
 import React, { useContext } from "react"
 import AppContext from "../auth/AuthContext"
-import { useNavigation } from "expo-router"
 
 export default Router = () => {
     const [isLoading, setIsLoading] = React.useState(true);
@@ -20,7 +19,6 @@ export default Router = () => {
                 
                 setIsLoading(false);
                 if (responseJson) {
-                    
                     const _user = responseJson.user;
                     const tuser = ({
                         email: _user.username,
@@ -35,10 +33,8 @@ export default Router = () => {
                         problems: _user.problems,
                         medicalHistory: _user.medicalHistory
                     });
-                    console.log("Setting user to: ", tuser);
                     setUser(tuser);
                     setIsLoggedIn(true);
-                    // navigation.navigate("form");
                     return;
                 }
                 setUser(null);

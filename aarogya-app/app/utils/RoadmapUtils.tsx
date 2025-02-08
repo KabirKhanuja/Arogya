@@ -1,4 +1,5 @@
 import { Api } from "./ApiConstants";
+import generateRoadmapMain from "../utils/RoadmapsDB";
 
 export default class RoadmapUtils {
     userId: string;
@@ -8,6 +9,10 @@ export default class RoadmapUtils {
     }
 
     async generateRoadmap() {
+        return generateRoadmapMain();
+    }
+
+    async _generateRoadmap() {
         try {            
             const response = await Api.post(Api.GENERATE_ROADMAP_URL, {});
             if (response.status >= 200 && response.status < 300) {

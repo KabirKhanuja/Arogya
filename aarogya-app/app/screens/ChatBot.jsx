@@ -103,7 +103,7 @@ const TypingIndicator = () => {
     );
 };
 
-const EmptyMessagesContainer = () => {
+const EmptyMessagesContainer = ({addHelloMessage}) => {
     return (
         <View style={styles.container}>
             <Ionicons name="chatbubbles-outline" size={50} color="#888" />
@@ -112,7 +112,9 @@ const EmptyMessagesContainer = () => {
                 Start by typing a message below. The chatbot is here to assist you with your queries,
                 provide helpful insights, and make your experience smoother.
             </Text>
-            <Text style={styles.hint}>Try saying: "Hello!"</Text>
+            <TouchableOpacity onPress={addHelloMessage}>
+                <Text style={styles.hint}>Try saying: "Hello!"</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -145,19 +147,28 @@ const styles = StyleSheet.create({
 });
 
 
-export default function ChatBotScreen(props) {
+export default function ChatBotScreen() {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const chatbotRef = useRef(new Chatbot());
 
-    const handleSendMessage = () => {
-        if (message === '' || message === null) {
+    const clearMessages = () => {
+        chatbotRef.current.reset();
+        setMessages([]);
+    }
+
+    const addHelloMessage = () => {
+        handleSendMessage("Hello!");
+    }
+
+    const handleSendMessage = ({extraMessage=null}) => {
+        if ((message === '' || message === null) && extraMessage === null) {
             return;
         }
 
         const userMessage = {
-            "message": message,
+            "message": (message === '' || message === null) ? extraMessage : message,
             "sender": "user",
         }
         messages.push(userMessage);
@@ -190,7 +201,7 @@ export default function ChatBotScreen(props) {
                 backgroundColor: "white",
             }}>
             {
-                messages.length === 0 && <EmptyMessagesContainer />
+                messages.length === 0 && <EmptyMessagesContainer addHelloMessage={addHelloMessage} />
             }
             {
                 messages.length > 0 && (
@@ -470,7 +481,9 @@ export default function ChatBotScreen(props) {
                     borderTopWidth: 1,
                     borderColor: "transparent",
                 }}>
-                <ProfileImageView uri={"https://picsum.photos/200/200"} addMargin={false} />
+                <TouchableOpacity onPress={clearMessages}>
+                    <ProfileImageView uri={"https://picsum.photos/200/200"} addMargin={false} />
+                </TouchableOpacity>
                 <View
                     style={{
                         flexDirection: "row",
