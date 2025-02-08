@@ -27,8 +27,8 @@ export default function FormScreen() {
             if(user.gender) setGender(user.gender);
             if(user.height) setHeight(user.height.toString());
             if(user.weight) setWeight(user.weight.toString());
-            if(user.doYouSmoke in yesNoOptions) setSmoking(user.doYouSmoke);
-            if(user.doYouDrink in yesNoOptions) setDrinking(user.doYouDrink);
+            if(user.doYouSmoke) setSmoking(user.doYouSmoke);
+            if(user.doYouDrink) setDrinking(user.doYouDrink);
             if(user.problems) setProblems(user.problems.toString());
             if(user.medicalHistory) setMedicalHistory(user.medicalHistory);
         }
