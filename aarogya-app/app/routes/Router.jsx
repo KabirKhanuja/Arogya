@@ -2,12 +2,13 @@ import Loading from "../components/Loading"
 import MainNavigator from "./MainStack"
 import AuthNavigator from "./AuthStack"
 import React, { useContext } from "react"
-import AppContext, { AppContextProvider } from "../auth/AuthContext"
+import AppContext from "../auth/AuthContext"
+import { useNavigation } from "expo-router"
 
 export default Router = () => {
     const [isLoading, setIsLoading] = React.useState(true);
-    // const [user, setUser] = React.useState(null);
-    const { authService, isLoggedIn, setIsLoggedIn,setUser, user } = useContext(AppContext);
+    const { authService, isLoggedIn, setIsLoggedIn, setUser, user, formFilled } = useContext(AppContext);
+    const navigation = useNavigation();
 
     React.useEffect(() => {
         if (isLoggedIn && user) {
@@ -39,11 +40,9 @@ export default Router = () => {
             });
     }, [authService, isLoggedIn, setIsLoggedIn, setUser, user]);
 
-    if (isLoading) {
-        return <Loading />;
-    }
-
     return (
-        isLoggedIn ? <MainNavigator /> : <AuthNavigator />
+        isLoggedIn ? (
+            formFilled ? <MainNavigator /> : <AuthNavigator />
+        ) : <AuthNavigator />
     )
 }

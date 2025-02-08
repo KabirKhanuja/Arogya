@@ -12,7 +12,7 @@ export default function RegisterScreen() {
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const { authService, isLoggedIn, setIsLoggedIn } = useContext(AppContext);
+    const { authService, isLoggedIn, setIsLoggedIn, setUser } = useContext(AppContext);
 
     const handleLogin = () => {
         // Navigate to the login screen
@@ -55,6 +55,17 @@ export default function RegisterScreen() {
                 console.log("Registration successful: ", response);
                 setLoading(false);
                 setIsLoggedIn(true);
+                const _user = response.response.user as UserType;
+                setUser({
+                    id: _user.id,
+                    name: _user.name,
+                    email: email,
+                    age: 0,
+                    height: "",
+                    weight: "",
+                    problems: "",
+                });
+                navigation.navigate("form");
             } else {
                 setLoading(false);
                 if (response) {

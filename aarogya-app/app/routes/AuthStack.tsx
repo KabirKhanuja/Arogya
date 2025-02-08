@@ -15,11 +15,10 @@ export const AuthStackParamsList = {
 const AuthNavigator = () => {
   return (
     <Stack.Navigator>
-                  <Stack.Screen name="Form" component={FormScreen} options={{ headerShown: false }} />
-      
       <Stack.Screen name="landing-page" component={LandingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="register" component={RegisterScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

@@ -1,11 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import AppContext from "../auth/AuthContext";
 import { SafeAreaView, View, ScrollView, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 
-export default function FormScreen(){
-    const [textInput1, onChangeTextInput1] = useState('');
-    const [textInput2, onChangeTextInput2] = useState('');
+export default function FormScreen() {
     const [age, setAge] = useState('');
     const [gender, setGender] = useState('');
     const [height, setHeight] = useState('');
@@ -17,9 +15,9 @@ export default function FormScreen(){
     const [showDrinkingModal, setShowDrinkingModal] = useState(false);
     const [problems, setProblems] = useState('');
     const [medicalHistory, setMedicalHistory] = useState('');
-	const { user } = useContext(AppContext);
+    const { authService, user, setFormFilled } = useContext(AppContext);
     const genderOptions = ['Male', 'Female', 'Other'];
-    const yesNoOptions = ['Never','Sometimes', 'Frequently'];
+    const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
 
     const handleNumberInput = (text, setter, min, max) => {
         let numericValue = text.replace(/[^0-9]/g, '');
@@ -29,32 +27,56 @@ export default function FormScreen(){
         setter(numericValue);
     };
 
+    const handleContinue = () => {
+        authService.updateUserAccount({
+            age: parseInt(age),
+            gender: gender,
+            weight: weight,
+            height: height,
+            doYouSmoke: smoking,
+            doYouDrink: drinking,
+            problems: problems,
+            medicalHistory: medicalHistory
+        })
+            .then(responseJson => {
+                if (responseJson) {
+                    console.log("User account updated successfully", responseJson);
+                    setFormFilled(true);
+                    return;
+                }
+                console.log("Error updating user account");
+            })
+            .catch(err => {
+                console.log("Error updating user account");
+            });
+    };
+
     return (
-        <SafeAreaView 
+        <SafeAreaView
             style={{
                 flex: 1,
                 backgroundColor: "#FFFFFF",
             }}>
-            <ScrollView  
+            <ScrollView
                 style={{
                     flex: 1,
                     backgroundColor: "#FFFFFF",
                 }}>
-                <View 
+                <View
                     style={{
                         backgroundColor: "#FFFFFF",
                         paddingBottom: 43,
                         marginBottom: 12,
                     }}>
-                    <View 
+                    <View
                         style={{
                             backgroundColor: "#FFFFFF",
                             paddingHorizontal: 16,
                             marginBottom: 26,
                         }}>
-                            <Ionicons name="arrow-back" size={24} color={"black"} />
+                        <Ionicons name="arrow-back" size={24} color={"black"} />
                     </View>
-                    <Text 
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 22,
@@ -63,7 +85,7 @@ export default function FormScreen(){
                         }}>
                         {"Let's get started!"}
                     </Text>
-                    <Text 
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 16,
@@ -72,7 +94,7 @@ export default function FormScreen(){
                         }}>
                         {"We will use this information to customize your program and track your progress."}
                     </Text>
-                    <Text 
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 16,
@@ -84,7 +106,7 @@ export default function FormScreen(){
                     <TextInput
                         placeholder={""}
                         value={user ? user?.name : "UNK"}
-						editable={false}
+                        editable={false}
                         style={{
                             color: "#8C7A5E",
                             fontSize: 16,
@@ -96,7 +118,7 @@ export default function FormScreen(){
                             paddingHorizontal: 18,
                         }}
                     />
-                    <View 
+                    <View
                         style={{
                             flexDirection: "row",
                             alignItems: "center",
@@ -104,7 +126,7 @@ export default function FormScreen(){
                             marginLeft: 18,
                             marginRight: 145,
                         }}>
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -113,7 +135,7 @@ export default function FormScreen(){
                             }}>
                             {"Age"}
                         </Text>
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -121,7 +143,7 @@ export default function FormScreen(){
                             {"Gender"}
                         </Text>
                     </View>
-                    <View 
+                    <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
@@ -161,7 +183,7 @@ export default function FormScreen(){
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <View 
+                    <View
                         style={{
                             flexDirection: "row",
                             alignItems: "center",
@@ -169,7 +191,7 @@ export default function FormScreen(){
                             marginLeft: 18,
                             marginRight: 98,
                         }}>
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -178,7 +200,7 @@ export default function FormScreen(){
                             }}>
                             {"Height (in cm)"}
                         </Text>
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -186,7 +208,7 @@ export default function FormScreen(){
                             {"Weight (in kg)"}
                         </Text>
                     </View>
-                    <View 
+                    <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
@@ -226,7 +248,7 @@ export default function FormScreen(){
                             maxLength={3}
                         />
                     </View>
-                    <View 
+                    <View
                         style={{
                             backgroundColor: "#FFFFFF",
                             paddingTop: 17,
@@ -234,7 +256,7 @@ export default function FormScreen(){
                             paddingHorizontal: 16,
                             marginBottom: 15,
                         }}>
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -258,7 +280,7 @@ export default function FormScreen(){
                             </Text>
                         </TouchableOpacity>
 
-                        <Text 
+                        <Text
                             style={{
                                 color: "#161411",
                                 fontSize: 16,
@@ -281,7 +303,7 @@ export default function FormScreen(){
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <Text 
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 16,
@@ -308,7 +330,7 @@ export default function FormScreen(){
                             textAlignVertical: 'top'
                         }}
                     />
-                    <Text 
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 16,
@@ -335,23 +357,23 @@ export default function FormScreen(){
                             textAlignVertical: 'top'
                         }}
                     />
-                    <View 
+                    <View
                         style={{
                             height: 10, // reduced from 20
                             backgroundColor: "#FFFFFF",
                         }}>
                     </View>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={{
                         alignItems: "center",
                         backgroundColor: "#F99E16",
                         borderRadius: 12,
                         paddingVertical: 15,
-						marginBottom: 10,
+                        marginBottom: 10,
                         marginHorizontal: 16,
-                    }} onPress={()=>alert('Pressed!')}>
-                    <Text 
+                    }} onPress={handleContinue}>
+                    <Text
                         style={{
                             color: "#161411",
                             fontSize: 14,
