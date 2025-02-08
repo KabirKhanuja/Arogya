@@ -51,13 +51,17 @@ export default function RegisterScreen() {
         }
 
         authService.createUserAccount({ name, email, password }).then((response) => {
-            if (response) {
+            if (response && typeof response === 'object' && !('error' in response)) {
                 console.log("Registration successful: ", response);
                 setLoading(false);
                 setIsLoggedIn(true);
             } else {
-                setError("An error occurred while registering");
                 setLoading(false);
+                if (response && typeof response === 'object' && 'error' in response) {
+                    setError(response.error as string);
+                } else {
+                    setError("An error occurred while registering");
+                }
             }
         });
     };

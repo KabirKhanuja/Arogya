@@ -19,12 +19,23 @@ class AuthenticationService {
             const response = await Api.post(Api.REGISTER_URL, {
                 name: data.name,
                 username: data.email,
-                password: data.password
+                password: data.password,
             });
             if (response.status >= 200 && response.status < 300) {
-                return response.responseJson;
+                return {
+                    response: response.responseJson,
+                    error: null,
+                };
+            } else if (response.responseJson.message) {
+                return {
+                    response: null,
+                    error: response.responseJson.message,
+                };
             }
-            return null;
+            return {
+                response: null,
+                error: null,
+            };
         } catch (error) {
             console.log("Error in creating user account: ", error);
             return error;
@@ -33,11 +44,11 @@ class AuthenticationService {
 
     async loginUserAccount(data: LoginUserAccount) {
         console.log("Data: ", data);
-        
+
         try {
             const response = await Api.post(Api.LOGIN_URL, {
                 username: data.email,
-                password: data.password
+                password: data.password,
             });
             if (response.status >= 200 && response.status < 300) {
                 const token = response.responseJson.token;
