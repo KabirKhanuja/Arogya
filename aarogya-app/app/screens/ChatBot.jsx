@@ -41,7 +41,7 @@ const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = fals
             }}>
             <ProfileImageView uri={userPictureUrl ? userPictureUrl : "https://picsum.photos/200/200"} />
             <View>
-                <Text style={{ color: "#9E7A47", fontSize: 12, marginBottom: 6, marginLeft: 15, }}>Bot</Text>
+                <Text style={{ color: "#9E7A47", fontSize: 12, marginBottom: 6, marginLeft: 15, }}>Assistant</Text>
                 <Text
                     style={{
                         color: isTypingIndicator ? "blue" : "#1C160C",
