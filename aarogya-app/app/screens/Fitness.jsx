@@ -1,8 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { SafeAreaView, View, ScrollView, Image, Text, } from "react-native";
+import { SafeAreaView, View, ScrollView, Image, Text, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function FitnessScreen() {
+	const navigation = useNavigation();
+
+	const handleButtonPress = () => {
+		navigation.navigate("Camera");
+	};
+
 	return (
 		<SafeAreaView 
 			style={{
@@ -47,46 +54,48 @@ export default function FitnessScreen() {
 						}}>
 						{"Morning"}
 					</Text>
-					<View 
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							backgroundColor: "#FCFAF7",
-							paddingVertical: 12,
-							paddingHorizontal: 16,
-						}}>
-						<Image
-							source = {{uri: "https://images.healthshots.com/healthshots/en/uploads/2023/05/10200007/exercise-1600x900.jpg"}} 
-							resizeMode = {"stretch"}
-							style={{
-								borderRadius: 8,
-								width: 100,
-								height: 56,
-								marginRight: 17,
-							}}
-						/>
+					<TouchableOpacity onPress={handleButtonPress}>
 						<View 
 							style={{
-								flex: 1,
+								flexDirection: "row",
+								alignItems: "center",
+								backgroundColor: "#FCFAF7",
+								paddingVertical: 12,
+								paddingHorizontal: 16,
 							}}>
-							<Text 
+							<Image
+								source = {{uri: "https://images.healthshots.com/healthshots/en/uploads/2023/05/10200007/exercise-1600x900.jpg"}} 
+								resizeMode = {"stretch"}
 								style={{
-									color: "#1C160C",
-									fontSize: 16,
-									marginBottom: 8,
-								}}>
-								{"Wake up your muscles"}
-							</Text>
-							<Text 
+									borderRadius: 8,
+									width: 100,
+									height: 56,
+									marginRight: 17,
+								}}
+							/>
+							<View 
 								style={{
-									color: "#A08249",
-									fontSize: 14,
-									textAlign: "center",
+									flex: 1,
 								}}>
-								{"Start with a 5-minute stretching"}
-							</Text>
+								<Text 
+									style={{
+										color: "#1C160C",
+										fontSize: 16,
+										marginBottom: 8,
+									}}>
+									{"Wake up your muscles"}
+								</Text>
+								<Text 
+									style={{
+										color: "red",
+										fontSize: 14,
+										// textAlign: "center",
+									}}>
+									{"Click here to start camera."}
+								</Text>
+							</View>
 						</View>
-					</View>
+					</TouchableOpacity>
 					<View 
 						style={{
 							flexDirection: "row",
@@ -301,7 +310,7 @@ export default function FitnessScreen() {
 								style={{
 									color: "#A08249",
 									fontSize: 14,
-									textAlign: "center",
+									// textAlign: "center",
 								}}>
 								{"Sit straight and hold for 3 minutes."}
 							</Text>

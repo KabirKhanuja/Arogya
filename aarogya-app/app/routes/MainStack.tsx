@@ -7,6 +7,7 @@ import ProfileScreen from '../screens/Profile';
 import CountdownScreen from '../screens/Countdown';
 import SettingsScreen from '../screens/Settings';
 import FormScreen from '../screens/Form';
+import CameraScreen from '../screens/CameraScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AppContext from '../auth/AuthContext';
@@ -18,6 +19,7 @@ export const MainStackParamsList = {
     fitness: undefined,
     chat: undefined,
     profile: undefined,
+    camera: undefined,
 };
 
 const Tab = createBottomTabNavigator();
@@ -30,6 +32,7 @@ const MainNavigator = () => {
             <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
             <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }
