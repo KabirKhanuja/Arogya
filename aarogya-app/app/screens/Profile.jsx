@@ -1,7 +1,9 @@
+import { useNavigation } from "expo-router";
 import React from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 
 export default function ProfileScreen() {
+	const navigation = useNavigation();
 	return (
 		<SafeAreaView
 			style={{
@@ -92,7 +94,7 @@ export default function ProfileScreen() {
 								backgroundColor: "#F99E16",
 								borderRadius: 8,
 								paddingVertical: 15,
-							}} onPress={() => alert('Pressed!')}>
+							}} onPress={() => navigation.navigate("Settings")}>
 							<Text
 								style={{
 									color: "#1C160C",
