@@ -11,10 +11,15 @@ type LoginUserAccount = {
     password: string;
 };
 
+type AuthResponse<T> = {
+    response: T | null;
+    error: string | null;
+};
+
 class AuthenticationService {
     constructor() {}
 
-    async createUserAccount(data: CreateUserAccount) {
+    async createUserAccount(data: CreateUserAccount) : Promise<AuthResponse<string>> {
         try {
             const response = await Api.post(Api.REGISTER_URL, {
                 name: data.name,
@@ -38,11 +43,14 @@ class AuthenticationService {
             };
         } catch (error) {
             console.log("Error in creating user account: ", error);
-            return error;
+            return {
+                response: null,
+                error: null,
+            };
         }
     }
 
-    async loginUserAccount(data: LoginUserAccount) {
+    async loginUserAccount(data: LoginUserAccount) : Promise<AuthResponse<string>> {
         console.log("Data: ", data);
 
         try {
@@ -53,12 +61,21 @@ class AuthenticationService {
             if (response.status >= 200 && response.status < 300) {
                 const token = response.responseJson.token;
                 await setJWTToken(token);
-                return response.responseJson;
+                return {
+                    response: response.responseJson,
+                    error: null,
+                }
             }
-            return null;
+            return {
+                response: null,
+                error: null,
+            }
         } catch (error) {
             console.log("Error in logging in user account: ", error);
-            return null;
+            return {
+                response: null,
+                error: null,
+            }
         }
     }
 

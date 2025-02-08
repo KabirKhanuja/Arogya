@@ -34,14 +34,19 @@ export default function LoginScreen() {
       return;
     }
 
-    authService.loginUserAccount({ email, password }).then((response) => {
-      if (response) {
-        console.log("Login successful: ", response);
+    authService.loginUserAccount({ email, password }).then((response: { response?: any; error?: string | null }) => {
+      if (response.error == null) {
+        console.log("Login successful: ", response.response);
         setLoading(false);
         setIsLoggedIn(true);
       } else {
-        setError("Invalid email or password");
-        setLoading(false);
+        if (response && response.error != null) {
+          setError(response.error);
+          setLoading(false);
+        }else{
+          setError("Invalid email or password");
+          setLoading(false);
+        }
       }
     });
   };
