@@ -7,6 +7,10 @@ export default class Chatbot {
         this.conversationId = null;
     }
 
+    async reset(){
+        this.conversationId = null;
+    }
+
     async getChatbotResponse(message: string) {
         try {
             console.log("Message: ", message, "TO:", this.conversationId);

@@ -25,9 +25,9 @@ export const MainStackParamsList = {
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
-    const {formFilled} = useContext(AppContext);
     return (
         <Stack.Navigator>
+            <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
             <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />

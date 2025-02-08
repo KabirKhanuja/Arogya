@@ -2,20 +2,22 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useContext, useState } from "react";
 import AppContext from "../auth/AuthContext";
 import { SafeAreaView, View, ScrollView, Text, TextInput, TouchableOpacity, Modal } from "react-native";
+import { useNavigation } from "expo-router";
 
 export default function FormScreen() {
+    const { authService, user, setUser } = useContext(AppContext);
     const [age, setAge] = useState('');
-    const [gender, setGender] = useState('');
-    const [height, setHeight] = useState('');
-    const [weight, setWeight] = useState('');
+    const navigation = useNavigation();
+    const [gender, setGender] = useState((user && user.gender != "") ? user.gender : "");
+    const [height, setHeight] = useState((user && user.height != "") ? user.height : "");
+    const [weight, setWeight] = useState((user && user.weight != "") ? user.weight : "");
+    const [smoking, setSmoking] = useState((user && user.doYouSmoke != "") ? user.doYouSmoke : "");
+    const [drinking, setDrinking] = useState((user && user.doYouDrink != "") ? user.doYouDrink : "");
+    const [problems, setProblems] = useState((user && user.problems != "") ? user.problems : "");
+    const [medicalHistory, setMedicalHistory] = useState((user && user.medicalHistory) != "" ? user.medicalHistory : "");
     const [showGenderModal, setShowGenderModal] = useState(false);
-    const [smoking, setSmoking] = useState('');
-    const [drinking, setDrinking] = useState('');
     const [showSmokingModal, setShowSmokingModal] = useState(false);
     const [showDrinkingModal, setShowDrinkingModal] = useState(false);
-    const [problems, setProblems] = useState('');
-    const [medicalHistory, setMedicalHistory] = useState('');
-    const { authService, user, setFormFilled, setUser } = useContext(AppContext);
     const genderOptions = ['Male', 'Female', 'Other'];
     const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
 
@@ -28,6 +30,12 @@ export default function FormScreen() {
     };
 
     const handleContinue = () => {
+
+        if (!age || !gender || !height || !weight || !smoking || !drinking || !problems || !medicalHistory) {
+            alert("Please fill out all fields before continuing.");
+            return;
+        }
+
         authService.updateUserAccount({
             age: parseInt(age),
             gender: gender,
@@ -52,7 +60,8 @@ export default function FormScreen() {
                         medicalHistory: medicalHistory
                     })
                     console.log("User account updated successfully", responseJson);
-                    setFormFilled(true);
+                    // setFormFilled(true);
+                    navigation.navigate("MainTabs");
                     return;
                 }
                 console.log("Error updating user account");
