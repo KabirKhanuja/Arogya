@@ -74,19 +74,24 @@ export default function HomeScreen() {
                                 alignItems: "center",
                                 marginBottom: 16,
                                 marginHorizontal: 16,
+                                gap: 16,
                             }}>
                             <View
                                 style={{
+                                    flex: 1,
                                     backgroundColor: "#F4F2EF",
                                     borderRadius: 12,
                                     paddingVertical: 30,
                                     paddingHorizontal: 25,
+                                    alignItems: "center",
+                                    minWidth: 165,
                                 }}>
                                 <Text
                                     style={{
                                         color: "#161411",
                                         fontSize: 16,
                                         marginBottom: 16,
+                                        textAlign: "center",
                                     }}>
                                     {"Steps Today"}
                                 </Text>
@@ -100,19 +105,22 @@ export default function HomeScreen() {
                             </View>
                             <View
                                 style={{
+                                    flex: 1,
                                     backgroundColor: "#F4F2EF",
                                     borderRadius: 12,
-                                    marginStart: 16,
                                     paddingVertical: 30,
-                                    paddingHorizontal: 26,
+                                    paddingHorizontal: 25,
+                                    alignItems: "center",
+                                    minWidth: 165,
                                 }}>
                                 <Text
                                     style={{
                                         color: "#161411",
                                         fontSize: 16,
                                         marginBottom: 16,
+                                        textAlign: "center",
                                     }}>
-                                    {"Exercises done "}
+                                    {"Exercises Done"}
                                 </Text>
                                 <Text
                                     style={{
@@ -129,22 +137,27 @@ export default function HomeScreen() {
                                 justifyContent: "space-between",
                                 alignItems: "center",
                                 marginBottom: 16,
-                                marginStart: 16,
+                                marginHorizontal: 16,
+                                gap: 16,
                             }}>
                             <View
                                 style={{
+                                    flex: 1,
                                     backgroundColor: "#F4F2EF",
                                     borderRadius: 12,
                                     paddingVertical: 30,
                                     paddingHorizontal: 25,
+                                    alignItems: "center",
+                                    minWidth: 165,
                                 }}>
                                 <Text
                                     style={{
                                         color: "#161411",
                                         fontSize: 16,
                                         marginBottom: 16,
+                                        textAlign: "center",
                                     }}>
-                                    {"Time spent"}
+                                    {"Time Spent"}
                                 </Text>
                                 <Text
                                     style={{
@@ -156,20 +169,23 @@ export default function HomeScreen() {
                             </View>
                             <View
                                 style={{
-                                    marginStart: 16,
-
+                                    flex: 1,
                                     backgroundColor: "#F4F2EF",
                                     borderRadius: 12,
                                     paddingVertical: 30,
                                     paddingHorizontal: 25,
+                                    alignItems: "center",
+                                    minWidth: 165,
                                 }}>
                                 <Text
                                     style={{
                                         color: "#161411",
                                         fontSize: 16,
                                         marginBottom: 16,
+                                        textAlign: "center",
+                                        // marginHorizontal: 2,
                                     }}>
-                                    {"Calories burned"}
+                                    {"Calories Burned"}
                                 </Text>
                                 <Text
                                     style={{
@@ -185,6 +201,7 @@ export default function HomeScreen() {
                                 backgroundColor: "#F4F2EF",
                                 borderRadius: 12,
                                 paddingVertical: 30,
+                                width: 380,
                                 paddingHorizontal: 25,
                                 marginBottom: 37,
                                 alignContent: "center",

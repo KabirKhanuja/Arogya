@@ -67,7 +67,7 @@ const MainTabsNavigator = () => {
 
                 <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
                 <Tab.Screen name="Fitness" component={FitnessScreen} options={{ headerShown: false }} />
-                <Tab.Screen name="Chat" component={ChatBotScreen} options={{ headerShown: false }} />
+                <Tab.Screen name="Chat" component={ChatBotScreen} options={{ headerShown: true, headerTitle: "Arogya Assistant" }} />
                 <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
 
             </Tab.Navigator>
