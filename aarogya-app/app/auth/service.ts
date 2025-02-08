@@ -16,7 +16,11 @@ class AuthenticationService {
 
     async createUserAccount(data: CreateUserAccount) {
         try {
-            const response = await Api.post(Api.REGISTER_URL, data);
+            const response = await Api.post(Api.REGISTER_URL, {
+                name: data.name,
+                username: data.email,
+                password: data.password
+            });
             if (response.status >= 200 && response.status < 300) {
                 return response.responseJson;
             }
