@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import StepTracker from './StepTracker';  // Import the StepTracker component
+import StepTracker from './pedo-app/app/StepTracker';  // Import the StepTracker component
 
 const App = () => {
   return (
