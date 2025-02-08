@@ -116,7 +116,7 @@ export default function FormScreen() {
                     </Text>
                     <TextInput
                         placeholder={""}
-                        value={user ? user?.name : "UNK"}
+                        value={user ? user?.name : "Not added"}
                         editable={false}
                         style={{
                             color: "#8C7A5E",

@@ -30,7 +30,6 @@ export const AppContext = createContext<AppContextType>({
 export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
     const [user, setUser] = React.useState<UserType | null>(null);
-    const [screenState, setScreenState] = React.useState<ScreenState>({ screen: "landing" });
     const [formFilled, setFormFilled] = React.useState<boolean>(false);
     const authService = new AuthenticationService();
     const defaultContext = {

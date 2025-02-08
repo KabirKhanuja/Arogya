@@ -7,25 +7,22 @@ import { useNavigation } from "expo-router"
 
 export default Router = () => {
     const [isLoading, setIsLoading] = React.useState(true);
-    const { authService, isLoggedIn, setIsLoggedIn, setUser, user, formFilled, setFormFilled } = useContext(AppContext);
-    const navigation = useNavigation();
+    const { authService, isLoggedIn, setIsLoggedIn, setUser, user } = useContext(AppContext);
 
     React.useEffect(() => {
         if (isLoggedIn && user) {
             setIsLoading(false);
             return;
         }
-
         authService.getCurrentUser()
             .then(responseJson => {
+                console.log("Response from getCurrentUser: ", responseJson);
+                
                 setIsLoading(false);
-
                 if (responseJson) {
+                    
                     const _user = responseJson.user;
-                    setFormFilled(
-                        _user.name !== null && _user.height !== "" && _user.weight !== "" && _user.age !== "" && _user.problem !== ""
-                    )
-                    setUser({
+                    const tuser = ({
                         email: _user.username,
                         name: _user.name,
                         id: _user.user_id,
@@ -38,8 +35,10 @@ export default Router = () => {
                         problems: _user.problems,
                         medicalHistory: _user.medicalHistory
                     });
-
+                    console.log("Setting user to: ", tuser);
+                    setUser(tuser);
                     setIsLoggedIn(true);
+                    // navigation.navigate("form");
                     return;
                 }
                 setUser(null);
@@ -53,8 +52,6 @@ export default Router = () => {
     }, [authService, isLoggedIn, setIsLoggedIn, setUser, user]);
 
     return (
-        isLoggedIn ? (
-            formFilled ? <MainNavigator /> : <AuthNavigator />
-        ) : <AuthNavigator />
+        isLoggedIn ? <MainNavigator /> : <AuthNavigator />
     )
 }

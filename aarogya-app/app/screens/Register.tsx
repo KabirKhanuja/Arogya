@@ -12,7 +12,7 @@ export default function RegisterScreen() {
     const [name, setName] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const { authService, isLoggedIn, setIsLoggedIn, setUser } = useContext(AppContext);
+    const { authService, isLoggedIn, setIsLoggedIn, setFormFilled } = useContext(AppContext);
 
     const handleLogin = () => {
         // Navigate to the login screen
@@ -51,28 +51,14 @@ export default function RegisterScreen() {
         }
 
         authService.createUserAccount({ name, email, password }).then((response) => {
-            if (response.error == null) {
+            if (response) {
                 console.log("Registration successful: ", response);
                 setLoading(false);
+                // setFormFilled(false);
                 setIsLoggedIn(true);
-                const _user = response.response.user as UserType;
-                setUser({
-                    id: _user.id,
-                    name: _user.name,
-                    email: email,
-                    age: 0,
-                    height: "",
-                    weight: "",
-                    problems: "",
-                });
-                navigation.navigate("form");
             } else {
+                setError("An error occurred while registering");
                 setLoading(false);
-                if (response) {
-                    setError(response.error);
-                } else {
-                    setError("An error occurred while registering");
-                }
             }
         });
     };
@@ -95,12 +81,17 @@ export default function RegisterScreen() {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#f5f7fa",
+                backgroundColor: "#FCFAF7",
                 padding: 20,
             }}
         >
-            <Text style={{ fontSize: 28, fontWeight: "bold", color: "#333", marginBottom: 20 }}>
-                Register
+            <Text style={{ 
+                fontSize: 32, 
+                fontWeight: "bold", 
+                color: "#161411", 
+                marginBottom: 30 
+            }}>
+                Create Account
             </Text>
 
             {loading && <Loading visible={loading} />}
@@ -111,13 +102,14 @@ export default function RegisterScreen() {
                 onChangeText={onChangeName}
                 style={{
                     width: "90%",
-                    padding: 12,
-                    backgroundColor: "white",
-                    borderRadius: 8,
-                    marginBottom: 10,
-                    borderWidth: 1,
-                    borderColor: "#ccc",
+                    padding: 16,
+                    backgroundColor: "#F4F2EF",
+                    borderRadius: 12,
+                    marginBottom: 16,
+                    fontSize: 16,
+                    color: "#161411",
                 }}
+                placeholderTextColor="#8C7A5E"
             />
 
             <TextInput
@@ -127,13 +119,14 @@ export default function RegisterScreen() {
                 onChangeText={onChangeEmail}
                 style={{
                     width: "90%",
-                    padding: 12,
-                    backgroundColor: "white",
-                    borderRadius: 8,
-                    marginBottom: 10,
-                    borderWidth: 1,
-                    borderColor: "#ccc",
+                    padding: 16,
+                    backgroundColor: "#F4F2EF",
+                    borderRadius: 12,
+                    marginBottom: 16,
+                    fontSize: 16,
+                    color: "#161411",
                 }}
+                placeholderTextColor="#8C7A5E"
             />
 
             <TextInput
@@ -143,23 +136,24 @@ export default function RegisterScreen() {
                 secureTextEntry
                 style={{
                     width: "90%",
-                    padding: 12,
-                    backgroundColor: "white",
-                    borderRadius: 8,
-                    marginBottom: 10,
-                    borderWidth: 1,
-                    borderColor: "#ccc",
+                    padding: 16,
+                    backgroundColor: "#F4F2EF",
+                    borderRadius: 12,
+                    marginBottom: 16,
+                    fontSize: 16,
+                    color: "#161411",
                 }}
+                placeholderTextColor="#8C7A5E"
             />
 
             {error && (
                 <View
                     style={{
                         width: "90%",
-                        padding: 12,
+                        padding: 16,
                         backgroundColor: "#f8d7da",
-                        borderRadius: 8,
-                        marginBottom: 10,
+                        borderRadius: 12,
+                        marginBottom: 16,
                         borderWidth: 1,
                         borderColor: "#f5c6cb",
                     }}
@@ -170,21 +164,34 @@ export default function RegisterScreen() {
 
             <TouchableOpacity
                 style={{
-                    backgroundColor: "#007bff",
-                    paddingVertical: 12,
-                    paddingHorizontal: 30,
-                    borderRadius: 8,
+                    backgroundColor: "#F99E16",
+                    width: "90%",
+                    padding: 16,
+                    borderRadius: 12,
                     marginTop: 10,
+                    alignItems: "center",
                 }}
                 onPress={onRegister}
             >
-                <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+                <Text style={{ 
+                    color: "#161411", 
+                    fontSize: 18, 
+                    fontWeight: "600" 
+                }}>
                     Register
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleLogin}>
-                <Text style={{ color: "#007bff", marginTop: 15 }}>Already have an account? Login</Text>
+            <TouchableOpacity 
+                onPress={handleLogin}
+                style={{ marginTop: 20 }}
+            >
+                <Text style={{ 
+                    color: "#8C7A5E",
+                    fontSize: 16
+                }}>
+                    Already have an account? <Text style={{ color: "#F99E16" }}>Login</Text>
+                </Text>
             </TouchableOpacity>
         </View>
     );

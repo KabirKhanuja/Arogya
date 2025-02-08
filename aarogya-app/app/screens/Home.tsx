@@ -21,19 +21,19 @@ export default function HomeScreen() {
     const [roadmapGenerated, setRoadmapGenerated] = React.useState(false);
     const [roadmap, setRoadmap] = React.useState({});
     const navigation = useNavigation();
-    const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
+    // const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
 
-    React.useEffect(() => {
-        if (!roadmapGenerated) {
-            roadmapGeneratorRef.current.generateRoadmap()
-                .then((response) => {
-                    if (response) {
-                        setRoadmap(response);
-                    }
-                    setRoadmapGenerated(true);
-                });
-        }
-    }, []);
+    // React.useEffect(() => {
+    //     if (!roadmapGenerated) {
+    //         roadmapGeneratorRef.current.generateRoadmap()
+    //             .then((response) => {
+    //                 if (response) {
+    //                     setRoadmap(response);
+    //                 }
+    //                 setRoadmapGenerated(true);
+    //             });
+    //     }
+    // }, []);
 
     return (
         <SafeAreaView

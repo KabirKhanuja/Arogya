@@ -65,12 +65,17 @@ export default function LoginScreen() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f5f7fa",
+        backgroundColor: "#FCFAF7",
         padding: 20,
       }}
     >
-      <Text style={{ fontSize: 28, fontWeight: "bold", color: "#333", marginBottom: 20 }}>
-        Login
+      <Text style={{ 
+        fontSize: 32, 
+        fontWeight: "bold", 
+        color: "#161411", 
+        marginBottom: 30 
+      }}>
+        Welcome Back
       </Text>
 
       {loading && <Loading visible={loading} />}
@@ -82,13 +87,14 @@ export default function LoginScreen() {
         onChangeText={onChangeEmail}
         style={{
           width: "90%",
-          padding: 12,
-          backgroundColor: "white",
-          borderRadius: 8,
-          marginBottom: 10,
-          borderWidth: 1,
-          borderColor: "#ccc",
+          padding: 16,
+          backgroundColor: "#F4F2EF",
+          borderRadius: 12,
+          marginBottom: 16,
+          fontSize: 16,
+          color: "#161411",
         }}
+        placeholderTextColor="#8C7A5E"
       />
 
       <TextInput
@@ -98,23 +104,24 @@ export default function LoginScreen() {
         secureTextEntry
         style={{
           width: "90%",
-          padding: 12,
-          backgroundColor: "white",
-          borderRadius: 8,
-          marginBottom: 10,
-          borderWidth: 1,
-          borderColor: "#ccc",
+          padding: 16,
+          backgroundColor: "#F4F2EF",
+          borderRadius: 12,
+          marginBottom: 16,
+          fontSize: 16,
+          color: "#161411",
         }}
+        placeholderTextColor="#8C7A5E"
       />
 
       {error && (
         <View
           style={{
             width: "90%",
-            padding: 12,
+            padding: 16,
             backgroundColor: "#f8d7da",
-            borderRadius: 8,
-            marginBottom: 10,
+            borderRadius: 12,
+            marginBottom: 16,
             borderWidth: 1,
             borderColor: "#f5c6cb",
           }}
@@ -125,22 +132,35 @@ export default function LoginScreen() {
 
       <TouchableOpacity
         style={{
-          backgroundColor: "#007bff",
-          paddingVertical: 12,
-          paddingHorizontal: 30,
-          borderRadius: 8,
+          backgroundColor: "#F99E16",
+          width: "90%",
+          padding: 16,
+          borderRadius: 12,
           marginTop: 10,
+          alignItems: "center",
         }}
         disabled={loading}
         onPress={onLogin}
       >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+        <Text style={{ 
+          color: "#161411", 
+          fontSize: 18, 
+          fontWeight: "600" 
+        }}>
           Login
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleRegister}>
-        <Text style={{ color: "#007bff", marginTop: 15 }}>Don't have an account? Register</Text>
+      <TouchableOpacity 
+        onPress={handleRegister}
+        style={{ marginTop: 20 }}
+      >
+        <Text style={{ 
+          color: "#8C7A5E",
+          fontSize: 16
+        }}>
+          Don't have an account? <Text style={{ color: "#F99E16" }}>Register</Text>
+        </Text>
       </TouchableOpacity>
     </View>
   );

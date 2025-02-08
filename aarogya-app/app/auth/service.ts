@@ -68,13 +68,13 @@ class AuthenticationService {
     async loginUserAccount(
         data: LoginUserAccount
     ): Promise<AuthResponse<string>> {
-        console.log("Data: ", data);
-
         try {
             const response = await Api.post(Api.LOGIN_URL, {
                 username: data.email,
                 password: data.password,
             });
+            console.log("LOGIN Response: ", response);
+            
             if (response.status >= 200 && response.status < 300) {
                 const token = response.responseJson.token;
                 await setJWTToken(token);

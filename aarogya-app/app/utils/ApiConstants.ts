@@ -17,7 +17,6 @@ const clearJWTToken = async () => {
 
 export class Api {
     static readonly BASE_URL = "https://aarogyaapi.vercel.app/";
-    // static readonly BASE_URL = "http://127.0.0.1:5000";
 
     static readonly LOGIN_URL = `${Api.BASE_URL}/login`;
     static readonly REGISTER_URL = `${Api.BASE_URL}/signup`;
@@ -25,6 +24,7 @@ export class Api {
     static readonly LOGOUT_URL = `${Api.BASE_URL}/logout`;
     static readonly CHATBOT_URL = `${Api.BASE_URL}/chat`;
     static readonly UPDATE_USER_URL = `${Api.BASE_URL}/user/profile`;
+    static readonly USER_FORM_FILLED_URL = `${Api.BASE_URL}/user/profile/formFilled`;
     static readonly GENERATE_ROADMAP_URL = `${Api.BASE_URL}/user/generate-roadmap`;
 
     static async buildHeaders() {
@@ -39,6 +39,7 @@ export class Api {
 
     static async get(url: string) {
         try {
+            console.log("GET request to: ", url);
             const response = await fetch(url, {
                 method: "GET",
                 headers: await Api.buildHeaders(),
@@ -54,6 +55,7 @@ export class Api {
 
     static async post(url: string, data: any) {
         try {
+            console.log("POST request to: ", url);
             const response = await fetch(url, {
                 method: "POST",
                 headers: await Api.buildHeaders(),

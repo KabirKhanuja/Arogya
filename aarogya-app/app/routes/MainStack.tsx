@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useContext } from 'react';
 import HomeScreen from '../screens/Home';
 import FitnessScreen from '../screens/Fitness';
 import ChatBotScreen from '../screens/ChatBot';
@@ -9,6 +9,7 @@ import SettingsScreen from '../screens/Settings';
 import FormScreen from '../screens/Form';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import AppContext from '../auth/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,12 +23,13 @@ export const MainStackParamsList = {
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
+    const {formFilled} = useContext(AppContext);
     return (
         <Stack.Navigator>
             <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
-            <Stack.Screen name="Form" component={FormScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }
