@@ -6,6 +6,7 @@ import ChatBotScreen from '../screens/ChatBot';
 import ProfileScreen from '../screens/Profile';
 import CountdownScreen from '../screens/Countdown';
 import SettingsScreen from '../screens/Settings';
+import FormScreen from '../screens/Form';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -26,6 +27,7 @@ const MainNavigator = () => {
             <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
+            <Stack.Screen name="Form" component={FormScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }
