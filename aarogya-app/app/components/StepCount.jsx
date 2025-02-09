@@ -59,21 +59,22 @@ export default function StepCount() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Step Tracker</Text>
-      <View style={styles.infoContainer}>
-        <View style={styles.stepsContainer}>
           <Text style={styles.stepsText}>{steps}</Text>
-          <Text style={styles.stepsLabel}>Steps</Text>
-        </View>
-        <View style={styles.caloriesContainer}>
+      {/* <Text style={styles.title}>Step Tracker</Text>
+      <View style={styles.infoContainer}>
+        <View style={styles.stepsContainer}> */}
+          {/* <Text style={styles.stepsText}>{steps}</Text> */}
+          {/* <Text style={styles.stepsLabel}>Steps</Text> */}
+        {/* </View> */}
+        {/* <View style={styles.caloriesContainer}>
           <Text style={styles.caloriesLabel}>
             Estimated Calories Burned;
             </Text>
           <Text style={styles.caloriesText}>
             {estimatedCaloriesBurned.toFixed(2)} calories
             </Text>
-        </View>
-      </View>
+        </View> */}
+      {/* </View> */}
     </View>
   );
 }

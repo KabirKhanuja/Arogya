@@ -5,6 +5,7 @@ import { useNavigation } from "expo-router";
 import RoadmapUtils from "../utils/RoadmapUtils";
 import ExerciseRoadmap from "../components/ExerciseRoadmap";
 import { ScoreContext } from "../context/ScoreContext";
+import StepCount from "../components/StepCount";
 
 const LoadingIndicator = ({ text = "Typing" }) => {
     const typingIndicator = [`${text}`, `${text}.`, `${text}..`, `${text}...`];
@@ -24,7 +25,7 @@ export default function HomeScreen() {
     const navigation = useNavigation();
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
     const { setTotalScore } = useContext(ScoreContext);
-    const currentScore = 5000; 
+    const currentScore = 5000;
 
     React.useEffect(() => {
         if (!roadmapGenerated) {
@@ -136,7 +137,7 @@ export default function HomeScreen() {
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    {"45"}
+                                    <StepCount />
                                 </Text>
                             </View>
                             <View
@@ -273,23 +274,23 @@ export default function HomeScreen() {
                     {
                         !roadmapGenerated ? (
                             <View
-                            style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginStart: 40,
-                                paddingBottom: 50
-                            }}
+                                style={{
+                                    flex: 1,
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    marginStart: 40,
+                                    paddingBottom: 50
+                                }}
                             >
                                 <LoadingIndicator text="Generating" />
                             </View>
-                    ) : (
+                        ) : (
                             <>
                                 {/* <Text>
                                     {JSON.stringify(roadmap)}
                                 </Text> */}
                                 <Text></Text>
-                                <ExerciseRoadmap data={roadmap}/>
+                                <ExerciseRoadmap data={roadmap} />
                             </>
                         )
                     }
