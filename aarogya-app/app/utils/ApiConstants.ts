@@ -17,6 +17,7 @@ const clearJWTToken = async () => {
 
 export class Api {
     static readonly BASE_URL = "https://aarogyaapi.vercel.app/";
+    // static readonly BASE_URL = "http://192.168.94.4:5000/";
 
     static readonly LOGIN_URL = `${Api.BASE_URL}/login`;
     static readonly REGISTER_URL = `${Api.BASE_URL}/signup`;
@@ -26,7 +27,7 @@ export class Api {
     static readonly UPDATE_USER_URL = `${Api.BASE_URL}/user/profile`;
     static readonly USER_FORM_FILLED_URL = `${Api.BASE_URL}/user/profile/formFilled`;
     static readonly GENERATE_ROADMAP_URL = `${Api.BASE_URL}/user/generate-roadmap-force`;
-    static readonly LOCAL_SERVER_IP_ADDRESS = `http://192.168.94.4:5000/`;
+    static readonly LOCAL_SERVER_IP_ADDRESS = `http://192.168.94.4:5000`;
     static readonly RECORD_EXERCISE_URL = `${Api.LOCAL_SERVER_IP_ADDRESS}/record-exercise`;
 
     static async buildHeaders() {

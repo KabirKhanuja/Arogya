@@ -1,16 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView, View, ScrollView, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import { CameraView, Camera, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview"; // Import WebView
+import { Api } from "../utils/ApiConstants";
+
+const DELAY = 500;
 
 export default function Exercising5() {
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
-    const [camera, setCamera] = useState(null);
+    const camera = useRef(null);
     const [showCamera, setShowCamera] = useState(true); // Add this state
+    const exerciseName = "finger_splaying";
+    const [count, setCount] = React.useState(0);
+    const [exerciseMessage, setExerciseMessage] = React.useState("Please follow the instructions");
+    const [isCompleted, setIsCompleted] = React.useState(false);
+    const TOTAL_COUNT = 15;
+
+    const sendImage = async (base64Image) => {
+        try {
+            const response = await Api.post(Api.RECORD_EXERCISE_URL, {
+                image: base64Image,
+                exercise: exerciseName
+            });
+            if (response.result) {
+                setIsCompleted(response.responseJson.completed);
+                setCount(response.responseJson.current_reps_count);
+                setExerciseMessage((prev) => {
+                    if (response.responseJson.completed) {
+                        return "Exercise completed!";
+                    } else {
+                        return response.responseJson.speak_text + `Keep going! ${response.responseJson.current_reps_count}/${TOTAL_COUNT}`;
+                    }
+                });
+            }
+
+            console.log("Image sent successfully", response.responseJson);
+        } catch (error) {
+            console.error("Error sending image:", error);
+        }
+    };
 
     useEffect(() => {
+        let interval;
+        interval = setInterval(async () => {
+            if (camera.current) {
+                try {
+                    console.log("Taking picture...");
+                    const photo = await camera.current.takePictureAsync({ base64: true });
+                    console.log("Sending captured image...");
+                    sendImage(photo.base64);
+                } catch (error) {
+                    console.error("Error capturing image:", error);
+                }
+            }
+        }, DELAY);
+        return () => clearInterval(interval);
+    }, [permission]);
+
+
+    useEffect(() => {
+        if (permission?.granted == true) return;
         if (!permission?.granted && permission?.canAskAgain) {
             requestPermission();
         } else if (!permission?.granted && !permission?.canAskAgain) {
@@ -50,19 +101,19 @@ export default function Exercising5() {
                     </Text>
                     <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 11, marginLeft: 17, marginRight: 30 }}>
                         <Text style={{ color: "#21160A", fontSize: 16, marginRight: 4, flex: 1 }}>
-                            {"Stand up and breathe"}
+                            {exerciseMessage}
                         </Text>
                         <Text style={{ color: "#21160A", fontSize: 16 }}>
-                            {"Counter: 7/10"}
+                            {`Counter: ${count}/${TOTAL_COUNT}`}
                         </Text>
                     </View>
-                    
+
                     {/* Camera/GIF View Container */}
                     <View style={{ height: 463, width: '100%', marginBottom: 9 }}>
                         {permission?.granted ? (
                             showCamera ? (
                                 <CameraView
-                                    ref={ref => setCamera(ref)}
+                                    ref={camera}
                                     style={{ flex: 1 }}
                                     facing={facing}
                                 />
@@ -77,7 +128,7 @@ export default function Exercising5() {
                         ) : (
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text>No access to camera</Text>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     onPress={requestPermission}
                                     style={{ marginTop: 20, padding: 10, backgroundColor: '#F99E16', borderRadius: 5 }}
                                 >
@@ -87,68 +138,68 @@ export default function Exercising5() {
                         )}
                     </View>
 
-                    <View style={{ 
-                        alignItems: "center", 
+                    <View style={{
+                        alignItems: "center",
                         marginBottom: 0,
-                        width: '100%' 
+                        width: '100%'
                     }}>
-                        <View style={{ 
-                            flexDirection: "row", 
+                        <View style={{
+                            flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
                             width: '100%'
                         }}>
-                            <View style={{ 
+                            <View style={{
                                 width: 48,
                                 height: 48,
-                                backgroundColor: "#F9F4EF", 
+                                backgroundColor: "#F9F4EF",
                                 borderRadius: 24,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginHorizontal: 12,
-                                shadowColor: "#0000001A", 
-                                shadowOpacity: 0.1, 
-                                shadowOffset: { width: 0, height: 2 }, 
-                                shadowRadius: 4, 
-                                elevation: 4 
+                                shadowColor: "#0000001A",
+                                shadowOpacity: 0.1,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowRadius: 4,
+                                elevation: 4
                             }}>
                                 <TouchableOpacity><Ionicons name="images-outline" size={24} color="black" /></TouchableOpacity>
                             </View>
-                            <View style={{ 
+                            <View style={{
                                 width: 64,
                                 height: 64,
-                                backgroundColor: "#F9F4EF", 
+                                backgroundColor: "#F9F4EF",
                                 borderRadius: 32,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginHorizontal: 12,
-                                shadowColor: "#0000001A", 
-                                shadowOpacity: 0.1, 
-                                shadowOffset: { width: 0, height: 2 }, 
-                                shadowRadius: 4, 
-                                elevation: 4 
+                                shadowColor: "#0000001A",
+                                shadowOpacity: 0.1,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowRadius: 4,
+                                elevation: 4
                             }}>
                                 <TouchableOpacity onPress={toggleView}>
-                                    <Ionicons 
-                                        name={showCamera ? "camera-outline" : "videocam-outline"} 
-                                        size={32} 
-                                        color="black" 
+                                    <Ionicons
+                                        name={showCamera ? "camera-outline" : "videocam-outline"}
+                                        size={32}
+                                        color="black"
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ 
+                            <View style={{
                                 width: 48,
                                 height: 48,
-                                backgroundColor: "#F9F4EF", 
+                                backgroundColor: "#F9F4EF",
                                 borderRadius: 24,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginHorizontal: 12,
-                                shadowColor: "#0000001A", 
-                                shadowOpacity: 0.1, 
-                                shadowOffset: { width: 0, height: 2 }, 
-                                shadowRadius: 4, 
-                                elevation: 4 
+                                shadowColor: "#0000001A",
+                                shadowOpacity: 0.1,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowRadius: 4,
+                                elevation: 4
                             }}>
                                 <TouchableOpacity><Ionicons name="refresh-outline" size={24} color="black" /></TouchableOpacity>
                             </View>
@@ -170,38 +221,38 @@ export default function Exercising5() {
                                 {"Exercise Demo"}
                             </Text>
                         </TouchableOpacity> */}
-                        <View style={{ 
-                            flexDirection: "row", 
-                            justifyContent: "space-between", 
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                             alignItems: "center",
-							marginTop: 85, 
+                            marginTop: 85,
                             marginBottom: 2,
                             width: '100%'
                         }}>
-                            <TouchableOpacity 
-                                style={{ 
+                            <TouchableOpacity
+                                style={{
                                     flex: 1,
-                                    alignItems: "center", 
-                                    backgroundColor: "#F4EADB", 
-                                    borderRadius: 8, 
+                                    alignItems: "center",
+                                    backgroundColor: "#F4EADB",
+                                    borderRadius: 8,
                                     paddingVertical: 18,
                                     marginRight: 8
-                                }} 
+                                }}
                                 onPress={() => alert('Pressed!')}
                             >
                                 <Text style={{ color: "#21160A", fontSize: 16 }}>
                                     {"Alternate"}
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity 
-                                style={{ 
+                            <TouchableOpacity
+                                style={{
                                     flex: 1,
-                                    alignItems: "center", 
-                                    backgroundColor: "#F4EADB", 
-                                    borderRadius: 8, 
+                                    alignItems: "center",
+                                    backgroundColor: "#F4EADB",
+                                    borderRadius: 8,
                                     paddingVertical: 18,
                                     marginLeft: 8
-                                }} 
+                                }}
                                 onPress={() => alert('Pressed!')}
                             >
                                 <Text style={{ color: "#21160A", fontSize: 16 }}>

@@ -15,8 +15,9 @@ export default function CountdownScreen() {
                     clearInterval(interval);
                     navigation.replace("Exercising5");
                     return 0;
+                }else{
+                    return prevCount - 1;
                 }
-                return prevCount - 1;
             });
         }, 1000);
         return () => clearInterval(interval);

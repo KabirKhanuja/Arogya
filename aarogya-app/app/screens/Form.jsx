@@ -11,9 +11,9 @@ export default function FormScreen() {
     const [gender, setGender] = useState((user && user.gender != "") ? user.gender : "");
     const [height, setHeight] = useState((user && user.height != "") ? user.height : "");
     const [weight, setWeight] = useState((user && user.weight != "") ? user.weight : "");
-    const [smoking, setSmoking] = useState((user && user.doYouSmoke != "") ? user.doYouSmoke : "");
-    const [drinking, setDrinking] = useState((user && user.doYouDrink != "") ? user.doYouDrink : "");
-    const [problems, setProblems] = useState((user && user.problems != "") ? user.problems : "");
+    const [smoking, setSmoking] = useState("");
+    const [drinking, setDrinking] = useState("");
+    const [problems, setProblems] = useState("");
     const [medicalHistory, setMedicalHistory] = useState("");
     const [showGenderModal, setShowGenderModal] = useState(false);
     const [showSmokingModal, setShowSmokingModal] = useState(false);
@@ -344,7 +344,7 @@ export default function FormScreen() {
                             onPress={() => setShowDrinkingModal(true)}
                         >
                             <Text style={{ fontSize: 16, color: drinking ? "#161411" : "#8C7A5E" }}>
-                                {drinking || "Select option"}
+                                {drinking != "" ? drinking : "Select option"}
                             </Text>
                         </TouchableOpacity>
                     </View>

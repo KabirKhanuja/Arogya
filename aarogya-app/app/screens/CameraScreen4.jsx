@@ -44,6 +44,8 @@ export default function CameraScreen() {
     useEffect(() => {
         let interval;
         if (permission?.granted) {
+            console.log("Starting camera capture");
+            
             interval = setInterval(async () => {
                 if (cameraRef.current) {
                     try {
