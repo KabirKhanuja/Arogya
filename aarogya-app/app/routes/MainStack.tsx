@@ -7,7 +7,7 @@ import ProfileScreen from '../screens/Profile';
 import CountdownScreen from '../screens/Countdown';
 import SettingsScreen from '../screens/Settings';
 import FormScreen from '../screens/Form';
-import CameraScreen from '../screens/CameraScreen';
+import CameraScreen from '../screens/CameraScreen4';
 import Exercising5 from '../screens/Exercising5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';

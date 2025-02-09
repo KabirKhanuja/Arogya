@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import * as handpose from '@tensorflow-models/handpose';
 
-class HandSplayTracker {
+export default class FingerSplayTracker {
   constructor() {
     this.splayCount = { right: 0, left: 0 };
     this.prevSpread = { right: null, left: null };
@@ -12,6 +12,7 @@ class HandSplayTracker {
     this.currentExercise = 0;
     this.model = null;
     this.isModelLoaded = false;
+    this.initialize();
   }
 
   async initialize() {
@@ -22,7 +23,7 @@ class HandSplayTracker {
       this.isModelLoaded = true;
       return true;
     } catch (error) {
-      console.error("Error initializing HandSplayTracker:", error);
+      console.error("Error initializing FingerSplayTracker:", error);
       return false;
     }
   }
@@ -120,5 +121,3 @@ class HandSplayTracker {
     this.currentExercise = 0;
   }
 }
-
-export default HandSplayTracker;

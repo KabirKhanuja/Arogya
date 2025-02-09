@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera"; // Removed CameraType
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import FingerSplayTracker from "../exercises/finger_splaying";
 
 export default function CameraScreen() {
     const [facing, setFacing] = useState('back'); // Use string literal instead of CameraType
