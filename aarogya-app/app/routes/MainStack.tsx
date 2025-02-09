@@ -11,7 +11,6 @@ import CameraScreen from '../screens/CameraScreen4';
 import Exercising5 from '../screens/Exercising5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import AppContext from '../auth/AuthContext';
 import { ScoreProvider } from '../context/ScoreContext';
 
 const Stack = createNativeStackNavigator();
@@ -35,7 +34,7 @@ const MainNavigator = () => {
                 <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
                 <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Exercise5" component={Exercising5} options={{ headerShown: false }} />
+                <Stack.Screen name="Exercising5" component={Exercising5} options={{ headerShown: false }} />
             </Stack.Navigator>
         </ScoreProvider>
     )

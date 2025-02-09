@@ -13,7 +13,7 @@ export default function CountdownScreen() {
             setCount((prevCount) => {
                 if (prevCount <= 0) {
                     clearInterval(interval);
-                    navigation.replace("Exercising5"); // Using replace to prevent going back to countdown
+                    navigation.replace("Exercising5");
                     return 0;
                 }
                 return prevCount - 1;
