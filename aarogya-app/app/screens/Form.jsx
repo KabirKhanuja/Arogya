@@ -31,6 +31,13 @@ export default function FormScreen() {
             if(user.doYouDrink) setDrinking(user.doYouDrink);
             if(user.problems) setProblems(user.problems.toString());
             if(user.medicalHistory) setMedicalHistory(user.medicalHistory);
+
+            if(user.age && user.gender && user.height && user.weight && user.doYouSmoke && user.doYouDrink && user.problems && user.medicalHistory) {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "MainTabs" }],
+                });
+            }
         }
     }, []);
     const handleBack = () => {
