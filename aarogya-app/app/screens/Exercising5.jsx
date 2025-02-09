@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, Alert, Linking, Platform } from "react-native";
+import { SafeAreaView, View, ScrollView, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+import { WebView } from "react-native-webview"; // Import WebView
 
 export default function Exercising5() {
     const [facing, setFacing] = useState('back');
@@ -66,10 +67,11 @@ export default function Exercising5() {
                                     facing={facing}
                                 />
                             ) : (
-                                <Image
-                                    source={{ uri: "https://cdn.dribbble.com/users/1049995/screenshots/4467316/fingertaps_3.gif" }}
-                                    style={{ flex: 1, width: '100%', height: '100%' }}
-                                    resizeMode="contain"
+                                <WebView
+                                    style={{ flex: 1 }}
+                                    javaScriptEnabled={true}
+                                    domStorageEnabled={true}
+                                    source={{ uri: 'https://www.youtube.com/embed/5-g_fi3VhIs?si=8gKtdLuV1sBqDvib' }}
                                 />
                             )
                         ) : (
@@ -153,7 +155,7 @@ export default function Exercising5() {
                         </View>
                     </View>
                     <View style={{ width: '100%', paddingHorizontal: 16 }}>
-                        <TouchableOpacity 
+                        {/* <TouchableOpacity 
                             style={{ 
                                 backgroundColor: "#F99E16", 
                                 borderRadius: 8, 
@@ -167,11 +169,12 @@ export default function Exercising5() {
                             <Text style={{ color: "#21160A", fontSize: 16 }}>
                                 {"Exercise Demo"}
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <View style={{ 
                             flexDirection: "row", 
                             justifyContent: "space-between", 
-                            alignItems: "center", 
+                            alignItems: "center",
+							marginTop: 85, 
                             marginBottom: 2,
                             width: '100%'
                         }}>
