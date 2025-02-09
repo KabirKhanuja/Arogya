@@ -8,6 +8,7 @@ import CountdownScreen from '../screens/Countdown';
 import SettingsScreen from '../screens/Settings';
 import FormScreen from '../screens/Form';
 import CameraScreen from '../screens/CameraScreen';
+import Exercising5 from '../screens/Exercising5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AppContext from '../auth/AuthContext';
@@ -34,6 +35,7 @@ const MainNavigator = () => {
                 <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
                 <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Exercise5" component={Exercising5} options={{ headerShown: false }} />
             </Stack.Navigator>
         </ScoreProvider>
     )

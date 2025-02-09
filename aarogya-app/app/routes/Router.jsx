@@ -1,4 +1,3 @@
-import Loading from "../components/Loading"
 import MainNavigator from "./MainStack"
 import AuthNavigator from "./AuthStack"
 import React, { useContext } from "react"

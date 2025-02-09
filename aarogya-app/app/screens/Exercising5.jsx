@@ -3,7 +3,7 @@ import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, Alert, L
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 
-export default (props) => {
+export default function Exercising5() {
     const [facing, setFacing] = useState('back');
     const [permission, requestPermission] = useCameraPermissions();
     const [camera, setCamera] = useState(null);

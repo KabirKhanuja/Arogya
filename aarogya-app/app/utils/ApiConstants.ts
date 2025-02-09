@@ -25,7 +25,7 @@ export class Api {
     static readonly CHATBOT_URL = `${Api.BASE_URL}/chat`;
     static readonly UPDATE_USER_URL = `${Api.BASE_URL}/user/profile`;
     static readonly USER_FORM_FILLED_URL = `${Api.BASE_URL}/user/profile/formFilled`;
-    static readonly GENERATE_ROADMAP_URL = `${Api.BASE_URL}/user/generate-roadmap`;
+    static readonly GENERATE_ROADMAP_URL = `${Api.BASE_URL}/user/generate-roadmap-force`;
 
     static async buildHeaders() {
         const token = await getJWTToken();

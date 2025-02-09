@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
 import { useNavigation } from "expo-router";
@@ -6,6 +6,9 @@ import RoadmapUtils from "../utils/RoadmapUtils";
 import ExerciseRoadmap from "../components/ExerciseRoadmap";
 import { ScoreContext } from "../context/ScoreContext";
 import StepCount from "../components/StepCount";
+import { Accelerometer, Pedometer } from 'expo-sensors';
+
+const CALORIES_PER_STEP = 0.05;
 
 const LoadingIndicator = ({ text = "Typing" }) => {
     const typingIndicator = [`${text}`, `${text}.`, `${text}..`, `${text}...`];
@@ -26,6 +29,56 @@ export default function HomeScreen() {
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
     const { setTotalScore } = useContext(ScoreContext);
     const currentScore = 5000;
+    const [steps, setSteps] = useState(0);
+    const [iscounting, setIscounting] = useState(false);
+    const [lastY, setLastY] = useState(0);
+    const [lastTime, setLastTime] = useState(0);
+
+    const animationRefRunning = React.useRef(null);
+    const animationRefSitting = React.useRef(null);
+
+    React.useEffect(() => {
+        let subscription: any;
+        Accelerometer.isAvailableAsync().then((result) => {
+            if (result) {
+                subscription = Accelerometer.addListener((accelerometerData) => {
+                    const { y } = accelerometerData;
+                    const threshold = 0.1;
+                    const timestamp = new Date().getTime();
+
+                    if (
+                        Math.abs(y - lastY) > threshold &&
+                        !iscounting &&
+                        (timestamp - lastTime) > 800
+                    ) {
+                        setIscounting(true);
+                        setLastTime(timestamp);
+                        setLastY(y);
+
+                        setSteps((prevSteps) => prevSteps + 1);
+
+                        setTimeout(() => {
+                            setIscounting(false);
+                        }, 1200);
+                    }
+                });
+            } else {
+                console.log('Accelerometer is not available on this device');
+            }
+        });
+
+        return () => {
+            if (subscription) {
+                subscription.remove();
+            }
+        };
+    }, [iscounting, lastY, lastTime]);
+
+    const resetSteps = () => {
+        setSteps(0);
+    }
+
+    const estimatedCaloriesBurned = () => (steps * CALORIES_PER_STEP)
 
     React.useEffect(() => {
         if (!roadmapGenerated) {
@@ -137,7 +190,7 @@ export default function HomeScreen() {
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    <StepCount />
+                                    <Text>{steps}</Text>
                                 </Text>
                             </View>
                             <View
@@ -229,38 +282,12 @@ export default function HomeScreen() {
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    {"34"}
+                                    <Text>
+                                        {estimatedCaloriesBurned().toFixed(2)} calories
+                                    </Text>
                                 </Text>
                             </View>
                         </View>
-                        {/* <View
-                            style={{
-                                backgroundColor: "#F4F2EF",
-                                borderRadius: 12,
-                                paddingVertical: 30,
-                                width: 380,
-                                paddingHorizontal: 25,
-                                marginBottom: 37,
-                                alignContent: "center",
-                                alignItems: "center",
-                                marginHorizontal: 16,
-                            }}>
-                            <Text
-                                style={{
-                                    color: "#161411",
-                                    fontSize: 16,
-                                    marginBottom: 16,
-                                }}>
-                                {"Total score"}
-                            </Text>
-                            <Text
-                                style={{
-                                    color: "#161411",
-                                    fontSize: 24,
-                                }}>
-                                {"3,456"}
-                            </Text>
-                        </View> */}
                     </View>
                     <Text
                         style={{
@@ -286,10 +313,6 @@ export default function HomeScreen() {
                             </View>
                         ) : (
                             <>
-                                {/* <Text>
-                                    {JSON.stringify(roadmap)}
-                                </Text> */}
-                                <Text></Text>
                                 <ExerciseRoadmap data={roadmap} />
                             </>
                         )
