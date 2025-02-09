@@ -11,6 +11,7 @@ import CameraScreen from '../screens/CameraScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import AppContext from '../auth/AuthContext';
+import { ScoreProvider } from '../context/ScoreContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,13 +27,15 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
-            <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
-        </Stack.Navigator>
+        <ScoreProvider>
+            <Stack.Navigator>
+                <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
+                <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
+                <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>
+        </ScoreProvider>
     )
 }
 const MainTabsNavigator = () => {

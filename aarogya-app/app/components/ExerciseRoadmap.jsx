@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigation } from "@react-navigation/native";
+// import React, { useContext } from "react";
+import { Image } from "react-native";
+import AppContext from "../auth/AuthContext";
+// import { useNavigation } from "expo-router";
+import RoadmapUtils from "../utils/RoadmapUtils";
+// import ExerciseRoadmap from "../components/ExerciseRoadmap";
 import {
   View,
   Text,
@@ -9,6 +16,7 @@ import {
 } from 'react-native';
 
 function ExerciseRoadmap({ data }) {
+  const navigation = useNavigation();
   const [expandedPhase, setExpandedPhase] = useState(0);
   const [expandedDay, setExpandedDay] = useState(null);
 
@@ -19,53 +27,57 @@ function ExerciseRoadmap({ data }) {
   const safeString = (str) => str || '';
 
   const renderExercise = (exercise = {}) => (
-    <View key={exercise?.slug || Math.random().toString()} style={styles.exerciseCard}>
-      <Text style={styles.exerciseName}>{safeString(exercise?.name)}</Text>
-      {exercise?.category && (
-        <Text style={styles.exerciseCategory}>Category: {exercise.category}</Text>
-      )}
-      {exercise?.purpose && (
-        <Text style={styles.exercisePurpose}>{exercise.purpose}</Text>
-      )}
-      
-      <View style={styles.exerciseDetails}>
-        {exercise?.duration !== undefined && (
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Duration:</Text>
-            <Text style={styles.detailValue}>{exercise.duration} min</Text>
-          </View>
+    <TouchableOpacity onPress={() => navigation.navigate("Countdown", { 
+      exerciseName: exercise?.name || "Exercise"
+    })}>
+      <View key={exercise?.slug || Math.random().toString()} style={styles.exerciseCard}>
+        <Text style={styles.exerciseName}>{safeString(exercise?.name)}</Text>
+        {exercise?.category && (
+          <Text style={styles.exerciseCategory}>Category: {exercise.category}</Text>
         )}
-        {exercise?.sets !== undefined && (
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Sets:</Text>
-            <Text style={styles.detailValue}>{exercise.sets}</Text>
-          </View>
+        {exercise?.purpose && (
+          <Text style={styles.exercisePurpose}>{exercise.purpose}</Text>
         )}
-        {exercise?.reps !== undefined && (
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Reps:</Text>
-            <Text style={styles.detailValue}>{exercise.reps}</Text>
-          </View>
-        )}
-        {exercise?.hold_duration && (
-          <View style={styles.detailItem}>
-            <Text style={styles.detailLabel}>Hold:</Text>
-            <Text style={styles.detailValue}>{exercise.hold_duration}</Text>
+
+        <View style={styles.exerciseDetails}>
+          {exercise?.duration !== undefined && (
+            <View style={styles.detailItem}>
+              <Text style={styles.detailLabel}>Duration:</Text>
+              <Text style={styles.detailValue}>{exercise.duration} min</Text>
+            </View>
+          )}
+          {exercise?.sets !== undefined && (
+            <View style={styles.detailItem}>
+              <Text style={styles.detailLabel}>Sets:</Text>
+              <Text style={styles.detailValue}>{exercise.sets}</Text>
+            </View>
+          )}
+          {exercise?.reps !== undefined && (
+            <View style={styles.detailItem}>
+              <Text style={styles.detailLabel}>Reps:</Text>
+              <Text style={styles.detailValue}>{exercise.reps}</Text>
+            </View>
+          )}
+          {exercise?.hold_duration && (
+            <View style={styles.detailItem}>
+              <Text style={styles.detailLabel}>Hold:</Text>
+              <Text style={styles.detailValue}>{exercise.hold_duration}</Text>
+            </View>
+          )}
+        </View>
+
+        {safeArray(exercise?.precautions).length > 0 && (
+          <View style={styles.precautionsContainer}>
+            <Text style={styles.precautionsTitle}>Precautions:</Text>
+            {safeArray(exercise?.precautions).map((precaution, index) => (
+              <Text key={index} style={styles.precautionItem}>
+                • {safeString(precaution)}
+              </Text>
+            ))}
           </View>
         )}
       </View>
-
-      {safeArray(exercise?.precautions).length > 0 && (
-        <View style={styles.precautionsContainer}>
-          <Text style={styles.precautionsTitle}>Precautions:</Text>
-          {safeArray(exercise?.precautions).map((precaution, index) => (
-            <Text key={index} style={styles.precautionItem}>
-              • {safeString(precaution)}
-            </Text>
-          ))}
-        </View>
-      )}
-    </View>
+    </TouchableOpacity>
   );
 
   const renderDay = (day = {}, phaseIndex) => (
@@ -79,7 +91,7 @@ function ExerciseRoadmap({ data }) {
           {expandedDay === day?.day ? '−' : '+'}
         </Text>
       </TouchableOpacity>
-      
+
       {expandedDay === day?.day && safeArray(day?.sessions).map((session, sessionIndex) => (
         <View key={sessionIndex} style={styles.sessionContainer}>
           {session?.time_slot && (
@@ -147,7 +159,7 @@ function ExerciseRoadmap({ data }) {
             </View>
           )}
         </View>
-        
+
         <View style={styles.phasesContainer}>
           {safeArray(data?.roadmap?.phases).map(renderPhase)}
         </View>

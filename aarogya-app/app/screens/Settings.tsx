@@ -172,7 +172,7 @@ export default function SettingsScreen() {
                             }}
                         />
                     </View>
-                    <Text
+                    {/* <Text
                         style={{
                             color: "#1C0C0C",
                             fontSize: 18,
@@ -231,7 +231,7 @@ export default function SettingsScreen() {
                             }}>
                             {"Everyone"}
                         </Text>
-                    </View>
+                    </View> */}
                     <Text
                         style={{
                             color: "#1C0C0C",

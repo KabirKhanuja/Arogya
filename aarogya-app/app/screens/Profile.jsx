@@ -2,10 +2,91 @@ import { useNavigation } from "expo-router";
 import React, { useContext } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
+import { ScoreContext } from "../context/ScoreContext";
 
 export default function ProfileScreen() {
 	const navigation = useNavigation();
-	const {user} = useContext(AppContext);
+	const { user } = useContext(AppContext);
+	const { totalScore } = useContext(ScoreContext); // Get totalScore from context
+
+	const renderBadges = () => (
+		<>
+			<Text style={{ color: "#1C160C", fontSize: 18, marginBottom: 24, marginLeft: 17 }}>
+				{"Badges"}
+			</Text>
+			
+			{totalScore < 500 ? (
+				<Text style={{ 
+					color: "#9E7A47", 
+					fontSize: 16, 
+					marginBottom: 50, 
+					marginLeft: 17,
+					fontStyle: 'italic' 
+				}}>
+					{"No Badges Won"}
+				</Text>
+			) : (
+				<>
+					<View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 18, marginHorizontal: 16 }}>
+						{totalScore >= 500 && (
+							<Image
+								source={{ uri: "https://kylesethgray.com/content/images/2018/08/thanksgiving_day_challenge_5k.png" }}
+								resizeMode={"stretch"}
+								style={{ borderRadius: 8, width: 173, height: 173 }}
+							/>
+						)}
+						{totalScore >= 1000 && (
+							<Image
+								source={{ uri: "https://kylesethgray.com/content/images/2018/08/new_year_2017.png" }}
+								resizeMode={"stretch"}
+								style={{ borderRadius: 8, width: 173, height: 173 }}
+							/>
+						)}
+					</View>
+					<View style={{ flexDirection: "row", alignItems: "center", marginBottom: 7, marginLeft: 17, marginRight: 45 }}>
+						{totalScore >= 500 && (
+							<Text style={{ color: "#1C160C", fontSize: 16, marginRight: 4, flex: 1 }}>
+								{"First Step Badge"}
+							</Text>
+						)}
+						{totalScore >= 1000 && (
+							<Text style={{ color: "#1C160C", fontSize: 16 }}>
+								{"Second Step Badge"}
+							</Text>
+						)}
+					</View>
+					<View style={{ flexDirection: "row", alignItems: "center", marginBottom: 33, marginLeft: 16, marginRight: 68 }}>
+						{totalScore >= 500 && (
+							<Text style={{ color: "#9E7A47", fontSize: 14, marginRight: 4, flex: 1 }}>
+								{"For getting 500 total score"}
+							</Text>
+						)}
+						{totalScore >= 1000 && (
+							<Text style={{ color: "#9E7A47", fontSize: 14, width: 121 }}>
+								{"For getting 1000 total score"}
+							</Text>
+						)}
+					</View>
+					{totalScore >= 5000 && (
+						<>
+							<Image
+								source={{ uri: "https://kylesethgray.com/content/images/2018/08/VeteransDay_Sticker.png" }}
+								resizeMode={"stretch"}
+								style={{ borderRadius: 8, width: 173, height: 173, marginBottom: 18, marginLeft: 16 }}
+							/>
+							<Text style={{ color: "#1C160C", fontSize: 16, marginBottom: 7, marginLeft: 17 }}>
+								{"Five Steps Badge"}
+							</Text>
+							<Text style={{ color: "#9E7A47", fontSize: 14, marginBottom: 50, marginLeft: 16 }}>
+								{"For getting 5000 total score"}
+							</Text>
+						</>
+					)}
+				</>
+			)}
+		</>
+	);
+
 	return (
 		<SafeAreaView
 			style={{
@@ -34,7 +115,7 @@ export default function ProfileScreen() {
 								color: "#1C160C",
 								fontSize: 18,
 							}}>
-							{"Badges & Certificates"}
+							{"User Profile"}
 						</Text>
 					</View>
 					<Image
@@ -132,123 +213,10 @@ export default function ProfileScreen() {
 							}}>
 						</View>
 					</View>
-					<Text
-						style={{
-							color: "#1C160C",
-							fontSize: 18,
-							marginBottom: 24,
-							marginLeft: 17,
-						}}>
-						{"Badges"}
-					</Text>
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-							alignItems: "center",
-							marginBottom: 18,
-							marginHorizontal: 16,
-						}}>
-						<Image
-							source={{ uri: "https://kylesethgray.com/content/images/2018/08/thanksgiving_day_challenge_5k.png" }}
-							resizeMode={"stretch"}
-							style={{
-								borderRadius: 8,
-								width: 173,
-								height: 173,
-							}}
-						/>
-						<Image
-							source={{ uri: "https://kylesethgray.com/content/images/2018/08/new_year_2017.png" }}
-							resizeMode={"stretch"}
-							style={{
-								borderRadius: 8,
-								width: 173,
-								height: 173,
-							}}
-						/>
-					</View>
-					<View
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							marginBottom: 7,
-							marginLeft: 17,
-							marginRight: 45,
-						}}>
-						<Text
-							style={{
-								color: "#1C160C",
-								fontSize: 16,
-								marginRight: 4,
-								flex: 1,
-							}}>
-							{"First Step Badge"}
-						</Text>
-						<Text
-							style={{
-								color: "#1C160C",
-								fontSize: 16,
-							}}>
-							{"Second Step Badge"}
-						</Text>
-					</View>
-					<View
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							marginBottom: 33,
-							marginLeft: 16,
-							marginRight: 68,
-						}}>
-						<Text
-							style={{
-								color: "#9E7A47",
-								fontSize: 14,
-								marginRight: 4,
-								flex: 1,
-							}}>
-							{"For completing 1st exercise"}
-						</Text>
-						<Text
-							style={{
-								color: "#9E7A47",
-								fontSize: 14,
-								width: 121,
-							}}>
-							{"For completing 2nd exercise"}
-						</Text>
-					</View>
-					<Image
-						source={{ uri: "https://kylesethgray.com/content/images/2018/08/VeteransDay_Sticker.png" }}
-						resizeMode={"stretch"}
-						style={{
-							borderRadius: 8,
-							width: 173,
-							height: 173,
-							marginBottom: 18,
-							marginLeft: 16,
-						}}
-					/>
-					<Text
-						style={{
-							color: "#1C160C",
-							fontSize: 16,
-							marginBottom: 7,
-							marginLeft: 17,
-						}}>
-						{"Five Steps Badge"}
-					</Text>
-					<Text
-						style={{
-							color: "#9E7A47",
-							fontSize: 14,
-							marginBottom: 50,
-							marginLeft: 16,
-						}}>
-						{"For completing 5 exercises"}
-					</Text>
-					<Text
+					
+					{renderBadges()}
+					
+					{/* <Text
 						style={{
 							color: "#1C160C",
 							fontSize: 18,
@@ -335,7 +303,7 @@ export default function ProfileScreen() {
 								{"For reaching goals"}
 							</Text>
 						</View>
-					</View>
+					</View> */}
 					<TouchableOpacity
 						style={{
 							alignItems: "center",

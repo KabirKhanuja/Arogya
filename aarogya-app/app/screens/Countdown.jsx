@@ -1,16 +1,26 @@
 import React, { useEffect } from "react";
-import { use } from "react";
-import { SafeAreaView, View, ScrollView, Text, TouchableOpacity, } from "react-native";
+import { SafeAreaView, View, ScrollView, Text, TouchableOpacity } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function CountdownScreen() {
     const [count, setCount] = React.useState(3);
+    const navigation = useNavigation();
+    const route = useRoute();
+    const exerciseName = route.params?.exerciseName || "Exercise";
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCount((prevCount) => prevCount - 1);
+            setCount((prevCount) => {
+                if (prevCount <= 0) {
+                    clearInterval(interval);
+                    navigation.replace("Exercising5"); // Using replace to prevent going back to countdown
+                    return 0;
+                }
+                return prevCount - 1;
+            });
         }, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [navigation]);
 
     return (
         <SafeAreaView
@@ -35,7 +45,7 @@ export default function CountdownScreen() {
                             marginBottom: 320,
                             marginLeft: 31,
                         }}>
-                        {"Improve your balance "}
+                        {exerciseName}
                     </Text>
                     <Text
                         style={{

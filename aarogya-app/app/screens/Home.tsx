@@ -4,6 +4,7 @@ import AppContext from "../auth/AuthContext";
 import { useNavigation } from "expo-router";
 import RoadmapUtils from "../utils/RoadmapUtils";
 import ExerciseRoadmap from "../components/ExerciseRoadmap";
+import { ScoreContext } from "../context/ScoreContext";
 
 const LoadingIndicator = ({ text = "Typing" }) => {
     const typingIndicator = [`${text}`, `${text}.`, `${text}..`, `${text}...`];
@@ -22,6 +23,8 @@ export default function HomeScreen() {
     const [roadmap, setRoadmap] = React.useState({});
     const navigation = useNavigation();
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
+    const { setTotalScore } = useContext(ScoreContext);
+    const currentScore = 5000; 
 
     React.useEffect(() => {
         if (!roadmapGenerated) {
@@ -34,6 +37,10 @@ export default function HomeScreen() {
                 });
         }
     }, []);
+
+    React.useEffect(() => {
+        setTotalScore(currentScore);
+    }, [currentScore]);
 
     return (
         <SafeAreaView
@@ -113,7 +120,7 @@ export default function HomeScreen() {
                                     paddingVertical: 30,
                                     paddingHorizontal: 25,
                                     alignItems: "center",
-                                    minWidth: 165,
+                                    minWidth: 195,
                                 }}>
                                 <Text
                                     style={{
@@ -177,7 +184,7 @@ export default function HomeScreen() {
                                     paddingVertical: 30,
                                     paddingHorizontal: 25,
                                     alignItems: "center",
-                                    minWidth: 165,
+                                    minWidth: 195,
                                 }}>
                                 <Text
                                     style={{
@@ -186,14 +193,14 @@ export default function HomeScreen() {
                                         marginBottom: 16,
                                         textAlign: "center",
                                     }}>
-                                    {"Time Spent"}
+                                    {"Total Score"}
                                 </Text>
                                 <Text
                                     style={{
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    {"1:03"}
+                                    {currentScore}
                                 </Text>
                             </View>
                             <View
@@ -225,7 +232,7 @@ export default function HomeScreen() {
                                 </Text>
                             </View>
                         </View>
-                        <View
+                        {/* <View
                             style={{
                                 backgroundColor: "#F4F2EF",
                                 borderRadius: 12,
@@ -252,7 +259,7 @@ export default function HomeScreen() {
                                 }}>
                                 {"3,456"}
                             </Text>
-                        </View>
+                        </View> */}
                     </View>
                     <Text
                         style={{
@@ -278,9 +285,10 @@ export default function HomeScreen() {
                             </View>
                     ) : (
                             <>
-                                <Text>
+                                {/* <Text>
                                     {JSON.stringify(roadmap)}
-                                </Text>
+                                </Text> */}
+                                <Text></Text>
                                 <ExerciseRoadmap data={roadmap}/>
                             </>
                         )

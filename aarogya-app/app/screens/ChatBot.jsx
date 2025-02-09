@@ -39,9 +39,9 @@ const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = fals
                 marginHorizontal: 16,
                 marginEnd: 10,
             }}>
-            <ProfileImageView uri={userPictureUrl ? userPictureUrl : "https://picsum.photos/200/200"} />
+            <ProfileImageView uri="https://i.ibb.co/5XQtFKcY/docroro.png" />
             <View>
-                <Text style={{ color: "#9E7A47", fontSize: 12, marginBottom: 6, marginLeft: 15, }}>Assistant</Text>
+                <Text style={{ color: "#9E7A47", fontSize: 12, marginBottom: 6, marginLeft: 15, }}>Roro</Text>
                 <Text
                     style={{
                         color: isTypingIndicator ? "blue" : "#1C160C",
