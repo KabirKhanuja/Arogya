@@ -2,9 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { SafeAreaView, View, ScrollView, Image, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { MainStackNavigationProps } from "../routes/MainStack";
 
 export default function FitnessScreen() {
-	const navigation = useNavigation();
+	const navigation = useNavigation<MainStackNavigationProps>();
 
 	const handleButtonPress = () => {
 		navigation.navigate("Camera");

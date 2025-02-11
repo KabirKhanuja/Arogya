@@ -30,4 +30,9 @@ export default class RoadmapUtils {
         }
     }
 
+
+    static async clearRoadmapFromStorage() {
+        await SecureStorage.deleteItemAsync('roadmap');
+    }
+
 }

@@ -1,41 +1,49 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView, View, ScrollView, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
-import { CameraView, Camera, useCameraPermissions } from "expo-camera";
+import { CameraView, Camera, useCameraPermissions, CameraType } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { WebView } from "react-native-webview"; // Import WebView
 import { Api } from "../utils/ApiConstants";
+import * as SecureStorage from "expo-secure-store";
+import ExerciseUtils from "../utils/ExerciseUtils";
 
 const DELAY = 500;
 
 export default function Exercising5() {
-    const [facing, setFacing] = useState('back');
+    const [facing, setFacing] = useState<CameraType>('front');
     const [permission, requestPermission] = useCameraPermissions();
     const camera = useRef(null);
     const [showCamera, setShowCamera] = useState(true); // Add this state
     const exerciseName = "finger_splaying";
+    const exerciseRef = useRef(new ExerciseUtils(exerciseName));
     const [count, setCount] = React.useState(0);
     const [exerciseMessage, setExerciseMessage] = React.useState("Please follow the instructions");
     const [isCompleted, setIsCompleted] = React.useState(false);
     const TOTAL_COUNT = 15;
 
-    const sendImage = async (base64Image) => {
+    useEffect(() => {
+        (async () => {
+            const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
+            await SecureStorage.setItemAsync("ex-count", (parseInt(rcount) + 1).toString());
+        })();
+    }, []);
+
+    const sendImage = async (base64Image: string) => {
         try {
             const response = await Api.post(Api.RECORD_EXERCISE_URL, {
                 image: base64Image,
-                exercise: exerciseName
+                exercise: exerciseName,
+                params: {
+                    current_reps_count: count,
+                }
             });
-            if (response.result) {
-                setIsCompleted(response.responseJson.completed);
+            if (response.responseJson.result) {
+                const exerciseData = response.responseJson.result;
+                exerciseRef.current.saveExerciseDataFromResponse(exerciseData);
+                setIsCompleted(exerciseData.completed);
                 setCount(response.responseJson.current_reps_count);
-                setExerciseMessage((prev) => {
-                    if (response.responseJson.completed) {
-                        return "Exercise completed!";
-                    } else {
-                        return response.responseJson.speak_text + `Keep going! ${response.responseJson.current_reps_count}/${TOTAL_COUNT}`;
-                    }
-                });
+                setExerciseMessage((prev) => exerciseRef.current.getSpeakText());
             }
-
             console.log("Image sent successfully", response.responseJson);
         } catch (error) {
             console.error("Error sending image:", error);
@@ -45,12 +53,14 @@ export default function Exercising5() {
     useEffect(() => {
         let interval;
         interval = setInterval(async () => {
-            if (camera.current) {
+            if (camera.current && !isCompleted) {
                 try {
                     console.log("Taking picture...");
-                    const photo = await camera.current.takePictureAsync({ base64: true });
+                    const photo = await (camera.current as CameraView).takePictureAsync({ base64: true });
                     console.log("Sending captured image...");
-                    sendImage(photo.base64);
+                    if (photo && photo.base64) {
+                        sendImage(photo.base64);
+                    }
                 } catch (error) {
                     console.error("Error capturing image:", error);
                 }

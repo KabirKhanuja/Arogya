@@ -7,21 +7,34 @@ import ProfileScreen from '../screens/Profile';
 import CountdownScreen from '../screens/Countdown';
 import SettingsScreen from '../screens/Settings';
 import FormScreen from '../screens/Form';
-import CameraScreen from '../screens/CameraScreen4';
 import Exercising5 from '../screens/Exercising5';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { ScoreProvider } from '../context/ScoreContext';
+import { StackNavigationProp } from "@react-navigation/stack";
 
 const Stack = createNativeStackNavigator();
 
-export const MainStackParamsList = {
-    home: undefined,
-    fitness: undefined,
-    chat: undefined,
-    profile: undefined,
+export type MainStackParamsList = {
     camera: undefined,
+    form: undefined,
+    MainTabs: undefined,
+    Countdown: {
+        exerciseName: string;
+    },
+    Settings: undefined,
+    Exercising5: undefined,
 };
+
+export type MainStackTabsParamsList = {
+    Home: undefined,
+    Fitness: undefined,
+    Chat: undefined,
+    Profile: undefined,
+};
+
+export type MainStackNavigationProps = StackNavigationProp<MainStackParamsList>;
+
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +46,6 @@ const MainNavigator = () => {
                 <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
                 <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
-                <Stack.Screen name="Camera" component={CameraScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Exercising5" component={Exercising5} options={{ headerShown: false }} />
             </Stack.Navigator>
         </ScoreProvider>

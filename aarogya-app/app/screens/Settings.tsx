@@ -1,20 +1,24 @@
 import React, { useContext, useEffect } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
+import RoadmapUtils from "../utils/RoadmapUtils";
 
 export default function SettingsScreen() {
-    const { authService, setIsLoggedIn } = useContext(AppContext);
+    const { authService, setIsLoggedIn, user } = useContext(AppContext);
 
-    const handleLogout = () => {
-        authService.logoutUser()
-            .then((response) => {
-                if (response) {
-                    console.log("Logout successful");
-                    setIsLoggedIn(false);
-                } else {
-                    console.log("Error logging out");
-                }
-            });
+    const handleLogout = async () => {
+        try {
+            const response = await authService.logoutUser()
+            if (response) {
+                console.log("Logout successful");
+                await RoadmapUtils.clearRoadmapFromStorage()
+                setIsLoggedIn(false);
+            } else {
+                console.log("Error logging out");
+            }
+        } catch (error) {
+            console.log("Error logging out: ", error);
+        }
     };
 
     return (
@@ -116,7 +120,7 @@ export default function SettingsScreen() {
                                 color: "#1C0C0C",
                                 fontSize: 16,
                             }}>
-                            {"test@gmail.com"}
+                            {user?.email}
                         </Text>
                     </View>
                     <View

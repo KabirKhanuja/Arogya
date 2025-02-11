@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { MainStackNavigationProps } from "../routes/MainStack";
+
+export type CountdownScreenProps = {
+    exerciseName: string;
+}
 
 export default function CountdownScreen() {
     const [count, setCount] = React.useState(3);
-    const navigation = useNavigation();
+    const navigation = useNavigation<MainStackNavigationProps>();
     const route = useRoute();
-    const exerciseName = route.params?.exerciseName || "Exercise";
+    const exerciseName = (route.params as CountdownScreenProps)?.exerciseName || "Exercise";
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -15,7 +20,7 @@ export default function CountdownScreen() {
                     clearInterval(interval);
                     navigation.replace("Exercising5");
                     return 0;
-                }else{
+                } else {
                     return prevCount - 1;
                 }
             });

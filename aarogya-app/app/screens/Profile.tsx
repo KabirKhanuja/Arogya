@@ -1,27 +1,38 @@
-import { useNavigation } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
 import { ScoreContext } from "../context/ScoreContext";
+import * as SecureStore from "expo-secure-store";
+import { MainStackNavigationProps } from "../routes/MainStack";
+import { UserType } from "../types/user";
 
 export default function ProfileScreen() {
-	const navigation = useNavigation();
+	const navigation = useNavigation<MainStackNavigationProps>();
 	const { user } = useContext(AppContext);
 	const { totalScore } = useContext(ScoreContext); // Get totalScore from context
+
+	const handleReevaluate = async () => {
+		await SecureStore.deleteItemAsync("roadmap");
+		navigation.reset({
+			index: 0,
+			routes: [{ name: "form" }],
+		});
+	};
 
 	const renderBadges = () => (
 		<>
 			<Text style={{ color: "#1C160C", fontSize: 18, marginBottom: 24, marginLeft: 17 }}>
 				{"Badges"}
 			</Text>
-			
+
 			{totalScore < 500 ? (
-				<Text style={{ 
-					color: "#9E7A47", 
-					fontSize: 16, 
-					marginBottom: 50, 
+				<Text style={{
+					color: "#9E7A47",
+					fontSize: 16,
+					marginBottom: 50,
 					marginLeft: 17,
-					fontStyle: 'italic' 
+					fontStyle: 'italic'
 				}}>
 					{"No Badges Won"}
 				</Text>
@@ -135,7 +146,7 @@ export default function ProfileScreen() {
 							textAlign: "center",
 							marginBottom: 20,
 						}}>
-						{user.name}
+						{user?.name ? user.name : "User Name"}
 					</Text>
 					<Text
 						style={{
@@ -144,7 +155,7 @@ export default function ProfileScreen() {
 							textAlign: "center",
 							marginBottom: 20,
 						}}>
-						{`Age: ${user.age}, Weight: ${user.weight} kgs, Height: ${user.height} cms`}
+						{`Age: ${user?.age ? user.age : ""}, Weight: ${user?.weight ? user.weight : ""} kgs, Height: ${user?.height ? user.height : ""} cms`}
 					</Text>
 					<View
 						style={{
@@ -161,7 +172,7 @@ export default function ProfileScreen() {
 								backgroundColor: "#F4EFE5",
 								borderRadius: 8,
 								paddingVertical: 15,
-							}} onPress={() => alert('Pressed!')}>
+							}} onPress={handleReevaluate}>
 							<Text
 								style={{
 									color: "#1C160C",
@@ -213,9 +224,9 @@ export default function ProfileScreen() {
 							}}>
 						</View>
 					</View>
-					
+
 					{renderBadges()}
-					
+
 					{/* <Text
 						style={{
 							color: "#1C160C",
