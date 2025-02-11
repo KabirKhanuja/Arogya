@@ -7,7 +7,7 @@ type AppContextType = {
     authService: AuthenticationService;
     isLoggedIn: boolean;
     setIsLoggedIn: (isLoggedIn: boolean) => void;
-    setUser: (user: UserType) => void;
+    setUser: (user: UserType | null) => void;
     user: UserType | null;
 }
 

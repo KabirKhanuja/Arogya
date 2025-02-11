@@ -2,9 +2,10 @@ import MainNavigator from "./MainStack"
 import AuthNavigator from "./AuthStack"
 import React, { useContext } from "react"
 import AppContext from "../auth/AuthContext"
+import { UserType } from "../types/user";
 
-export default Router = () => {
-    const [isLoading, setIsLoading] = React.useState(true);
+export default function Router() {
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const { authService, isLoggedIn, setIsLoggedIn, setUser, user } = useContext(AppContext);
 
     React.useEffect(() => {
@@ -15,11 +16,11 @@ export default Router = () => {
         authService.getCurrentUser()
             .then(responseJson => {
                 console.log("Response from getCurrentUser: ", responseJson);
-                
+
                 setIsLoading(false);
                 if (responseJson) {
                     const _user = responseJson.user;
-                    const tuser = ({
+                    const tuser: UserType = {
                         email: _user.username,
                         name: _user.name,
                         id: _user.user_id,
@@ -27,11 +28,11 @@ export default Router = () => {
                         gender: _user.gender,
                         weight: _user.weight,
                         height: _user.height,
-                        doYouSmoke: _user.smoking,
-                        doYouDrink: _user.drinking,
+                        doYouSmoke: _user.doYouSmoke,
+                        doYouDrink: _user.doYouDrink,
                         problems: _user.problems,
                         medicalHistory: _user.medicalHistory
-                    });
+                    };
                     setUser(tuser);
                     setIsLoggedIn(true);
                     return;

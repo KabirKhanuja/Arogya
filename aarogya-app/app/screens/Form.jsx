@@ -22,7 +22,7 @@ export default function FormScreen() {
     const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
 
     useEffect(() => {
-        if (user) {
+        if (user) {            
             if(user.age) setAge(user.age.toString());
             if(user.gender) setGender(user.gender);
             if(user.height) setHeight(user.height.toString());
@@ -32,14 +32,12 @@ export default function FormScreen() {
             if(user.problems) setProblems(user.problems.toString());
             if(user.medicalHistory) setMedicalHistory(user.medicalHistory);
 
-            if(user.age && user.gender && user.height && user.weight && user.doYouSmoke && user.doYouDrink && user.problems && user.medicalHistory) {
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: "MainTabs" }],
-                });
-            }
+            // if(user.age && user.gender && user.height && user.weight && user.doYouSmoke && user.doYouDrink && user.problems && user.medicalHistory) {
+            //     navigation.navigate("MainTabs");
+            // }
         }
     }, []);
+    
     const handleBack = () => {
         navigation.navigate("MainTabs");
     };

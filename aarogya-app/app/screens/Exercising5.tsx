@@ -33,18 +33,16 @@ export default function Exercising5() {
             const response = await Api.post(Api.RECORD_EXERCISE_URL, {
                 image: base64Image,
                 exercise: exerciseName,
-                params: {
-                    current_reps_count: count,
-                }
+                params: exerciseRef.current.buildRequestData()
             });
             if (response.responseJson.result) {
                 const exerciseData = response.responseJson.result;
                 exerciseRef.current.saveExerciseDataFromResponse(exerciseData);
                 setIsCompleted(exerciseData.completed);
-                setCount(response.responseJson.current_reps_count);
-                setExerciseMessage((prev) => exerciseRef.current.getSpeakText());
+                setCount((prev) => exerciseData.current_reps_count || prev);
+                setExerciseMessage((prev) => exerciseData.speak_text || prev);
             }
-            console.log("Image sent successfully", response.responseJson);
+            console.log("Image sent successfully", JSON.stringify(response.responseJson));
         } catch (error) {
             console.error("Error sending image:", error);
         }

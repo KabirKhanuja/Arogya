@@ -39,4 +39,12 @@ export default class ExerciseUtils {
     getSpeakText() {
         return this.currentExerciseData.speak_text;
     }
+
+    buildRequestData() {
+        return {
+            exercise: this.exerciseName,
+            ...this.currentExerciseData.data,
+            current_reps_count: this.currentExerciseData.current_reps_count,
+        }
+    }
 }
