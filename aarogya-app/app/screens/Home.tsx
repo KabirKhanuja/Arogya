@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import RoadmapUtils from "../utils/RoadmapUtils";
 import ExerciseRoadmap from "../components/ExerciseRoadmap";
 import { ScoreContext } from "../context/ScoreContext";
-import StepCount from "../components/StepCount";
 import { Accelerometer, Pedometer } from 'expo-sensors';
+import * as SecureStorage from "expo-secure-store";
+import { Roadmap } from "../types/Roadmap";
+import { MainStackNavigationProps } from "../routes/MainStack";
+import { CountdownScreenProps } from "./Countdown";
 
 const CALORIES_PER_STEP = 0.05;
 
@@ -24,18 +27,24 @@ const LoadingIndicator = ({ text = "Typing" }) => {
 export default function HomeScreen() {
     const { user } = useContext(AppContext);
     const [roadmapGenerated, setRoadmapGenerated] = React.useState(false);
-    const [roadmap, setRoadmap] = React.useState({});
-    const navigation = useNavigation();
+    const [roadmap, setRoadmap] = React.useState<Roadmap | Object>({});
+    const navigation = useNavigation<MainStackNavigationProps>();
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
     const { setTotalScore } = useContext(ScoreContext);
     const currentScore = 5000;
     const [steps, setSteps] = useState(0);
+    const [exercisesCount, setExercisesCount] = useState(0);
     const [iscounting, setIscounting] = useState(false);
     const [lastY, setLastY] = useState(0);
     const [lastTime, setLastTime] = useState(0);
 
-    const animationRefRunning = React.useRef(null);
-    const animationRefSitting = React.useRef(null);
+    React.useEffect(() => {
+        (async () => {
+            const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
+            setExercisesCount(parseInt(rcount));
+        })();
+    }, []);
+
 
     React.useEffect(() => {
         let subscription: any;
@@ -217,7 +226,7 @@ export default function HomeScreen() {
                                         color: "#161411",
                                         fontSize: 24,
                                     }}>
-                                    {"2"}
+                                    {exercisesCount}
                                 </Text>
                             </View>
                         </View>
@@ -327,7 +336,12 @@ export default function HomeScreen() {
                             marginBottom: 12,
                             marginHorizontal: 16,
                         }} onPress={() => {
-                            navigation.navigate("Countdown");
+                            const firstExerciseName = (roadmap as Roadmap).phases?.[0]?.weekly_schedule?.[0]?.sessions?.[0]?.exercises?.[0]?.name;
+                            if (firstExerciseName) {
+                                navigation.navigate("Countdown", {
+                                    exerciseName: firstExerciseName,
+                                });
+                            }
                         }}>
                         <Text
                             style={{

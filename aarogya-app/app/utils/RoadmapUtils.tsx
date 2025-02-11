@@ -10,7 +10,7 @@ export default class RoadmapUtils {
 
     async generateRoadmap() {
         try {
-            const localRoadmap = await SecureStorage.getItemAsync('roadmapsss');
+            const localRoadmap = await SecureStorage.getItemAsync('roadmap');
             if (localRoadmap && localRoadmap != "") {
                 const localRoadmapObj = JSON.parse(localRoadmap);
                 if (localRoadmapObj) return localRoadmapObj;
@@ -28,6 +28,11 @@ export default class RoadmapUtils {
             console.log("Error in getting chatbot response: ", error);
             return null;
         }
+    }
+
+
+    static async clearRoadmapFromStorage() {
+        await SecureStorage.deleteItemAsync('roadmap');
     }
 
 }

@@ -4,7 +4,7 @@ import { SafeAreaView, View, ScrollView, Image, Text, TouchableOpacity, TextInpu
 import Chatbot from "../utils/ChatbotUtils";
 
 
-const ProfileImageView = ({ uri, addMargin = true }) => {
+const ProfileImageView = ({ uri, addMargin = true }: { uri: string; addMargin?: boolean }) => {
     return (
         <View
             style={{
@@ -28,7 +28,9 @@ const ProfileImageView = ({ uri, addMargin = true }) => {
     );
 };
 
-const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = false }) => {
+const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = false }:
+    { message: string; userPictureUrl: string; isTypingIndicator?: boolean }
+) => {
     return (
         <View
             style={{
@@ -60,7 +62,9 @@ const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = fals
     );
 };
 
-const UserMessage = ({ message, userPictureUrl }) => {
+const UserMessage = ({ message, userPictureUrl }:
+    { message: string; userPictureUrl: string }
+) => {
     return (
         <View
             style={{
@@ -103,7 +107,9 @@ const TypingIndicator = () => {
     );
 };
 
-const EmptyMessagesContainer = ({addHelloMessage}) => {
+const EmptyMessagesContainer = ({ addHelloMessage }:
+    { addHelloMessage: () => void }
+) => {
     return (
         <View style={styles.container}>
             <Ionicons name="chatbubbles-outline" size={50} color="#888" />
@@ -146,11 +152,16 @@ const styles = StyleSheet.create({
     },
 });
 
+type ChatMessage = {
+    message: string;
+    sender: string;
+}
+
 
 export default function ChatBotScreen() {
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [message, setMessage] = useState<string>('');
+    const [isTyping, setIsTyping] = useState<boolean>(false);
     const chatbotRef = useRef(new Chatbot());
 
     const clearMessages = () => {
@@ -162,13 +173,13 @@ export default function ChatBotScreen() {
         handleSendMessage("Hello!");
     }
 
-    const handleSendMessage = ({extraMessage=null}) => {
+    const handleSendMessage = (extraMessage: string | null = null) => {
         if ((message === '' || message === null) && extraMessage === null) {
             return;
         }
 
-        const userMessage = {
-            "message": (message === '' || message === null) ? extraMessage : message,
+        const userMessage: ChatMessage = {
+            "message": (message === '' || message === null) ? extraMessage!! : message,
             "sender": "user",
         }
         messages.push(userMessage);
@@ -490,9 +501,7 @@ export default function ChatBotScreen() {
                         alignItems: "center",
                         flex: 1,
                         marginVertical: 8,
-                        color: "#1C160C",
                         paddingVertical: 3,
-                        fontSize: 16,
                         backgroundColor: "#F4EFE5",
                         borderRadius: 8,
                     }}>
@@ -517,7 +526,7 @@ export default function ChatBotScreen() {
                             padding: 10,
                         }}
                         disabled={message === ''}
-                        onPress={handleSendMessage}>
+                        onPress={() => handleSendMessage()}>
                         <Ionicons name="send" size={24} color={
                             message === '' ? "#9E7A47" : "#1C160C"
                         } />

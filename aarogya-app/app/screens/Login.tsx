@@ -1,12 +1,12 @@
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import AppRoutes from "../types/routes";
 import Loading from "../components/Loading";
 import AppContext from "../auth/AuthContext";
+import { AuthStackNavigationProps } from "../routes/AuthStack";
 
 export default function LoginScreen() {
-  const navigation = useNavigation<NavigationProp<AppRoutes>>();
+  const navigation = useNavigation<AuthStackNavigationProps>();
   const [loading, setLoading] = React.useState(false);
   const [error, _setError] = React.useState<string | null>(null);
   const [email, setEmail] = React.useState("");

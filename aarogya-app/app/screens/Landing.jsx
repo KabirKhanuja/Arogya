@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
 const { width } = Dimensions.get('window');

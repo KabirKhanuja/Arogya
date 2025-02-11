@@ -1,6 +1,7 @@
 import React, { createContext, FC, PropsWithChildren } from "react";
 import AuthenticationService from "./service"
 import getUserMain from "../utils/UsersDB";
+import { UserType } from "../types/user";
 
 type AppContextType = {
     authService: AuthenticationService;

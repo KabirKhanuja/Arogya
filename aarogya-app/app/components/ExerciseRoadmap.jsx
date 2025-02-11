@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
-// import React, { useContext } from "react";
-import { Image } from "react-native";
-import AppContext from "../auth/AuthContext";
-// import { useNavigation } from "expo-router";
-import RoadmapUtils from "../utils/RoadmapUtils";
-// import ExerciseRoadmap from "../components/ExerciseRoadmap";
 import {
   View,
   Text,
@@ -27,9 +21,11 @@ function ExerciseRoadmap({ data }) {
   const safeString = (str) => str || '';
 
   const renderExercise = (exercise = {}) => (
-    <TouchableOpacity onPress={() => navigation.navigate("Countdown", { 
+    <TouchableOpacity onPress={() => navigation.navigate("Countdown", {
       exerciseName: exercise?.name || "Exercise"
-    })}>
+    })}
+      key={exercise?.slug || Math.random().toString()}
+    >
       <View key={exercise?.slug || Math.random().toString()} style={styles.exerciseCard}>
         <Text style={styles.exerciseName}>{safeString(exercise?.name)}</Text>
         {exercise?.category && (

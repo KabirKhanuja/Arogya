@@ -3,13 +3,17 @@ import React, { useEffect } from 'react';
 import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import LandingScreen from '../screens/Landing';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const Stack = createNativeStackNavigator();
 
-export const AuthStackParamsList = {
+export type AuthStackParamsList = {
   login: undefined,
   register: undefined,
 };
+
+export type AuthStackNavigationProps = StackNavigationProp<AuthStackParamsList>;
+
 
 const AuthNavigator = () => {
   return (
