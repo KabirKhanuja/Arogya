@@ -4,6 +4,7 @@ import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import LandingScreen from '../screens/Landing';
 import { StackNavigationProp } from '@react-navigation/stack';
+import UnlockedBadgeScreen from '../screens/UnlockedBadge';
 
 const Stack = createNativeStackNavigator();
 

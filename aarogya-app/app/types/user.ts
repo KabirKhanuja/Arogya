@@ -2,7 +2,7 @@ export type UserType = {
     id: string;
     name: string;
     email: string;
-    age: string;
+    age: number;
     gender: string;
     height: string;
     weight: string;
@@ -10,4 +10,5 @@ export type UserType = {
     doYouDrink: string;
     problems: string;
     medicalHistory: string;
+    formFilled: boolean;
 };

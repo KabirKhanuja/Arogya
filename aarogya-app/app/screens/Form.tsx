@@ -3,11 +3,14 @@ import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../auth/AuthContext";
 import { SafeAreaView, View, ScrollView, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { useNavigation } from "expo-router";
+import { useRoute } from "@react-navigation/native";
+import { RoadmpaGenerationExtraProps } from "./GeneratingRoadmap";
+import { MainStackNavigationProps } from "../routes/MainStack";
 
 export default function FormScreen() {
     const { authService, user, setUser } = useContext(AppContext);
     const [age, setAge] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<MainStackNavigationProps>();
     const [gender, setGender] = useState((user && user.gender != "") ? user.gender : "");
     const [height, setHeight] = useState((user && user.height != "") ? user.height : "");
     const [weight, setWeight] = useState((user && user.weight != "") ? user.weight : "");
@@ -20,29 +23,26 @@ export default function FormScreen() {
     const [showDrinkingModal, setShowDrinkingModal] = useState(false);
     const genderOptions = ['Male', 'Female', 'Other'];
     const yesNoOptions = ['Never', 'Sometimes', 'Frequently'];
+    const forceGenerate = (useRoute().params as RoadmpaGenerationExtraProps)?.force || false;
 
     useEffect(() => {
-        if (user) {            
-            if(user.age) setAge(user.age.toString());
-            if(user.gender) setGender(user.gender);
-            if(user.height) setHeight(user.height.toString());
-            if(user.weight) setWeight(user.weight.toString());
-            if(user.doYouSmoke) setSmoking(user.doYouSmoke);
-            if(user.doYouDrink) setDrinking(user.doYouDrink);
-            if(user.problems) setProblems(user.problems.toString());
-            if(user.medicalHistory) setMedicalHistory(user.medicalHistory);
-
-            // if(user.age && user.gender && user.height && user.weight && user.doYouSmoke && user.doYouDrink && user.problems && user.medicalHistory) {
-            //     navigation.navigate("MainTabs");
-            // }
+        if (user) {
+            if (user.age) setAge(user.age.toString());
+            if (user.gender) setGender(user.gender);
+            if (user.height) setHeight(user.height.toString());
+            if (user.weight) setWeight(user.weight.toString());
+            if (user.doYouSmoke) setSmoking(user.doYouSmoke);
+            if (user.doYouDrink) setDrinking(user.doYouDrink);
+            if (user.problems) setProblems(user.problems.toString());
+            if (user.medicalHistory) setMedicalHistory(user.medicalHistory);
         }
     }, []);
-    
+
     const handleBack = () => {
         navigation.navigate("MainTabs");
     };
 
-    const handleNumberInput = (text, setter, min, max) => {
+    const handleNumberInput = (text: string, setter: React.Dispatch<React.SetStateAction<string>>, min: number, max: number) => {
         let numericValue = text.replace(/[^0-9]/g, '');
         if (numericValue !== '') {
             numericValue = Math.max(min, Math.min(max, parseInt(numericValue))).toString();
@@ -70,7 +70,7 @@ export default function FormScreen() {
             .then(responseJson => {
                 if (responseJson) {
                     setUser({
-                        ...user,
+                        ...user!!,
                         age: parseInt(age),
                         gender: gender,
                         weight: weight,
@@ -81,14 +81,16 @@ export default function FormScreen() {
                         medicalHistory: medicalHistory
                     })
                     console.log("User account updated successfully", responseJson);
-                    // setFormFilled(true);
-                    navigation.navigate("MainTabs");
+                    navigation.navigate("GeneratingRoadmap",{
+                        force: forceGenerate
+                    });
                     return;
                 }
                 console.log("Error updating user account");
             })
             .catch(err => {
                 console.log("Error updating user account");
+                // TODO: Show error message
             });
     };
 
@@ -134,6 +136,7 @@ export default function FormScreen() {
                             fontSize: 16,
                             marginBottom: 40,
                             marginHorizontal: 28,
+                            textAlign: "center",
                         }}>
                         {"We will use this information to customize your program and track your progress."}
                     </Text>

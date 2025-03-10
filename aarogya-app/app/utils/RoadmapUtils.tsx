@@ -8,15 +8,17 @@ export default class RoadmapUtils {
         this.userId = userId;
     }
 
-    async generateRoadmap() {
+    async generateRoadmap({ force }: { force: boolean } = { force: false }) {
         try {
-            const localRoadmap = await SecureStorage.getItemAsync('roadmap');
-            if (localRoadmap && localRoadmap != "") {
-                const localRoadmapObj = JSON.parse(localRoadmap);
-                if (localRoadmapObj) return localRoadmapObj;
-            }
-
-            const response = await Api.post(Api.GENERATE_ROADMAP_URL, {});
+            if (!force) {
+                const localRoadmap = await SecureStorage.getItemAsync('roadmap');
+                if (localRoadmap && localRoadmap != "") {
+                    const localRoadmapObj = JSON.parse(localRoadmap);
+                    if (localRoadmapObj) return localRoadmapObj;
+                }
+            } else console.log("[Warning] Generating roadmap forcefully");
+            const url = force ? Api.GENERATE_ROADMAP_FORCE_URL : Api.GENERATE_ROADMAP_URL;
+            const response = await Api.post(url, {});
             if (response.status >= 200 && response.status < 300) {
                 const responseJson = response.responseJson;
                 console.log("Roadmap response: ", responseJson);

@@ -14,8 +14,8 @@ type LoginUserAccount = {
 type UpdateUserData = {
     age: number;
     gender: string;
-    weight: number;
-    height: number;
+    weight: string;
+    height: string;
     doYouSmoke: string;
     doYouDrink: string;
     problems: string;
@@ -39,6 +39,8 @@ class AuthenticationService {
                 username: data.email,
                 password: data.password,
             });
+            console.log("REGISTER Response: ", response);
+
             if (response.status >= 200 && response.status < 300) {
                 const token = response.responseJson.token;
                 await setJWTToken(token);
@@ -46,21 +48,18 @@ class AuthenticationService {
                     response: response.responseJson,
                     error: null,
                 };
-            } else if (response.responseJson.message) {
-                return {
-                    response: null,
-                    error: response.responseJson.message,
-                };
             }
             return {
                 response: null,
-                error: null,
+                error: response.responseJson
+                    ? response.responseJson.message
+                    : "Unknown error",
             };
         } catch (error) {
             console.log("Error in creating user account: ", error);
             return {
                 response: null,
-                error: null,
+                error: "Unknown error",
             };
         }
     }
@@ -74,7 +73,7 @@ class AuthenticationService {
                 password: data.password,
             });
             console.log("LOGIN Response: ", response);
-            
+
             if (response.status >= 200 && response.status < 300) {
                 const token = response.responseJson.token;
                 await setJWTToken(token);
@@ -85,13 +84,15 @@ class AuthenticationService {
             }
             return {
                 response: null,
-                error: null,
+                error: response.responseJson
+                    ? response.responseJson.message
+                    : "Unknown error",
             };
         } catch (error) {
             console.log("Error in logging in user account: ", error);
             return {
                 response: null,
-                error: null,
+                error: "Unknown error",
             };
         }
     }

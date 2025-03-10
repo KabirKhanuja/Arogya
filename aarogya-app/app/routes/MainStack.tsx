@@ -12,12 +12,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { ScoreProvider } from '../context/ScoreContext';
 import { StackNavigationProp } from "@react-navigation/stack";
+import AppContext from '../auth/AuthContext';
+import GeneratingRoadmapScreen from '../screens/GeneratingRoadmap';
 
 const Stack = createNativeStackNavigator();
 
 export type MainStackParamsList = {
     camera: undefined,
-    form: undefined,
+    form: {
+        force: boolean;
+    },
+    GeneratingRoadmap: {
+        force: boolean;
+    },
     MainTabs: undefined,
     Countdown: {
         exerciseName: string;
@@ -39,10 +46,12 @@ export type MainStackNavigationProps = StackNavigationProp<MainStackParamsList>;
 const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
+    const { user } = useContext(AppContext);
     return (
         <ScoreProvider>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName={user?.formFilled ? "MainTabs" : "form"}>
                 <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="GeneratingRoadmap" component={GeneratingRoadmapScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
                 <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />

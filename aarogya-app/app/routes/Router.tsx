@@ -3,6 +3,7 @@ import AuthNavigator from "./AuthStack"
 import React, { useContext } from "react"
 import AppContext from "../auth/AuthContext"
 import { UserType } from "../types/user";
+import Loading from "../components/Loading";
 
 export default function Router() {
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -15,9 +16,9 @@ export default function Router() {
         }
         authService.getCurrentUser()
             .then(responseJson => {
-                console.log("Response from getCurrentUser: ", responseJson);
-
                 setIsLoading(false);
+                console.log("Response from getCurrentUser: ", responseJson);
+                
                 if (responseJson) {
                     const _user = responseJson.user;
                     const tuser: UserType = {
@@ -31,7 +32,8 @@ export default function Router() {
                         doYouSmoke: _user.doYouSmoke,
                         doYouDrink: _user.doYouDrink,
                         problems: _user.problems,
-                        medicalHistory: _user.medicalHistory
+                        medicalHistory: _user.medicalHistory,
+                        formFilled: responseJson.filled,
                     };
                     setUser(tuser);
                     setIsLoggedIn(true);
@@ -46,6 +48,8 @@ export default function Router() {
                 setIsLoggedIn(false);
             });
     }, [authService, isLoggedIn, setIsLoggedIn, setUser, user]);
+
+    if (isLoading) return <Loading />
 
     return (
         isLoggedIn ? <MainNavigator /> : <AuthNavigator />

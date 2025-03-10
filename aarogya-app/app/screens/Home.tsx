@@ -9,11 +9,10 @@ import { Accelerometer, Pedometer } from 'expo-sensors';
 import * as SecureStorage from "expo-secure-store";
 import { Roadmap } from "../types/Roadmap";
 import { MainStackNavigationProps } from "../routes/MainStack";
-import { CountdownScreenProps } from "./Countdown";
 
 const CALORIES_PER_STEP = 0.05;
 
-const LoadingIndicator = ({ text = "Typing" }) => {
+const LoadingIndicator = ({ text = "Loading" }) => {
     const typingIndicator = [`${text}`, `${text}.`, `${text}..`, `${text}...`];
     const [indicator, setIndicator] = React.useState(0);
     setTimeout(() => {
@@ -31,7 +30,7 @@ export default function HomeScreen() {
     const navigation = useNavigation<MainStackNavigationProps>();
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
     const { setTotalScore } = useContext(ScoreContext);
-    const currentScore = 5000;
+    const currentScore = 0;
     const [steps, setSteps] = useState(0);
     const [exercisesCount, setExercisesCount] = useState(0);
     const [iscounting, setIscounting] = useState(false);
@@ -82,10 +81,6 @@ export default function HomeScreen() {
             }
         };
     }, [iscounting, lastY, lastTime]);
-
-    const resetSteps = () => {
-        setSteps(0);
-    }
 
     const estimatedCaloriesBurned = () => (steps * CALORIES_PER_STEP)
 
@@ -282,7 +277,6 @@ export default function HomeScreen() {
                                         fontSize: 16,
                                         marginBottom: 16,
                                         textAlign: "center",
-                                        // marginHorizontal: 2,
                                     }}>
                                     {"Calories Burned"}
                                 </Text>
@@ -302,8 +296,11 @@ export default function HomeScreen() {
                         style={{
                             color: "#161411",
                             fontSize: 18,
+                            marginTop: 16,
                             marginBottom: 26,
-                            marginLeft: 17,
+                            width: "100%",
+                            fontWeight: "bold",
+                            textAlign: "center"
                         }}>
                         {"Today's roadmap"}
                     </Text>

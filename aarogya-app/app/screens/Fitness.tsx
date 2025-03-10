@@ -36,10 +36,13 @@ export default function FitnessScreen() {
 							paddingHorizontal: 16,
 							marginBottom: 25,
 						}}>
-                        <Ionicons name="arrow-back" size={24} color="black" />
+                        <Ionicons name="arrow-back" size={24} color="black" onPress={()=>{
+							navigation.goBack();
+						}}/>	
 						<Text 
 							style={{
 								color: "#1C160C",
+								marginStart: 16,
 								fontSize: 18,
 								flex: 1,
 							}}>

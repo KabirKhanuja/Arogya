@@ -7,7 +7,29 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  Image,
 } from 'react-native';
+import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
+
+// Theme colors
+const THEME = {
+  primary: '#3498db',
+  secondary: '#2ecc71',
+  accent: '#f39c12',
+  background: '#f9f9f9',
+  card: '#ffffff',
+  text: {
+    primary: '#2c3e50',
+    secondary: '#7f8c8d',
+    light: '#bdc3c7',
+    white: '#ffffff',
+  },
+  border: '#ecf0f1',
+  shadow: {
+    color: '#000',
+    opacity: 0.1,
+  }
+};
 
 function ExerciseRoadmap({ data }) {
   const navigation = useNavigation();
@@ -19,121 +41,210 @@ function ExerciseRoadmap({ data }) {
 
   // Helper function to safely get string or return empty string
   const safeString = (str) => str || '';
+  const normalText = (str) => {
+    return str
+      .replace(/_/g, ' ')
+      .replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  }
+  // Get category icon
+  const getCategoryIcon = (category = '') => {
+    const catLower = category.toLowerCase();
+    
+    if (catLower.includes('strength')) return 'dumbbell';
+    if (catLower.includes('cardio')) return 'running';
+    if (catLower.includes('yoga') || catLower.includes('flexibility')) return 'yoga';
+    if (catLower.includes('balance')) return 'level';
+    if (catLower.includes('mobility')) return 'walking';
+    if (catLower.includes('stretching')) return 'child';
+    if (catLower.includes('rehab')) return 'medkit';
+    return 'fitness-center'; // Default icon
+  };
 
-  const renderExercise = (exercise = {}) => (
-    <TouchableOpacity onPress={() => navigation.navigate("Countdown", {
-      exerciseName: exercise?.name || "Exercise"
-    })}
-      key={exercise?.slug || Math.random().toString()}
-    >
-      <View key={exercise?.slug || Math.random().toString()} style={styles.exerciseCard}>
-        <Text style={styles.exerciseName}>{safeString(exercise?.name)}</Text>
-        {exercise?.category && (
-          <Text style={styles.exerciseCategory}>Category: {exercise.category}</Text>
-        )}
-        {exercise?.purpose && (
-          <Text style={styles.exercisePurpose}>{exercise.purpose}</Text>
-        )}
+  const renderExercise = (exercise = {}) => {
+    const categoryIcon = 'running';//getCategoryIcon(exercise?.category);
+    
+    return (
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Countdown", {
+          exerciseName: exercise?.name || "Exercise"
+        })}
+        key={exercise?.slug || Math.random().toString()}
+        style={styles.exerciseCardContainer}
+      >
+        <View style={styles.exerciseCard}>
+          <View style={styles.exerciseHeaderRow}>
+            <View style={styles.exerciseNameContainer}>
+              <FontAwesome5 name={categoryIcon} size={18} color={THEME.primary} style={styles.categoryIcon} />
+              <Text style={styles.exerciseName}>{normalText(safeString(exercise?.name))}</Text>
+            </View>
+            <View style={styles.startButton}>
+              <Ionicons name="play-circle" size={24} color={THEME.secondary} />
+            </View>
+          </View>
+          
+          {exercise?.category && (
+            <View style={styles.categoryTag}>
+              <Text style={styles.categoryText}>{exercise.category}</Text>
+            </View>
+          )}
+          
+          {exercise?.purpose && (
+            <Text style={styles.exercisePurpose}>{exercise.purpose}</Text>
+          )}
 
-        <View style={styles.exerciseDetails}>
-          {exercise?.duration !== undefined && (
-            <View style={styles.detailItem}>
-              <Text style={styles.detailLabel}>Duration:</Text>
-              <Text style={styles.detailValue}>{exercise.duration} min</Text>
-            </View>
-          )}
-          {exercise?.sets !== undefined && (
-            <View style={styles.detailItem}>
-              <Text style={styles.detailLabel}>Sets:</Text>
-              <Text style={styles.detailValue}>{exercise.sets}</Text>
-            </View>
-          )}
-          {exercise?.reps !== undefined && (
-            <View style={styles.detailItem}>
-              <Text style={styles.detailLabel}>Reps:</Text>
-              <Text style={styles.detailValue}>{exercise.reps}</Text>
-            </View>
-          )}
-          {exercise?.hold_duration && (
-            <View style={styles.detailItem}>
-              <Text style={styles.detailLabel}>Hold:</Text>
-              <Text style={styles.detailValue}>{exercise.hold_duration}</Text>
+          <View style={styles.exerciseDetails}>
+            {exercise?.duration !== undefined && (
+              <View style={styles.detailItem}>
+                <Ionicons name="time-outline" size={16} color={THEME.primary} style={styles.detailIcon} />
+                <Text style={styles.detailLabel}>Duration:</Text>
+                <Text style={styles.detailValue}>{exercise.duration} min</Text>
+              </View>
+            )}
+            {exercise?.sets !== undefined && (
+              <View style={styles.detailItem}>
+                <FontAwesome5 name="layer-group" size={14} color={THEME.primary} style={styles.detailIcon} />
+                <Text style={styles.detailLabel}>Sets:</Text>
+                <Text style={styles.detailValue}>{exercise.sets}</Text>
+              </View>
+            )}
+            {exercise?.reps !== undefined && (
+              <View style={styles.detailItem}>
+                <FontAwesome5 name="redo" size={14} color={THEME.primary} style={styles.detailIcon} />
+                <Text style={styles.detailLabel}>Reps:</Text>
+                <Text style={styles.detailValue}>{exercise.reps}</Text>
+              </View>
+            )}
+            {exercise?.hold_duration && (
+              <View style={styles.detailItem}>
+                <Ionicons name="hourglass-outline" size={16} color={THEME.primary} style={styles.detailIcon} />
+                <Text style={styles.detailLabel}>Hold:</Text>
+                <Text style={styles.detailValue}>{exercise.hold_duration}</Text>
+              </View>
+            )}
+          </View>
+
+          {safeArray(exercise?.precautions).length > 0 && (
+            <View style={styles.precautionsContainer}>
+              <View style={styles.precautionsTitleRow}>
+                <Ionicons name="warning-outline" size={16} color={THEME.accent} />
+                <Text style={styles.precautionsTitle}>Precautions:</Text>
+              </View>
+              {safeArray(exercise?.precautions).map((precaution, index) => (
+                <Text key={index} style={styles.precautionItem}>
+                  • {safeString(precaution)}
+                </Text>
+              ))}
             </View>
           )}
         </View>
+      </TouchableOpacity>
+    );
+  };
 
-        {safeArray(exercise?.precautions).length > 0 && (
-          <View style={styles.precautionsContainer}>
-            <Text style={styles.precautionsTitle}>Precautions:</Text>
-            {safeArray(exercise?.precautions).map((precaution, index) => (
-              <Text key={index} style={styles.precautionItem}>
-                • {safeString(precaution)}
+  const renderDay = (day = {}, phaseIndex) => {
+    // Get day icon
+    const getDayIcon = (day) => {
+      const dayLower = day?.toLowerCase() || '';
+      
+      if (dayLower.includes('monday')) return 'calendar-day-1';
+      if (dayLower.includes('tuesday')) return 'calendar-day-2';
+      if (dayLower.includes('wednesday')) return 'calendar-day-3';
+      if (dayLower.includes('thursday')) return 'calendar-day-4';
+      if (dayLower.includes('friday')) return 'calendar-day-5';
+      if (dayLower.includes('saturday')) return 'calendar-day-6';
+      if (dayLower.includes('sunday')) return 'calendar-day-7';
+      if (dayLower.includes('rest')) return 'home';
+      return 'event';
+    };
+    
+    const dayIcon = getDayIcon(day?.day);
+    const isExpanded = expandedDay === day?.day;
+    
+    return (
+      <View key={day?.day || Math.random().toString()} style={styles.dayContainer}>
+        <TouchableOpacity
+          style={[styles.dayHeader, isExpanded && styles.dayHeaderActive]}
+          onPress={() => setExpandedDay(isExpanded ? null : day?.day)}
+        >
+          <View style={styles.dayTitleContainer}>
+            <MaterialIcons name={'calendar-today'} size={20} color={isExpanded ? THEME.text.white : THEME.primary} style={styles.dayIcon} />
+            <Text style={[styles.dayTitle, isExpanded && styles.dayTitleActive]}>
+              {safeString(day?.day[0].toUpperCase() + day?.day?.substring(1))}
+            </Text>
+          </View>
+          <MaterialIcons 
+            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
+            size={24} 
+            color={isExpanded ? THEME.text.white : THEME.text.secondary} 
+          />
+        </TouchableOpacity>
+
+        {isExpanded && safeArray(day?.sessions).map((session, sessionIndex) => (
+          <View key={sessionIndex} style={styles.sessionContainer}>
+            {session?.time_slot && (
+              <View style={styles.timeSlotContainer}>
+                <Ionicons name="time-outline" size={16} color={THEME.primary} />
+                <Text style={styles.timeSlot}>{session.time_slot[0].toUpperCase() + session.time_slot.substring(1)}</Text>
+              </View>
+            )}
+            {safeArray(session?.exercises).map(renderExercise)}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
+  const renderPhase = (phase = {}, index) => {
+    const isExpanded = expandedPhase === index;
+    const progressPercentage = phase?.completion_percentage || 0;
+    
+    return (
+      <View key={phase?.phase_number || index} style={styles.phaseContainer}>
+        <TouchableOpacity
+          style={[styles.phaseHeader, isExpanded && styles.phaseHeaderActive]}
+          onPress={() => setExpandedPhase(isExpanded ? null : index)}
+        >
+          <View style={styles.phaseTitleSection}>
+            <View style={{...styles.phaseNumberBadge, backgroundColor: isExpanded ? 'white' : 'rgba(52, 152, 219, 0.15)'}}>
+              <Text style={styles.phaseNumberText}>{phase?.phase_number || index + 1}</Text>
+            </View>
+            <View>
+              <Text style={[styles.phaseTitle, isExpanded && styles.phaseTitleActive]}>
+                {safeString(phase?.phase_name)}
               </Text>
-            ))}
+              {phase?.duration_weeks !== undefined && (
+                <View style={styles.phaseDurationRow}>
+                  <Ionicons name="calendar-outline" size={14} color={isExpanded ? THEME.text.white : THEME.text.secondary} />
+                  <Text style={[styles.phaseDuration, isExpanded && styles.phaseDurationActive]}>
+                    {phase.duration_weeks} weeks
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <MaterialIcons 
+            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
+            size={28} 
+            color={isExpanded ? THEME.text.white : THEME.text.secondary} 
+          />
+        </TouchableOpacity>
+
+        {isExpanded && (
+          <View style={styles.phaseContent}>
+            {safeArray(phase?.weekly_schedule).map((day) => renderDay(day, index))}
           </View>
         )}
       </View>
-    </TouchableOpacity>
-  );
+    );
+  };
 
-  const renderDay = (day = {}, phaseIndex) => (
-    <View key={day?.day || Math.random().toString()} style={styles.dayContainer}>
-      <TouchableOpacity
-        style={styles.dayHeader}
-        onPress={() => setExpandedDay(expandedDay === day?.day ? null : day?.day)}
-      >
-        <Text style={styles.dayTitle}>{safeString(day?.day)}</Text>
-        <Text style={styles.expandIcon}>
-          {expandedDay === day?.day ? '−' : '+'}
-        </Text>
-      </TouchableOpacity>
-
-      {expandedDay === day?.day && safeArray(day?.sessions).map((session, sessionIndex) => (
-        <View key={sessionIndex} style={styles.sessionContainer}>
-          {session?.time_slot && (
-            <Text style={styles.timeSlot}>{session.time_slot}</Text>
-          )}
-          {safeArray(session?.exercises).map(renderExercise)}
-        </View>
-      ))}
-    </View>
-  );
-
-  const renderPhase = (phase = {}, index) => (
-    <View key={phase?.phase_number || index} style={styles.phaseContainer}>
-      <TouchableOpacity
-        style={styles.phaseHeader}
-        onPress={() => setExpandedPhase(expandedPhase === index ? null : index)}
-      >
-        <View>
-          <Text style={styles.phaseTitle}>
-            {phase?.phase_number ? `Phase ${phase.phase_number}: ` : ''}{safeString(phase?.phase_name)}
-          </Text>
-          {phase?.duration_weeks !== undefined && (
-            <Text style={styles.phaseDuration}>
-              Duration: {phase.duration_weeks} weeks
-            </Text>
-          )}
-        </View>
-        <Text style={styles.expandIcon}>
-          {expandedPhase === index ? '−' : '+'}
-        </Text>
-      </TouchableOpacity>
-
-      {expandedPhase === index && (
-        <View style={styles.phaseContent}>
-          {safeArray(phase?.weekly_schedule).map((day) => renderDay(day, index))}
-        </View>
-      )}
-    </View>
-  );
-
-  // Handle case where data or data.roadmap is undefined
   if (!data?.roadmap) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>No roadmap data available</Text>
+        <View style={styles.emptyStateContainer}>
+          <Ionicons name="fitness-outline" size={80} color={THEME.text.light} />
+          <Text style={styles.emptyStateTitle}>No Roadmap Available</Text>
+          <Text style={styles.emptyStateMessage}>Your exercise roadmap data is not available yet.</Text>
         </View>
       </SafeAreaView>
     );
@@ -141,22 +252,32 @@ function ExerciseRoadmap({ data }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
+          <View style={styles.headerTitleRow}>
+            <Ionicons name="map-outline" size={24} color={THEME.primary} />
+            <Text style={styles.headerTitle}>Your Fitness Journey</Text>
+          </View>
           <Text style={styles.title}>{safeString(data?.roadmap?.description)}</Text>
+          
           {safeArray(data?.roadmap?.goals).length > 0 && (
             <View style={styles.goalsContainer}>
-              <Text style={styles.goalsTitle}>Goals:</Text>
+              <View style={styles.goalsTitleRow}>
+                <Ionicons name="trophy-outline" size={18} color={THEME.primary} />
+                <Text style={styles.goalsTitle}>Your Goals:</Text>
+              </View>
               {safeArray(data?.roadmap?.goals).map((goal, index) => (
-                <Text key={index} style={styles.goalItem}>
-                  • {safeString(goal)}
-                </Text>
+                <View key={index} style={styles.goalItemRow}>
+                  <Ionicons name="checkmark-circle-outline" size={16} color={THEME.secondary} style={styles.goalIcon} />
+                  <Text style={styles.goalItem}>{safeString(goal)}</Text>
+                </View>
               ))}
             </View>
           )}
         </View>
 
         <View style={styles.phasesContainer}>
+          <Text style={styles.sectionTitle}>Exercise Phases</Text>
           {safeArray(data?.roadmap?.phases).map(renderPhase)}
         </View>
       </ScrollView>
@@ -167,52 +288,91 @@ function ExerciseRoadmap({ data }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: THEME.background,
+  },
+  scrollContent: {
+    paddingBottom: 24,
   },
   header: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    padding: 20,
+    backgroundColor: THEME.card,
+    borderRadius: 12,
     margin: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    elevation: 3,
+    shadowColor: THEME.shadow.color,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: THEME.shadow.opacity,
+    shadowRadius: 6,
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: THEME.primary,
+    marginLeft: 8,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 16,
+    color: THEME.text.primary,
     marginBottom: 16,
+    lineHeight: 22,
   },
   goalsContainer: {
-    marginTop: 8,
+    marginTop: 12,
+    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+    padding: 12,
+    borderRadius: 8,
+  },
+  goalsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   goalsTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 8,
-    color: '#444',
+    color: THEME.text.primary,
+    marginLeft: 6,
+  },
+  goalItemRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  goalIcon: {
+    marginTop: 2,
+    marginRight: 6,
   },
   goalItem: {
     fontSize: 14,
-    color: '#666',
-    marginLeft: 8,
-    marginBottom: 4,
+    color: THEME.text.secondary,
+    flex: 1,
+    lineHeight: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: THEME.text.primary,
+    marginBottom: 16,
+    marginLeft: 16,
   },
   phasesContainer: {
-    padding: 16,
+    paddingHorizontal: 16,
   },
   phaseContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
+    backgroundColor: THEME.card,
+    borderRadius: 12,
     marginBottom: 16,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: THEME.shadow.color,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: THEME.shadow.opacity,
     shadowRadius: 4,
+    overflow: 'hidden',
   },
   phaseHeader: {
     padding: 16,
@@ -220,24 +380,57 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  phaseHeaderActive: {
+    backgroundColor: THEME.primary,
+  },
+  phaseTitleSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  phaseNumberBadge: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(52, 152, 219, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  phaseNumberText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: THEME.primary,
+  },
+  phaseNumberTextSelected: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
   phaseTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: THEME.text.primary,
+  },
+  phaseTitleActive: {
+    color: THEME.text.white,
+  },
+  phaseDurationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
   },
   phaseDuration: {
     fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+    color: THEME.text.secondary,
+    marginLeft: 4,
   },
-  expandIcon: {
-    fontSize: 24,
-    color: '#666',
+  phaseDurationActive: {
+    color: 'rgba(255, 255, 255, 0.8)',
   },
   phaseContent: {
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: THEME.border,
   },
   dayContainer: {
     marginBottom: 16,
@@ -246,49 +439,100 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+    borderRadius: 8,
+  },
+  dayHeaderActive: {
+    backgroundColor: THEME.primary,
+  },
+  dayTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dayIcon: {
+    marginRight: 8,
   },
   dayTitle: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#444',
+    color: THEME.text.primary,
+  },
+  dayTitleActive: {
+    color: THEME.text.white,
   },
   sessionContainer: {
     marginTop: 12,
     paddingLeft: 12,
   },
+  timeSlotContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   timeSlot: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#666',
-    marginBottom: 8,
+    color: THEME.text.secondary,
+    marginLeft: 6,
+  },
+  exerciseCardContainer: {
+    marginBottom: 12,
   },
   exerciseCard: {
-    backgroundColor: '#fff',
+    backgroundColor: THEME.card,
     padding: 16,
-    borderRadius: 8,
-    marginBottom: 12,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: THEME.border,
+    elevation: 1,
+    shadowColor: THEME.shadow.color,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: THEME.shadow.opacity,
+    shadowRadius: 2,
+  },
+  exerciseHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  exerciseNameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  categoryIcon: {
+    marginRight: 8,
   },
   exerciseName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    color: THEME.text.primary,
+    flex: 1,
   },
-  exerciseCategory: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
+  startButton: {
+    padding: 4,
+  },
+  categoryTag: {
+    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+  },
+  categoryText: {
+    fontSize: 12,
+    color: THEME.primary,
+    fontWeight: '500',
   },
   exercisePurpose: {
     fontSize: 14,
-    color: '#444',
+    color: THEME.text.secondary,
     marginBottom: 12,
+    lineHeight: 20,
   },
   exerciseDetails: {
     flexDirection: 'row',
@@ -299,32 +543,62 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 16,
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  detailIcon: {
+    marginRight: 4,
   },
   detailLabel: {
     fontSize: 13,
-    color: '#666',
+    color: THEME.text.secondary,
     marginRight: 4,
   },
   detailValue: {
     fontSize: 13,
-    color: '#333',
+    color: THEME.text.primary,
     fontWeight: '500',
   },
   precautionsContainer: {
     marginTop: 8,
+    backgroundColor: 'rgba(243, 156, 18, 0.1)',
+    padding: 10,
+    borderRadius: 6,
+  },
+  precautionsTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
   },
   precautionsTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#444',
-    marginBottom: 4,
+    color: THEME.text.primary,
+    marginLeft: 6,
   },
   precautionItem: {
     fontSize: 13,
-    color: '#666',
+    color: THEME.text.secondary,
     marginLeft: 8,
-    marginBottom: 2,
+    marginBottom: 4,
+    lineHeight: 18,
+  },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  emptyStateTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: THEME.text.primary,
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyStateMessage: {
+    fontSize: 16,
+    color: THEME.text.secondary,
+    textAlign: 'center',
   },
 });
 

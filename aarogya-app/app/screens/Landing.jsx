@@ -45,7 +45,7 @@ export default function LandingScreen() {
                         color: "#161411", 
                         marginBottom: 10 
                     }}>
-                        Aarogya
+                        Arogya
                     </Text>
                     <Text style={{ 
                         fontSize: 18, 
@@ -61,8 +61,8 @@ export default function LandingScreen() {
 
             <View style={{ padding: 20 }}>
                 <Image 
-                    source={{ uri: "https://i.ibb.co/q3P1N8x9/Exercise-Rehabilitation-Palm-Beach.png" }} 
-                    style={{ 
+                    source={require("../../assets/images/arogya_landing_page_image.jpeg")} 
+                    style={{
                         width: width - 40,
                         height: 220,
                         borderRadius: 20,
@@ -79,7 +79,7 @@ export default function LandingScreen() {
                     marginTop: 20,
                     textAlign: "center" 
                 }}>
-                    Why Choose Aarogya?
+                    Why Choose Arogya?
                 </Text>
 
                 {features.map((feature, index) => (

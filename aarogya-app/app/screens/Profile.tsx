@@ -14,10 +14,7 @@ export default function ProfileScreen() {
 
 	const handleReevaluate = async () => {
 		await SecureStore.deleteItemAsync("roadmap");
-		navigation.reset({
-			index: 0,
-			routes: [{ name: "form" }],
-		});
+		navigation.navigate("form", { force: true });
 	};
 
 	const renderBadges = () => (

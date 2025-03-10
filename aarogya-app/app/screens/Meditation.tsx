@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { ExerciseScreenProps } from "./Exercising5";
+import { MainStackNavigationProps } from "../routes/MainStack";
 
 export default function MeditationScreen() {
     const [count, setCount] = React.useState(3);
-    const navigation = useNavigation();
+    const navigation = useNavigation<MainStackNavigationProps>();
     const route = useRoute();
-    const exerciseName = route.params?.exerciseName || "Exercise";
+    const exerciseName = (route.params as ExerciseScreenProps)?.exerciseName || "Exercise";
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -15,7 +17,7 @@ export default function MeditationScreen() {
                     clearInterval(interval);
                     navigation.replace("MainTabs");
                     return 0;
-                }else{
+                } else {
                     return prevCount - 1;
                 }
             });

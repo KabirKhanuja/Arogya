@@ -1,35 +1,38 @@
 type ExerciseData = {
     exercise: string;
-    data: Object;
+    state: { message?: string };
     current_reps_count: number;
     speak_text: string;
-}
+};
 
 export default class ExerciseUtils {
-    exerciseName:string;
+    exerciseName: string;
     currentExerciseData: ExerciseData;
 
-    constructor(exerciseName:string) {
+    constructor(exerciseName: string) {
         this.exerciseName = exerciseName;
         this.currentExerciseData = {
             exercise: exerciseName,
-            data: {},
+            state: {},
             current_reps_count: 0,
-            speak_text: ''
-        }
+            speak_text: "",
+        };
     }
 
     saveExerciseDataFromResponse(response: Object) {
         this.currentExerciseData = {
             ...this.currentExerciseData,
-            data: {
-                ...response
-            }
-        }
+            state: response,
+        };
     }
 
     getExerciseData() {
-        return this.currentExerciseData.data;
+        if(this.currentExerciseData.state) return this.currentExerciseData.state;
+        return null;
+    }
+
+    getMessage(): string {
+        return this.currentExerciseData.state.message || "";
     }
 
     getRepsCount() {
@@ -43,8 +46,8 @@ export default class ExerciseUtils {
     buildRequestData() {
         return {
             exercise: this.exerciseName,
-            ...this.currentExerciseData.data,
+            ...this.currentExerciseData.state,
             current_reps_count: this.currentExerciseData.current_reps_count,
-        }
+        };
     }
 }

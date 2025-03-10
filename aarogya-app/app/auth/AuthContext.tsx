@@ -1,6 +1,5 @@
 import React, { createContext, FC, PropsWithChildren } from "react";
 import AuthenticationService from "./service"
-import getUserMain from "../utils/UsersDB";
 import { UserType } from "../types/user";
 
 type AppContextType = {
@@ -21,9 +20,7 @@ export const AppContext = createContext<AppContextType>({
 
 export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
-    const _user = getUserMain();
-    // const [user, setUser] = React.useState<UserType | null>(null);
-    const [user, setUser] = React.useState<UserType | null>(_user);
+    const [user, setUser] = React.useState<UserType | null>(null);
     const authService = new AuthenticationService();
     const defaultContext = {
         authService,
