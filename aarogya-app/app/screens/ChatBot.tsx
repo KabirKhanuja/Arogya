@@ -3,6 +3,7 @@ import React, { useContext, useRef, useState } from "react";
 import { SafeAreaView, View, ScrollView, Image, Text, TouchableOpacity, TextInput, StyleSheet, ImageSourcePropType } from "react-native";
 import Chatbot from "../utils/ChatbotUtils";
 import * as Speech from "expo-speech";
+import { Linking } from "react-native";
 
 const speakMessage = async (message: string,
     isSpeaking: boolean,
@@ -46,10 +47,81 @@ const ProfileImageView = ({ source, addMargin = true }: { source: ImageSourcePro
     );
 };
 
+interface BotResponse {
+    tool: string,
+    query: string,
+    conversation_text: string,
+    search_results: []
+}
+
+function basicTextResponse(message: string): BotResponse {
+    return {
+        tool: "",
+        query: "",
+        conversation_text: message,
+        search_results: []
+    }
+}
+
+interface YoutubeToolSearchResult {
+    video_id: string,
+    title: string,
+    description: string,
+    thumbnail: string,
+    channel_title: string,
+    video_url: string
+}
+
+const YouTubeSearchResult = ({ message }: { message: BotResponse }) => {
+    const openYoutubeVideo = (url: string) => {
+        Linking.openURL(url);
+    };
+    const search_results = message.search_results as YoutubeToolSearchResult[];
+
+    return (
+        <>
+            {message.tool === "youtube" && message.search_results.length > 0 && (
+                <View style={{
+                    backgroundColor: "#FFF",
+                    padding: 10,
+                    borderRadius: 8,
+                    borderColor: "#ccc",
+                    borderWidth: 1,
+                    marginTop: 10,
+                }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, alignContent: 'center' }}>
+                        <Ionicons name={"logo-youtube"} size={24} color="red" />
+                        <Text style={{ fontWeight: 'bold', color: '#FF0000', marginStart: 8 }}>YouTube Videos</Text>
+                    </View>
+
+                    {search_results.map((video) => (
+                        <TouchableOpacity
+                            key={video.video_id}
+                            style={{ marginBottom: 10 }}
+                            onPress={() => openYoutubeVideo(video.video_url)}
+                        >
+                            <View style={{ flexDirection: "row" }}>
+                                <Image source={{ uri: video.thumbnail }} style={{ width: 80, height: 50, borderRadius: 6 }} />
+                                <View style={{ marginLeft: 10, flexShrink: 1 }}>
+                                    <Text numberOfLines={2} style={{ fontWeight: '600', color: "#1C160C" }}>{video.title}</Text>
+                                    <Text style={{ color: "#666", fontSize: 12 }}>{video.channel_title}</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            )}
+        </>
+    )
+}
+
 const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = false }:
-    { message: string; userPictureUrl: string; isTypingIndicator?: boolean }
+    { message: BotResponse; userPictureUrl: string; isTypingIndicator?: boolean }
 ) => {
+    const messageContent = message.conversation_text;
     const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+    const hasToolUsage = message.tool != undefined && message.tool != "";
+
     return (
         <View
             style={{
@@ -78,11 +150,19 @@ const TherapistBotMessage = ({ message, userPictureUrl, isTypingIndicator = fals
                             fontSize: 16,
                             fontStyle: isTypingIndicator ? "italic" : "normal",
                         }}>
-                        {message}
+                        {message.conversation_text}
                     </Text>
+
+                    {
+                        hasToolUsage && (
+                            <YouTubeSearchResult message={message} />
+                        )
+                    }
+
+
                     <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
                         <TouchableOpacity onPress={() => {
-                            speakMessage(message, isSpeaking, setIsSpeaking)
+                            speakMessage(messageContent, isSpeaking, setIsSpeaking)
                         }}>
                             {
                                 isSpeaking ?
@@ -137,7 +217,7 @@ const TypingIndicator = () => {
         setIndicator((indicator + 1) % 4);
     }, 300);
     return (
-        <TherapistBotMessage message={typingIndicator[indicator]} userPictureUrl={"https://picsum.photos/200/200"} isTypingIndicator={true} />
+        <TherapistBotMessage message={basicTextResponse(typingIndicator[indicator])} userPictureUrl={"https://picsum.photos/200/200"} isTypingIndicator={true} />
     );
 };
 
@@ -155,7 +235,7 @@ const EmptyMessagesContainer = ({ addQuickMessage }:
             <Ionicons name="chatbubbles-outline" size={50} color="#888" />
             <Text style={styles.title}>Welcome to Doctor Roro! 👋</Text>
             <Text style={styles.description}>
-                Hi there! I'm Doctor Roro, your AI rehab companion.\n
+                Hi there! I'm Doctor Roro, your AI rehab companion.
                 I'm here to support you on your journey, answer your questions, and keep you motivated.
                 Just tap on a suggestion below or type your own message to get started!
             </Text>
@@ -208,7 +288,7 @@ const styles = StyleSheet.create({
 });
 
 type ChatMessage = {
-    message: string;
+    message: any;
     sender: string;
 }
 
@@ -242,7 +322,7 @@ export default function ChatBotScreen() {
         setMessage('');
         setIsTyping(true);
 
-        chatbotRef.current.getChatbotResponse(userMessage.message)
+        chatbotRef.current.getChatbotResponse(userMessage.message as string)
             .then((responseMessage) => {
                 if (responseMessage === '' || responseMessage === null) {
                     setIsTyping(false);
@@ -296,11 +376,11 @@ export default function ChatBotScreen() {
                                     messages.map((msg, index) => {
                                         if (msg.sender === "user") {
                                             return (
-                                                <UserMessage key={index} message={msg.message} userPictureUrl={"https://picsum.photos/200/200"} />
+                                                <UserMessage key={index} message={msg.message as string} userPictureUrl={"https://picsum.photos/200/200"} />
                                             )
                                         } else {
                                             return (
-                                                <TherapistBotMessage key={index} message={msg.message} userPictureUrl={"https://picsum.photos/200/200"} />
+                                                <TherapistBotMessage key={index} message={msg.message as BotResponse} userPictureUrl={"https://picsum.photos/200/200"} />
                                             )
                                         }
                                     })
@@ -317,8 +397,9 @@ export default function ChatBotScreen() {
                 style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    paddingHorizontal: 16,
-                    paddingVertical: 10,
+                    paddingTop: 2,
+                    paddingBottom: 6,
+                    marginHorizontal: 8,
                     backgroundColor: "white",
                     borderTopWidth: 1,
                     borderColor: "transparent",
@@ -340,20 +421,18 @@ export default function ChatBotScreen() {
                         placeholder="Write a message..."
                         value={message}
                         onChangeText={setMessage}
+                        multiline
+                        numberOfLines={3}
+                        textAlignVertical="top"
                         style={{
                             flex: 1,
-                            color: "#1C160C",
                             fontSize: 16,
-                            backgroundColor: "#F4EFE5",
-                            borderRadius: 8,
-                            paddingVertical: 10,
-                            paddingHorizontal: 16,
-                            marginRight: 10,
+                            paddingHorizontal: 15,
                         }}
+                        scrollEnabled={true}
                     />
                     <TouchableOpacity
                         style={{
-                            borderRadius: 8,
                             padding: 10,
                         }}
                         disabled={message === ''}

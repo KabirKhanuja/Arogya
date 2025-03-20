@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { SafeAreaView, View, ScrollView, Text, Image, TouchableOpacity, } from "react-native";
 import AppContext from "../auth/AuthContext";
 import RoadmapUtils from "../utils/RoadmapUtils";
+import Localdb from "../utils/Localdb";
 
 export default function SettingsScreen() {
     const { authService, setIsLoggedIn, user } = useContext(AppContext);
@@ -12,6 +13,7 @@ export default function SettingsScreen() {
             if (response) {
                 console.log("Logout successful");
                 await RoadmapUtils.clearRoadmapFromStorage()
+                await Localdb.clear();
                 setIsLoggedIn(false);
             } else {
                 console.log("Error logging out");

@@ -2,6 +2,11 @@ import * as SecureStore from "expo-secure-store";
 
 const TOKEN_KEY = "jwt-tokens";
 
+const hasToken = async () => {
+    const token = await SecureStore.getItemAsync(TOKEN_KEY);
+    return token !== null;
+};
+
 const getJWTToken = async () => {
     return await SecureStore.getItemAsync(TOKEN_KEY);
 };
@@ -23,6 +28,7 @@ export class Api {
     static readonly CURRENT_USER_URL = `${Api.BASE_URL}/user/profile`;
     static readonly LOGOUT_URL = `${Api.BASE_URL}/logout`;
     static readonly CHATBOT_URL = `${Api.BASE_URL}/chat`;
+    // static readonly CHATBOT_URL = `http://192.168.1.9:5000/chat`;
     static readonly UPDATE_USER_URL = `${Api.BASE_URL}/user/profile`;
     static readonly USER_FORM_FILLED_URL = `${Api.BASE_URL}/user/profile/formFilled`;
     static readonly GENERATE_ROADMAP_URL = `${Api.BASE_URL}/user/generate-roadmap`;
@@ -80,4 +86,4 @@ export class Api {
     }
 }
 
-export { setJWTToken, clearJWTToken };
+export { setJWTToken, clearJWTToken, hasToken };

@@ -1,4 +1,6 @@
-import { Api, setJWTToken } from "../utils/ApiConstants";
+import { Api, setJWTToken, hasToken } from "../utils/ApiConstants";
+import Localdb from "../utils/Localdb";
+import UserProfiledb from "../utils/UserProfiledb";
 
 type CreateUserAccount = {
     name: string;
@@ -99,8 +101,14 @@ class AuthenticationService {
 
     async getCurrentUser() {
         try {
+            if (await hasToken()) {
+                const user = UserProfiledb.getProfile();
+                if (user) return { user: user };
+            } else return null;
+
             const response = await Api.get(Api.CURRENT_USER_URL);
             if (response.status >= 200 && response.status < 300) {
+                UserProfiledb.setProfile(response.responseJson.user);
                 return response.responseJson;
             }
             return null;

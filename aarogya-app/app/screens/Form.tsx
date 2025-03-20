@@ -6,6 +6,7 @@ import { useNavigation } from "expo-router";
 import { useRoute } from "@react-navigation/native";
 import { RoadmpaGenerationExtraProps } from "./GeneratingRoadmap";
 import { MainStackNavigationProps } from "../routes/MainStack";
+import UserProfiledb from "../utils/UserProfiledb";
 
 export default function FormScreen() {
     const { authService, user, setUser } = useContext(AppContext);
@@ -69,7 +70,7 @@ export default function FormScreen() {
         })
             .then(responseJson => {
                 if (responseJson) {
-                    setUser({
+                    const updatedUser = {
                         ...user!!,
                         age: parseInt(age),
                         gender: gender,
@@ -78,8 +79,12 @@ export default function FormScreen() {
                         doYouSmoke: smoking,
                         doYouDrink: drinking,
                         problems: problems,
-                        medicalHistory: medicalHistory
-                    })
+                        medicalHistory: medicalHistory,
+                        formFilled: true
+                    }
+                    setUser(updatedUser);
+                    UserProfiledb.setProfile(updatedUser);
+
                     console.log("User account updated successfully", responseJson);
                     navigation.navigate("GeneratingRoadmap",{
                         force: forceGenerate

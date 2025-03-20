@@ -1,3 +1,5 @@
+import Localdb from "./Localdb";
+
 type ExerciseData = {
     exercise: string;
     state: { message?: string };
@@ -17,6 +19,16 @@ export default class ExerciseUtils {
             current_reps_count: 0,
             speak_text: "",
         };
+        const totalAttempts = Math.floor(Math.random() * 100);
+        const corrects = Math.floor(Math.random() * 50);
+        Localdb.appendExerciseToHistory({
+            name: exerciseName,
+            date: new Date().toISOString(),
+            duration: Math.floor(Math.random() * 100),
+            correctMovementsCount: corrects,
+            wrongMovementsCount: totalAttempts - corrects,
+            totalAttempts: totalAttempts,
+        });
     }
 
     saveExerciseDataFromResponse(response: Object) {

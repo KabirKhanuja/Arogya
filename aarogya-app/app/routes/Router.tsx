@@ -4,6 +4,8 @@ import React, { useContext } from "react"
 import AppContext from "../auth/AuthContext"
 import { UserType } from "../types/user";
 import Loading from "../components/Loading";
+import Localdb from "../utils/Localdb";
+import UserProfiledb from "../utils/UserProfiledb";
 
 export default function Router() {
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -22,9 +24,9 @@ export default function Router() {
                 if (responseJson) {
                     const _user = responseJson.user;
                     const tuser: UserType = {
-                        email: _user.username,
+                        email: _user.username? _user.username : _user.email,
                         name: _user.name,
-                        id: _user.user_id,
+                        id: _user.user_id ? _user.user_id : _user.id,
                         age: _user.age,
                         gender: _user.gender,
                         weight: _user.weight,
@@ -33,7 +35,7 @@ export default function Router() {
                         doYouDrink: _user.doYouDrink,
                         problems: _user.problems,
                         medicalHistory: _user.medicalHistory,
-                        formFilled: responseJson.filled,
+                        formFilled: _user.formFilled,
                     };
                     setUser(tuser);
                     setIsLoggedIn(true);

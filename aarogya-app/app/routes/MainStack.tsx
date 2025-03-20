@@ -14,6 +14,7 @@ import { ScoreProvider } from '../context/ScoreContext';
 import { StackNavigationProp } from "@react-navigation/stack";
 import AppContext from '../auth/AuthContext';
 import GeneratingRoadmapScreen from '../screens/GeneratingRoadmap';
+import { Keyboard } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,8 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
     const { user } = useContext(AppContext);
+    console.log("formFilled: ", user);
+    
     return (
         <ScoreProvider>
             <Stack.Navigator initialRouteName={user?.formFilled ? "MainTabs" : "form"}>
@@ -61,6 +64,17 @@ const MainNavigator = () => {
     )
 }
 const MainTabsNavigator = () => {
+    // Hides the bottom navigation bar when the keyboard is open
+    const [tabBarVisible, setTabBarVisible] = React.useState(true);
+
+    React.useEffect(() => {
+        const showSub = Keyboard.addListener('keyboardDidShow', () => setTabBarVisible(false));
+        const hideSub = Keyboard.addListener('keyboardDidHide', () => setTabBarVisible(true));
+        return () => {
+            showSub.remove();
+            hideSub.remove();
+        };
+    }, []);
     return (
         <>
             <Tab.Navigator
@@ -84,18 +98,20 @@ const MainTabsNavigator = () => {
                                 break;
                             default:
                                 iconName = 'home';
-                                break;                            
+                                break;
                         }
                         return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarStyle: {
+
+
+                    tabBarStyle: tabBarVisible ? {
                         height: 68,
                         alignItems: 'center',
-                        alignContent: 'center',
                         justifyContent: 'center',
                         backgroundColor: "#F5F0E5",
-                        paddingTop: 6
-                    }
+                        paddingTop: 6,
+                    } : { display: 'none' },
+
                 })}>
 
                 <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />

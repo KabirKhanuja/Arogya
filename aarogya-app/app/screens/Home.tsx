@@ -9,6 +9,8 @@ import { Accelerometer, Pedometer } from 'expo-sensors';
 import * as SecureStorage from "expo-secure-store";
 import { Roadmap } from "../types/Roadmap";
 import { MainStackNavigationProps } from "../routes/MainStack";
+import QuoteCarousel from "../components/QuotesCarousel";
+import Localdb from "../utils/Localdb";
 
 const CALORIES_PER_STEP = 0.05;
 
@@ -43,6 +45,12 @@ export default function HomeScreen() {
             setExercisesCount(parseInt(rcount));
         })();
     }, []);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setExercisesCount(Localdb.getExerciseHistory().length);
+        }, 1000);
+    }, [exercisesCount]);
 
 
     React.useEffect(() => {
@@ -349,6 +357,13 @@ export default function HomeScreen() {
                             {"Start routine"}
                         </Text>
                     </TouchableOpacity>
+                    <View
+                        style={{
+                            height: 20,
+                            backgroundColor: "#FFFFFF",
+                        }}>
+                    </View>
+                    <QuoteCarousel />
                     <View
                         style={{
                             height: 20,
