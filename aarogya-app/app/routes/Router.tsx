@@ -6,6 +6,24 @@ import { UserType } from "../types/user";
 import Loading from "../components/Loading";
 import { initNotifications, schedulePushNotification } from "../utils/NotificationUtils";
 
+const loginNotifications = {
+    titles: [
+      "Welcome Back, Warrior!",
+      "Back on Track!",
+      "Let’s Crush Today’s Rehab!",
+      "Your Progress Awaits!",
+      "Time to Stretch & Strengthen!"
+    ],
+    bodies: [
+      "Keep the momentum going! Your next workout is ready 🏃‍♂️.",
+      "Consistency is key! Let’s hit today’s rehab goals 🔥.",
+      "Every session brings you closer to recovery 💪.",
+      "Let’s make today’s workout count. Ready when you are!",
+      "Your exercises are lined up. Let’s get moving 🚀."
+    ]
+  };
+  
+
 export default function Router() {
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const { authService, isLoggedIn, setIsLoggedIn, setUser, user } = useContext(AppContext);
@@ -40,6 +58,14 @@ export default function Router() {
                         medicalHistory: _user.medicalHistory,
                         formFilled: _user.formFilled,
                     };
+                    const randomTitle = loginNotifications.titles[Math.floor(Math.random() * loginNotifications.titles.length)];
+                    const randomBody = loginNotifications.bodies[Math.floor(Math.random() * loginNotifications.bodies.length)];            
+                    schedulePushNotification({
+                        title: randomTitle,
+                        body: randomBody,
+                        data: {},
+                        afterSec: 1*60
+                    })
                     setUser(tuser);
                     setIsLoggedIn(true);
                     return;
