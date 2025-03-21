@@ -42,6 +42,14 @@ const badgesData = [
 		imageUrl: "https://kylesethgray.com/content/images/2018/08/VeteransDay_Sticker.png",
 		requiredScore: 5000
 	},
+	{
+		id: 5,
+		name: "Consistency Champion",
+		description: "For completing activities 7 days in a row",
+		imageUrl: "https://media.istockphoto.com/id/905084084/vector/bw-icon-finish-line.jpg?s=612x612&w=0&k=20&c=lhUJ8l42IlT9JX6g7AR7wG5a3FarXNtZq6Q4yUT-wSA=",
+		requiredScore: 2500,
+		specialRequirement: "7-day streak"
+	},
 ];
 
 // Temporary data for testing

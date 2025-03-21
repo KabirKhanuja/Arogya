@@ -18,9 +18,9 @@ const badgesData = [
 	{
 		id: 1,
 		name: "First Step Badge",
-		description: "For getting 500 total score",
+		description: "For getting 100 total score",
 		imageUrl: "https://kylesethgray.com/content/images/2018/08/thanksgiving_day_challenge_5k.png",
-		requiredScore: 500
+		requiredScore: 100
 	},
 	{
 		id: 2,
@@ -40,14 +40,14 @@ const badgesData = [
 		id: 4,
 		name: "Ten Steps Badge",
 		description: "For getting 10000 total score",
-		imageUrl: "https://kylesethgray.com/content/images/2018/08/midnight_5k_run.png",
+		imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAjY1PMGuLxgqYTLEr3HIQ-axizoykXbQEhw&s",
 		requiredScore: 10000
 	},
 	{
 		id: 5,
 		name: "Consistency Champion",
 		description: "For completing activities 7 days in a row",
-		imageUrl: "https://kylesethgray.com/content/images/2018/08/october_challenge.png",
+		imageUrl: "https://media.istockphoto.com/id/905084084/vector/bw-icon-finish-line.jpg?s=612x612&w=0&k=20&c=lhUJ8l42IlT9JX6g7AR7wG5a3FarXNtZq6Q4yUT-wSA=",
 		requiredScore: 2500,
 		specialRequirement: "7-day streak"
 	},
@@ -55,7 +55,7 @@ const badgesData = [
 		id: 6,
 		name: "Recovery Master",
 		description: "For reaching 50% of recovery progress",
-		imageUrl: "https://kylesethgray.com/content/images/2018/08/thanksgiving_feast.png",
+		imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEIaxAQZLo9O-QIU__us5ENINSWwgvGk5Y0A&s",
 		requiredScore: 3000,
 		specialRequirement: "50% recovery progress"
 	},
@@ -63,7 +63,7 @@ const badgesData = [
 		id: 7,
 		name: "Health Warrior",
 		description: "For maintaining perfect health metrics for 30 days",
-		imageUrl: "https://kylesethgray.com/content/images/2018/08/earth_day_2017.png",
+		imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS-EBa1dhAWgEuBzG3R_PgJ5AKBP_NwH0HAQ&s	",
 		requiredScore: 7500,
 		specialRequirement: "30-day perfect health"
 	}

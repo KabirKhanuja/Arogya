@@ -201,7 +201,13 @@ export default function HomeScreen() {
                             {"Ready for today's exercises?"}
                         </Text>
                     </View>
-                    <View>
+                    <View
+                        style={{
+                            justifyContent: "center",
+                            display: "flex",
+                            width: "100%",
+                        }}
+                    >
 
                         <View
                             style={{

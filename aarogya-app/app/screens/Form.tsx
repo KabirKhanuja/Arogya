@@ -27,6 +27,8 @@ export default function FormScreen() {
     const forceGenerate = (useRoute().params as RoadmpaGenerationExtraProps)?.force || false;
 
     useEffect(() => {
+        console.log(user);
+        
         if (user) {
             if (user.age) setAge(user.age.toString());
             if (user.gender) setGender(user.gender);
