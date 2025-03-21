@@ -32,29 +32,37 @@ export default function HomeScreen() {
     const navigation = useNavigation<MainStackNavigationProps>();
     const roadmapGeneratorRef = React.useRef(new RoadmapUtils(user!!.id!!));
     const { setTotalScore } = useContext(ScoreContext);
-    const currentScore = 0;
     const [steps, setSteps] = useState(0);
+    const [currentTotalScore, setCurrentTotalScore] = useState(0);
     const [exercisesCount, setExercisesCount] = useState(0);
     const [iscounting, setIscounting] = useState(false);
     const [lastY, setLastY] = useState(0);
     const [lastTime, setLastTime] = useState(0);
 
+    // React.useEffect(() => {
+    //     (async () => {
+    //         const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
+    //         setExercisesCount(parseInt(rcount));
+    //     })();
+    // }, []);
+
     React.useEffect(() => {
-        (async () => {
-            const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
-            setExercisesCount(parseInt(rcount));
-        })();
+        setSteps(Localdb.getStepCount());
     }, []);
 
     React.useEffect(() => {
         setTimeout(() => {
-            setExercisesCount(Localdb.getExerciseHistory().length);
+            const exercisesCountStoreVal = Localdb.getExerciseHistory().length;
+            setExercisesCount(exercisesCountStoreVal);
+            setTotalScore(exercisesCountStoreVal * 100);
+            setCurrentTotalScore(exercisesCountStoreVal * 100);
         }, 1000);
     }, [exercisesCount]);
 
 
     React.useEffect(() => {
         let subscription: any;
+        Localdb.setStepCount(steps);
         Accelerometer.isAvailableAsync().then((result) => {
             if (result) {
                 subscription = Accelerometer.addListener((accelerometerData) => {
@@ -104,9 +112,37 @@ export default function HomeScreen() {
         }
     }, []);
 
-    React.useEffect(() => {
-        setTotalScore(currentScore);
-    }, [currentScore]);
+    const BoxItem = ({ title, value }: { title: string, value: any }) => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: "#F4F2EF",
+                    borderRadius: 12,
+                    paddingVertical: 30,
+                    paddingHorizontal: 25,
+                    alignItems: "center",
+                    minWidth: 160,
+                }}>
+                <Text
+                    style={{
+                        color: "#161411",
+                        fontSize: 16,
+                        marginBottom: 16,
+                        textAlign: "center",
+                    }}>
+                    {title}
+                </Text>
+                <Text
+                    style={{
+                        color: "#161411",
+                        fontSize: 24,
+                    }}>
+                    <Text>{value}</Text>
+                </Text>
+            </View>
+        )
+    }
 
     return (
         <SafeAreaView
@@ -117,12 +153,10 @@ export default function HomeScreen() {
             <ScrollView
                 style={{
                     flex: 1,
-                    backgroundColor: "#FCFAF7",
                 }}>
                 <View
                     style={{
                         alignItems: "flex-start",
-                        backgroundColor: "#FCFAF7",
                         width: "100%",
                     }}>
                     <View
@@ -178,60 +212,8 @@ export default function HomeScreen() {
                                 marginHorizontal: 16,
                                 gap: 16,
                             }}>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: "#F4F2EF",
-                                    borderRadius: 12,
-                                    paddingVertical: 30,
-                                    paddingHorizontal: 25,
-                                    alignItems: "center",
-                                    minWidth: 195,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        marginBottom: 16,
-                                        textAlign: "center",
-                                    }}>
-                                    {"Steps Today"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 24,
-                                    }}>
-                                    <Text>{steps}</Text>
-                                </Text>
-                            </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: "#F4F2EF",
-                                    borderRadius: 12,
-                                    paddingVertical: 30,
-                                    paddingHorizontal: 25,
-                                    alignItems: "center",
-                                    minWidth: 165,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        marginBottom: 16,
-                                        textAlign: "center",
-                                    }}>
-                                    {"Exercises Done"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 24,
-                                    }}>
-                                    {exercisesCount}
-                                </Text>
-                            </View>
+                            <BoxItem title="Steps Today" value={steps} />
+                            <BoxItem title="Exercises Done" value={exercisesCount} />
                         </View>
                         <View
                             style={{
@@ -242,62 +224,8 @@ export default function HomeScreen() {
                                 marginHorizontal: 16,
                                 gap: 16,
                             }}>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: "#F4F2EF",
-                                    borderRadius: 12,
-                                    paddingVertical: 30,
-                                    paddingHorizontal: 25,
-                                    alignItems: "center",
-                                    minWidth: 195,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        marginBottom: 16,
-                                        textAlign: "center",
-                                    }}>
-                                    {"Total Score"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 24,
-                                    }}>
-                                    {currentScore}
-                                </Text>
-                            </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: "#F4F2EF",
-                                    borderRadius: 12,
-                                    paddingVertical: 30,
-                                    paddingHorizontal: 25,
-                                    alignItems: "center",
-                                    minWidth: 165,
-                                }}>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 16,
-                                        marginBottom: 16,
-                                        textAlign: "center",
-                                    }}>
-                                    {"Calories Burned"}
-                                </Text>
-                                <Text
-                                    style={{
-                                        color: "#161411",
-                                        fontSize: 24,
-                                    }}>
-                                    <Text>
-                                        {estimatedCaloriesBurned().toFixed(2)} calories
-                                    </Text>
-                                </Text>
-                            </View>
+                            <BoxItem title="Total Score" value={currentTotalScore} />
+                            <BoxItem title="Calories Burned" value={estimatedCaloriesBurned().toFixed(2)} />
                         </View>
                     </View>
                     <Text
@@ -327,7 +255,7 @@ export default function HomeScreen() {
                             </View>
                         ) : (
                             <>
-                                <ExerciseRoadmap data={roadmap} />
+                                <ExerciseRoadmap data={roadmap} roadmapProgress={exercisesCount * 0.5} />
                             </>
                         )
                     }
@@ -363,7 +291,24 @@ export default function HomeScreen() {
                             backgroundColor: "#FFFFFF",
                         }}>
                     </View>
-                    <QuoteCarousel />
+                    <View
+                        style={{
+                            flex: 1
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                alignSelf: 'center',
+                                marginTop: 46,
+                                marginBottom: 18,
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>
+                            {"Did you know?"}
+                        </Text>
+                        <QuoteCarousel />
+                    </View>
                     <View
                         style={{
                             height: 20,

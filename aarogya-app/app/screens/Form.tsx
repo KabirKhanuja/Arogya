@@ -121,6 +121,7 @@ export default function FormScreen() {
                             backgroundColor: "#FFFFFF",
                             paddingHorizontal: 16,
                             marginBottom: 26,
+                            marginTop: 18,
                         }}>
                         <TouchableOpacity onPress={handleBack}>
                             <Ionicons name="arrow-back" size={24} color={"black"} />

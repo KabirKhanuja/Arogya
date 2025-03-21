@@ -32,7 +32,7 @@ export default function LandingScreen() {
         <ScrollView style={{ backgroundColor: "#FCFAF7" }}>
             <LinearGradient 
                 colors={["#F99E16", "#FFB347"]} 
-                style={{ 
+                style={{
                     paddingTop: 60,
                     paddingBottom: 40,
                     borderBottomLeftRadius: 30,

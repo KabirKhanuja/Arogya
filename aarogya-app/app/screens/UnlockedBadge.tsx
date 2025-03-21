@@ -8,38 +8,51 @@ import {
 	Text,
 	Dimensions,
 	StyleSheet,
+	TouchableOpacity,
 } from "react-native";
+import { MainStackNavigationProps } from "../routes/MainStack";
+import { useNavigation } from "expo-router";
 
 interface Badge {
-	title: string;
+	name: string;
 	description: string;
-	iconUri: any;
+	// iconUri: any;
+	imageUrl: any;
 }
 
-// Temporary data for testing
-const badgesUnlocked: Badge[] = [
+const badgesData = [
 	{
-		title: "Test 1",
-		description: "Testing 1",
-		iconUri: require("../../assets/images/arogya_app.jpeg"),
+		id: 1,
+		name: "First Step Badge",
+		description: "For getting 500 total score",
+		imageUrl: "https://kylesethgray.com/content/images/2018/08/thanksgiving_day_challenge_5k.png",
+		requiredScore: 500
 	},
 	{
-		title: "Test 2",
-		description: "Testing 2",
-		iconUri: require("../../assets/images/arogya_app.jpeg"),
+		id: 2,
+		name: "Second Step Badge",
+		description: "For getting 1000 total score",
+		imageUrl: "https://kylesethgray.com/content/images/2018/08/new_year_2017.png",
+		requiredScore: 1000
 	},
 	{
-		title: "Test 3",
-		description: "Testing 3",
-		iconUri: require("../../assets/images/arogya_app.jpeg"),
+		id: 3,
+		name: "Five Steps Badge",
+		description: "For getting 5000 total score",
+		imageUrl: "https://kylesethgray.com/content/images/2018/08/VeteransDay_Sticker.png",
+		requiredScore: 5000
 	},
 ];
+
+// Temporary data for testing
+const badgesUnlocked: Badge[] = badgesData;
 
 const { width } = Dimensions.get("window");
 
 export default function UnlockedBadgeScreen() {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const viewabilityConfig = { viewAreaCoveragePercentThreshold: 50 };
+	const navigation = useNavigation<MainStackNavigationProps>();
 	const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
 		if (viewableItems.length > 0) {
 			setCurrentIndex(viewableItems[0].index);
@@ -70,8 +83,9 @@ export default function UnlockedBadgeScreen() {
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={({ item }) => (
 					<View style={styles.badgeContainer}>
-						<Image source={item.iconUri} style={styles.image} />
-						<Text style={styles.title}>{item.title}</Text>
+						{/* <Image source={item.iconUri} style={styles.image} /> */}
+						<Image source={{ uri: item.imageUrl }} style={styles.image} />
+						<Text style={styles.title}>{item.name}</Text>
 						<Text style={styles.description}>{item.description}</Text>
 					</View>
 				)}
@@ -86,6 +100,30 @@ export default function UnlockedBadgeScreen() {
 					/>
 				))}
 			</View>
+
+			<TouchableOpacity
+				style={{
+					alignItems: "center",
+					backgroundColor: "#F99E16",
+					borderRadius: 12,
+					padding: 14,
+					alignSelf: "stretch",
+					marginBottom: 12,
+					marginHorizontal: 16,
+				}} onPress={() => {
+					navigation.reset({
+						index: 0,
+						routes: [{ name: "MainTabs" }],
+					})
+				}}>
+				<Text
+					style={{
+						fontSize: 16,
+						textAlign: "center",
+					}}>
+					{"Continue"}
+				</Text>
+			</TouchableOpacity>
 		</SafeAreaView>
 	);
 }
@@ -123,7 +161,7 @@ const styles = StyleSheet.create({
 	dotContainer: {
 		flexDirection: "row",
 		position: "absolute",
-		bottom: 20,
+		bottom: 90,
 		alignSelf: "center",
 	},
 	dot: {

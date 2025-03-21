@@ -4,6 +4,24 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Loading from "../components/Loading";
 import AppContext from "../auth/AuthContext";
 import { AuthStackNavigationProps } from "../routes/AuthStack";
+import { schedulePushNotification } from "../utils/NotificationUtils";
+
+const registerNotifications = {
+    titles: [
+        "Welcome to Your Wellness Journey!",
+        "You've Taken the First Step!",
+        "Ready to Rebuild and Recharge!",
+        "Your Rehab Companion Awaits!",
+        "Let’s Begin Your Fitness Recovery!"
+    ],
+    bodies: [
+        "Your journey towards strength and recovery starts now 💪!",
+        "We’re excited to help you rebuild, one session at a time 🏋️‍♂️.",
+        "Explore exercises crafted for your recovery. Let’s begin!",
+        "Your personalized rehab plan is ready. Start your first session today!",
+        "Every rep counts! Let’s start moving toward your goals 🚀."
+    ]
+};
 
 export default function RegisterScreen() {
     const navigation = useNavigation<AuthStackNavigationProps>();
@@ -51,7 +69,15 @@ export default function RegisterScreen() {
 
         authService.createUserAccount({ name, email, password }).then((response) => {
             if (response) {
+                const randomRegisterTitle = registerNotifications.titles[Math.floor(Math.random() * registerNotifications.titles.length)];
+                const randomRegisterBody = registerNotifications.bodies[Math.floor(Math.random() * registerNotifications.bodies.length)];
                 console.log("Registration successful: ", response);
+                schedulePushNotification({
+                    title: randomRegisterTitle,
+                    body: randomRegisterBody,
+                    data: {},
+                    afterSec: 30,
+                })
                 setLoading(false);
                 setIsLoggedIn(true);
             } else {
@@ -83,11 +109,11 @@ export default function RegisterScreen() {
                 padding: 20,
             }}
         >
-            <Text style={{ 
-                fontSize: 32, 
-                fontWeight: "bold", 
-                color: "#161411", 
-                marginBottom: 30 
+            <Text style={{
+                fontSize: 32,
+                fontWeight: "bold",
+                color: "#161411",
+                marginBottom: 30
             }}>
                 Create Account
             </Text>
@@ -171,20 +197,20 @@ export default function RegisterScreen() {
                 }}
                 onPress={onRegister}
             >
-                <Text style={{ 
-                    color: "#161411", 
-                    fontSize: 18, 
-                    fontWeight: "600" 
+                <Text style={{
+                    color: "#161411",
+                    fontSize: 18,
+                    fontWeight: "600"
                 }}>
                     Register
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
                 onPress={handleLogin}
                 style={{ marginTop: 20 }}
             >
-                <Text style={{ 
+                <Text style={{
                     color: "#8C7A5E",
                     fontSize: 16
                 }}>

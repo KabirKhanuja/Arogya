@@ -16,18 +16,18 @@ export default function CountdownScreen() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCount((prevCount) => {
-                if (prevCount <= 0) {
+                if (prevCount <= 1) {
                     clearInterval(interval);
                     navigation.replace("Exercising5");
                     return 0;
-                } else {
-                    return prevCount - 1;
                 }
+                return prevCount - 1;
             });
         }, 1000);
-        return () => clearInterval(interval);
+    
+        return () => clearInterval(interval); // Clean up on unmount
     }, [navigation]);
-
+    
     return (
         <SafeAreaView
             style={{

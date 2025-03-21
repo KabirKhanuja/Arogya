@@ -32,6 +32,14 @@ export default class Localdb {
         Localdb.set('exerciseHistory', history);
     }
 
+    static setStepCount(count: number){
+        Localdb.set('stepcount', count);
+    }
+
+    static getStepCount(){
+        return Localdb.get('stepcount') || 0;
+    }
+
     static getProfile() {
         return Localdb.get('profile') || {};
     }

@@ -31,7 +31,7 @@ const THEME = {
   }
 };
 
-function ExerciseRoadmap({ data }) {
+function ExerciseRoadmap({ data, roadmapProgress }) {
   const navigation = useNavigation();
   const [expandedPhase, setExpandedPhase] = useState(0);
   const [expandedDay, setExpandedDay] = useState(null);
@@ -49,7 +49,7 @@ function ExerciseRoadmap({ data }) {
   // Get category icon
   const getCategoryIcon = (category = '') => {
     const catLower = category.toLowerCase();
-    
+
     if (catLower.includes('strength')) return 'dumbbell';
     if (catLower.includes('cardio')) return 'running';
     if (catLower.includes('yoga') || catLower.includes('flexibility')) return 'yoga';
@@ -62,9 +62,9 @@ function ExerciseRoadmap({ data }) {
 
   const renderExercise = (exercise = {}) => {
     const categoryIcon = 'running';//getCategoryIcon(exercise?.category);
-    
+
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => navigation.navigate("Countdown", {
           exerciseName: exercise?.name || "Exercise"
         })}
@@ -81,13 +81,13 @@ function ExerciseRoadmap({ data }) {
               <Ionicons name="play-circle" size={24} color={THEME.secondary} />
             </View>
           </View>
-          
+
           {exercise?.category && (
             <View style={styles.categoryTag}>
               <Text style={styles.categoryText}>{exercise.category}</Text>
             </View>
           )}
-          
+
           {exercise?.purpose && (
             <Text style={styles.exercisePurpose}>{exercise.purpose}</Text>
           )}
@@ -145,7 +145,7 @@ function ExerciseRoadmap({ data }) {
     // Get day icon
     const getDayIcon = (day) => {
       const dayLower = day?.toLowerCase() || '';
-      
+
       if (dayLower.includes('monday')) return 'calendar-day-1';
       if (dayLower.includes('tuesday')) return 'calendar-day-2';
       if (dayLower.includes('wednesday')) return 'calendar-day-3';
@@ -156,10 +156,11 @@ function ExerciseRoadmap({ data }) {
       if (dayLower.includes('rest')) return 'home';
       return 'event';
     };
-    
+
     const dayIcon = getDayIcon(day?.day);
     const isExpanded = expandedDay === day?.day;
-    
+    const isCompleted = phaseIndex == 2;
+
     return (
       <View key={day?.day || Math.random().toString()} style={styles.dayContainer}>
         <TouchableOpacity
@@ -167,15 +168,15 @@ function ExerciseRoadmap({ data }) {
           onPress={() => setExpandedDay(isExpanded ? null : day?.day)}
         >
           <View style={styles.dayTitleContainer}>
-            <MaterialIcons name={'calendar-today'} size={20} color={isExpanded ? THEME.text.white : THEME.primary} style={styles.dayIcon} />
+            <MaterialIcons name={isCompleted ? 'check' : 'calendar-today'} size={20} color={isExpanded ? THEME.text.white : THEME.primary} style={styles.dayIcon} />
             <Text style={[styles.dayTitle, isExpanded && styles.dayTitleActive]}>
               {safeString(day?.day[0].toUpperCase() + day?.day?.substring(1))}
             </Text>
           </View>
-          <MaterialIcons 
-            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
-            size={24} 
-            color={isExpanded ? THEME.text.white : THEME.text.secondary} 
+          <MaterialIcons
+            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+            size={24}
+            color={isExpanded ? THEME.text.white : THEME.text.secondary}
           />
         </TouchableOpacity>
 
@@ -196,8 +197,7 @@ function ExerciseRoadmap({ data }) {
 
   const renderPhase = (phase = {}, index) => {
     const isExpanded = expandedPhase === index;
-    const progressPercentage = phase?.completion_percentage || 0;
-    
+
     return (
       <View key={phase?.phase_number || index} style={styles.phaseContainer}>
         <TouchableOpacity
@@ -205,7 +205,7 @@ function ExerciseRoadmap({ data }) {
           onPress={() => setExpandedPhase(isExpanded ? null : index)}
         >
           <View style={styles.phaseTitleSection}>
-            <View style={{...styles.phaseNumberBadge, backgroundColor: isExpanded ? 'white' : 'rgba(52, 152, 219, 0.15)'}}>
+            <View style={{ ...styles.phaseNumberBadge, backgroundColor: isExpanded ? 'white' : 'rgba(52, 152, 219, 0.15)' }}>
               <Text style={styles.phaseNumberText}>{phase?.phase_number || index + 1}</Text>
             </View>
             <View>
@@ -222,10 +222,10 @@ function ExerciseRoadmap({ data }) {
               )}
             </View>
           </View>
-          <MaterialIcons 
-            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} 
-            size={28} 
-            color={isExpanded ? THEME.text.white : THEME.text.secondary} 
+          <MaterialIcons
+            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+            size={28}
+            color={isExpanded ? THEME.text.white : THEME.text.secondary}
           />
         </TouchableOpacity>
 
@@ -259,7 +259,7 @@ function ExerciseRoadmap({ data }) {
             <Text style={styles.headerTitle}>Your Fitness Journey</Text>
           </View>
           <Text style={styles.title}>{safeString(data?.roadmap?.description)}</Text>
-          
+
           {safeArray(data?.roadmap?.goals).length > 0 && (
             <View style={styles.goalsContainer}>
               <View style={styles.goalsTitleRow}>
@@ -275,6 +275,18 @@ function ExerciseRoadmap({ data }) {
             </View>
           )}
         </View>
+        
+        <View style={{marginTop: 28, marginBottom: 18, marginHorizontal: 18}}>
+          <Text style={[styles.progressLabel]}>
+            Overall Roadmap Progress ({roadmapProgress}%)
+          </Text>
+          <View style={styles.progressBarContainer}>
+            <View
+              style={[styles.progressBar, { width: `${roadmapProgress}%` }]}>
+            </View>
+          </View>
+        </View>
+
 
         <View style={styles.phasesContainer}>
           <Text style={styles.sectionTitle}>Exercise Phases</Text>
@@ -288,7 +300,6 @@ function ExerciseRoadmap({ data }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: THEME.background,
   },
   scrollContent: {
     paddingBottom: 24,
@@ -599,6 +610,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: THEME.text.secondary,
     textAlign: 'center',
+  },
+  progressLabel: {
+    color: "#9E7A47",
+    fontSize: 16,
+    marginBottom: 19,
+    textAlign: 'center',
+  },
+  progressBarContainer: {
+    backgroundColor: "#F5F0E5",
+    borderRadius: 4,
+    marginBottom: 29,
+    marginHorizontal: 16,
+    height: 8,
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: "#F99E16",
+    borderRadius: 4,
   },
 });
 

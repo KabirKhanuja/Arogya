@@ -78,8 +78,9 @@ export default function Exercising5() {
 
     useEffect(() => {
         (async () => {
-            const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
-            await SecureStorage.setItemAsync("ex-count", (parseInt(rcount) + 1).toString());
+            exerciseRef.current.save();
+            // const rcount = await SecureStorage.getItemAsync("ex-count") || "0";
+            // await SecureStorage.setItemAsync("ex-count", (parseInt(rcount) + 1).toString());
         })();
     }, []);
 
@@ -105,7 +106,7 @@ export default function Exercising5() {
                 console.log(exerciseRef.current.getMessage());
             }
         } catch (error) {
-            console.error("Error sending image:", error);
+            console.log("Error sending image:", error);
         }
     };
 
@@ -114,7 +115,7 @@ export default function Exercising5() {
         interval = setInterval(async () => {
             if (camera.current && !isCompleted && showCamera) {
                 try {
-                    const photo = await (camera.current as CameraView).takePictureAsync({ base64: true });
+                    const photo = await (camera.current as CameraView).takePictureAsync({ base64: true, shutterSound: false });
                     if (photo && photo.base64) {
                         sendImage(photo.base64);
                     }
@@ -365,7 +366,12 @@ export default function Exercising5() {
                                             paddingVertical: 18,
                                             marginRight: 8
                                         }}
-                                        onPress={() => alert('Pressed!')}
+                                        onPress={() => {
+                                            navigation.reset({
+                                                index: 0,
+                                                routes: [{ name: "BadgesUnlocked" }],
+                                            })
+                                        }}
                                     >
                                         <Text style={{ color: "#21160A", fontSize: 16 }}>
                                             {"Alternate"}

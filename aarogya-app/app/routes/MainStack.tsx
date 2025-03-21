@@ -14,7 +14,8 @@ import { ScoreProvider } from '../context/ScoreContext';
 import { StackNavigationProp } from "@react-navigation/stack";
 import AppContext from '../auth/AuthContext';
 import GeneratingRoadmapScreen from '../screens/GeneratingRoadmap';
-import { Keyboard } from 'react-native';
+import { Keyboard, StatusBar } from 'react-native';
+import UnlockedBadgeScreen from '../screens/UnlockedBadge';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ export type MainStackParamsList = {
     GeneratingRoadmap: {
         force: boolean;
     },
+    BadgesUnlocked: undefined,
     MainTabs: undefined,
     Countdown: {
         exerciseName: string;
@@ -48,13 +50,13 @@ const Tab = createBottomTabNavigator();
 
 const MainNavigator = () => {
     const { user } = useContext(AppContext);
-    console.log("formFilled: ", user);
-    
+
     return (
         <ScoreProvider>
             <Stack.Navigator initialRouteName={user?.formFilled ? "MainTabs" : "form"}>
                 <Stack.Screen name="form" component={FormScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="GeneratingRoadmap" component={GeneratingRoadmapScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="BadgesUnlocked" component={UnlockedBadgeScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="MainTabs" component={MainTabsNavigator} options={{ headerShown: false }} />
                 <Stack.Screen name="Countdown" component={CountdownScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true, headerTitle: "Settings" }} />
@@ -77,6 +79,7 @@ const MainTabsNavigator = () => {
     }, []);
     return (
         <>
+            <StatusBar backgroundColor="#4CAF50" barStyle="light-content" />
             <Tab.Navigator
                 initialRouteName='Home'
                 screenOptions={(route) => ({

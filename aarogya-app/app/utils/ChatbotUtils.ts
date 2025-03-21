@@ -14,9 +14,10 @@ export default class Chatbot {
 
     getContextMetadata(){
         const exerciseHistory = Localdb.getExerciseHistory();
-        return {
-            exerciseHistory: exerciseHistory
-        }
+        // return {
+        //     exerciseHistory: exerciseHistory
+        // }
+        return null;
     }
 
     async getChatbotResponse(message: string) {

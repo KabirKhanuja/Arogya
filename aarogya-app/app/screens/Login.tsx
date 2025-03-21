@@ -4,6 +4,24 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Loading from "../components/Loading";
 import AppContext from "../auth/AuthContext";
 import { AuthStackNavigationProps } from "../routes/AuthStack";
+import { schedulePushNotification } from "../utils/NotificationUtils";
+
+const loginNotifications = {
+  titles: [
+    "Welcome Back, Warrior!",
+    "Back on Track!",
+    "Let’s Crush Today’s Rehab!",
+    "Your Progress Awaits!",
+    "Time to Stretch & Strengthen!"
+  ],
+  bodies: [
+    "Keep the momentum going! Your next workout is ready 🏃‍♂️.",
+    "Consistency is key! Let’s hit today’s rehab goals 🔥.",
+    "Every session brings you closer to recovery 💪.",
+    "Let’s make today’s workout count. Ready when you are!",
+    "Your exercises are lined up. Let’s get moving 🚀."
+  ]
+};
 
 export default function LoginScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
@@ -36,14 +54,22 @@ export default function LoginScreen() {
 
     authService.loginUserAccount({ email, password }).then((response: { response?: any; error?: string | null }) => {
       if (response.error == null) {
+        const randomLoginTitle = loginNotifications.titles[Math.floor(Math.random() * loginNotifications.titles.length)];
+        const randomLoginBody = loginNotifications.bodies[Math.floor(Math.random() * loginNotifications.bodies.length)];
         console.log("Login successful: ", response.response);
+        schedulePushNotification({
+          title: randomLoginTitle,
+          body: randomLoginBody,
+          data: {},
+          afterSec: 30,
+        })
         setLoading(false);
         setIsLoggedIn(true);
       } else {
         if (response && response.error != null) {
           setError(response.error);
           setLoading(false);
-        }else{
+        } else {
           setError("Invalid email or password");
           setLoading(false);
         }
@@ -69,11 +95,11 @@ export default function LoginScreen() {
         padding: 20,
       }}
     >
-      <Text style={{ 
-        fontSize: 32, 
-        fontWeight: "bold", 
-        color: "#161411", 
-        marginBottom: 30 
+      <Text style={{
+        fontSize: 32,
+        fontWeight: "bold",
+        color: "#161411",
+        marginBottom: 30
       }}>
         Welcome Back
       </Text>
@@ -142,20 +168,20 @@ export default function LoginScreen() {
         disabled={loading}
         onPress={onLogin}
       >
-        <Text style={{ 
-          color: "#161411", 
-          fontSize: 18, 
-          fontWeight: "600" 
+        <Text style={{
+          color: "#161411",
+          fontSize: 18,
+          fontWeight: "600"
         }}>
           Login
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={handleRegister}
         style={{ marginTop: 20 }}
       >
-        <Text style={{ 
+        <Text style={{
           color: "#8C7A5E",
           fontSize: 16
         }}>

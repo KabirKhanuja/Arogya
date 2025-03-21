@@ -4,12 +4,15 @@ import React, { useContext } from "react"
 import AppContext from "../auth/AuthContext"
 import { UserType } from "../types/user";
 import Loading from "../components/Loading";
-import Localdb from "../utils/Localdb";
-import UserProfiledb from "../utils/UserProfiledb";
+import { initNotifications, schedulePushNotification } from "../utils/NotificationUtils";
 
 export default function Router() {
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
     const { authService, isLoggedIn, setIsLoggedIn, setUser, user } = useContext(AppContext);
+
+    React.useEffect(() => {
+        initNotifications();
+    }, [])
 
     React.useEffect(() => {
         if (isLoggedIn && user) {
@@ -20,11 +23,11 @@ export default function Router() {
             .then(responseJson => {
                 setIsLoading(false);
                 console.log("Response from getCurrentUser: ", responseJson);
-                
+
                 if (responseJson) {
                     const _user = responseJson.user;
                     const tuser: UserType = {
-                        email: _user.username? _user.username : _user.email,
+                        email: _user.username ? _user.username : _user.email,
                         name: _user.name,
                         id: _user.user_id ? _user.user_id : _user.id,
                         age: _user.age,

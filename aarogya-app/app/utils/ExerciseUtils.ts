@@ -19,14 +19,18 @@ export default class ExerciseUtils {
             current_reps_count: 0,
             speak_text: "",
         };
-        const totalAttempts = Math.floor(Math.random() * 100);
-        const corrects = Math.floor(Math.random() * 50);
+    }
+
+    save(){
+        let totalAttempts = 30;
+        const wrongs = Math.floor(Math.random() * 10);
+
         Localdb.appendExerciseToHistory({
-            name: exerciseName,
-            date: new Date().toISOString(),
-            duration: Math.floor(Math.random() * 100),
-            correctMovementsCount: corrects,
-            wrongMovementsCount: totalAttempts - corrects,
+            name: this.exerciseName,
+            // date: new Date().toISOString(),
+            duration: "2 min",
+            correctMovementsCount: totalAttempts - wrongs,
+            wrongMovementsCount: wrongs,
             totalAttempts: totalAttempts,
         });
     }
