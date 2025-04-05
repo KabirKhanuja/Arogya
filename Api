@@ -1,0 +1,24 @@
+from flask import Flask, request, jsonify
+import cv2
+import numpy as np
+import mediapipe as mp
+
+app = Flask(_name_)
+mp_pose = mp.solutions.pose
+
+@app.route('/detect_pose', methods=['POST'])
+def detect_pose():
+    file = request.files['image']
+    img_bytes = np.frombuffer(file.read(), np.uint8)
+    image = cv2.imdecode(img_bytes, cv2.IMREAD_COLOR)
+
+    with mp_pose.Pose(static_image_mode=True) as pose:
+        results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        if results.pose_landmarks:
+            keypoints = [{'x': lm.x, 'y': lm.y, 'z': lm.z} for lm in results.pose_landmarks.landmark]
+            return jsonify({'keypoints': keypoints})
+        else:
+            return jsonify({'keypoints': []})
+
+if _name_ == '_main_':
+    app.run(debug=True)
